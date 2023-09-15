@@ -2,11 +2,9 @@ from __future__ import annotations
 
 import ctypes
 from dataclasses import dataclass
-from typing import Type, TypeAlias
 
-from .backend import is_arch_x86
+from .defines import CType
 
-CType = Type[ctypes._SimpleCData]
 _python_bool = bool
 
 
@@ -61,30 +59,6 @@ supported_dtypes = (
 
 def is_complex_dtype(dtype: Dtype) -> _python_bool:
     return dtype in {complex64, complex128}
-
-
-c_dim_t = ctypes.c_int if is_arch_x86() else ctypes.c_longlong
-ShapeType = tuple[int, ...]
-
-
-class CShape(tuple):
-    def __new__(cls, *args: int) -> CShape:
-        cls.original_shape = len(args)
-        return tuple.__new__(cls, args)
-
-    def __init__(self, x1: int = 1, x2: int = 1, x3: int = 1, x4: int = 1) -> None:
-        self.x1 = x1
-        self.x2 = x2
-        self.x3 = x3
-        self.x4 = x4
-
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}{self.x1, self.x2, self.x3, self.x4}"
-
-    @property
-    def c_array(self):  # type: ignore[no-untyped-def]
-        c_shape = c_dim_t * 4  # ctypes.c_int | ctypes.c_longlong * 4
-        return c_shape(c_dim_t(self.x1), c_dim_t(self.x2), c_dim_t(self.x3), c_dim_t(self.x4))
 
 
 def to_str(c_str: ctypes.c_char_p) -> str:

@@ -3,7 +3,7 @@ from __future__ import annotations
 import ctypes
 from collections.abc import Callable
 
-from arrayfire_wrapper._typing import AFArray
+from arrayfire_wrapper.defines import AFArray
 from arrayfire_wrapper.library._broadcast import bcast_var
 from arrayfire_wrapper.library._error_handler import safe_call
 

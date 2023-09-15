@@ -1,13 +1,10 @@
 import ctypes
-from typing import TYPE_CHECKING
 
 from arrayfire_wrapper.backend import _backend
-from arrayfire_wrapper.dtypes import CShape, Dtype
+from arrayfire_wrapper.defines import AFArray, CShape
+from arrayfire_wrapper.dtypes import Dtype
 
 from ..._error_handler import safe_call
-
-if TYPE_CHECKING:
-    from arrayfire_wrapper._typing import AFArray
 
 
 def constant(number: int | float, shape: tuple[int, ...], dtype: Dtype, /) -> AFArray:

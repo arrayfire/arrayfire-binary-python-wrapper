@@ -1,9 +1,9 @@
 import ctypes
 from typing import TypeAlias
 
-from arrayfire_wrapper._typing import AFArray
 from arrayfire_wrapper.backend import _backend
-from arrayfire_wrapper.dtypes import CShape, Dtype
+from arrayfire_wrapper.defines import AFArray, CShape
+from arrayfire_wrapper.dtypes import Dtype
 
 from ..._error_handler import safe_call
 
