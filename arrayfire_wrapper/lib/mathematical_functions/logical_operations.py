@@ -1,6 +1,6 @@
 from arrayfire_wrapper.backend import _backend
 from arrayfire_wrapper.defines import AFArray
-from arrayfire_wrapper.library._utility import binary_op, unary_op
+from arrayfire_wrapper.lib._utility import binary_op, unary_op
 
 
 def and_(lhs: AFArray, rhs: AFArray, /) -> AFArray:

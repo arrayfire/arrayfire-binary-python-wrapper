@@ -8,7 +8,7 @@ __all__ += ["__arrayfire_version__"]
 __arrayfire_version__ = ARRAYFIRE_VERSION
 
 __all__ += ["add"]
-from arrayfire_wrapper.library.mathematical_functions import add
+from arrayfire_wrapper.lib.mathematical_functions import add
 
 __all__ += ["randu"]
-from arrayfire_wrapper.library.create_and_modify_array import randu
+from arrayfire_wrapper.lib.create_and_modify_array import randu

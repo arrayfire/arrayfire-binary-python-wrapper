@@ -4,8 +4,8 @@ import ctypes
 from collections.abc import Callable
 
 from arrayfire_wrapper.defines import AFArray
-from arrayfire_wrapper.library._broadcast import bcast_var
-from arrayfire_wrapper.library._error_handler import safe_call
+from arrayfire_wrapper.lib._broadcast import bcast_var
+from arrayfire_wrapper.lib._error_handler import safe_call
 
 
 def binary_op(c_func: Callable, lhs: AFArray, rhs: AFArray, /) -> AFArray:

@@ -1,6 +1,6 @@
 # flake8: noqa
 __all__ = [
-    "AFRandomEngine",
+    "AFRandomEngineHandle",
     "create_random_engine",
     "random_engine_get_seed",
     "random_engine_get_type",
@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 from .create_array.random_number_generation import (
-    AFRandomEngine,
+    AFRandomEngineHandle,
     create_random_engine,
     random_engine_get_seed,
     random_engine_get_type,

@@ -5,9 +5,9 @@ import math
 from typing import Any
 
 from arrayfire_wrapper.backend import _backend
-from arrayfire_wrapper.library._broadcast import bcast_var
+from arrayfire_wrapper.lib._broadcast import bcast_var
 
-from ._error_handler import safe_call
+from ..._error_handler import safe_call
 
 
 class _IndexSequence(ctypes.Structure):

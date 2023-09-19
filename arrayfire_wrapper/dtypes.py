@@ -61,7 +61,7 @@ def is_complex_dtype(dtype: Dtype) -> _python_bool:
     return dtype in {complex64, complex128}
 
 
-def to_str(c_str: ctypes.c_char_p) -> str:
+def to_str(c_str: ctypes.c_char_p | ctypes.Array[ctypes.c_char]) -> str:
     return str(c_str.value.decode("utf-8"))  # type: ignore[union-attr]
 
 

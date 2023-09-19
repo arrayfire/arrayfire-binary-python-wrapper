@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from arrayfire_wrapper.backend import _backend
 from arrayfire_wrapper.defines import AFArray
-from arrayfire_wrapper.library._utility import binary_op
+from arrayfire_wrapper.lib._utility import binary_op
 
 
 def add(lhs: AFArray, rhs: AFArray, /) -> AFArray:

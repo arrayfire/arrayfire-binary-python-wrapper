@@ -3,7 +3,7 @@ from __future__ import annotations
 import ctypes
 import platform
 from dataclasses import dataclass
-from typing import Type, TypeAlias
+from typing import Type
 
 
 def is_arch_x86() -> bool:
@@ -12,7 +12,13 @@ def is_arch_x86() -> bool:
 
 
 # A handle for an internal array object
-AFArray: TypeAlias = ctypes.c_void_p
+class AFArray(ctypes.c_void_p):
+    @classmethod
+    def create_null_pointer(cls) -> AFArray:
+        cls.value = None
+        return cls()
+
+
 CType = Type[ctypes._SimpleCData]
 CDimT = ctypes.c_int if is_arch_x86() else ctypes.c_longlong
 
