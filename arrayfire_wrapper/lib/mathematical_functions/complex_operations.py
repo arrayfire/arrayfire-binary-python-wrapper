@@ -1,10 +1,6 @@
-from typing import TYPE_CHECKING
-
 from arrayfire_wrapper.backend import _backend
-from arrayfire_wrapper.library._utility import binary_op, unary_op
-
-if TYPE_CHECKING:
-    from arrayfire_wrapper._typing import AFArray
+from arrayfire_wrapper.defines import AFArray
+from arrayfire_wrapper.lib._utility import binary_op, unary_op
 
 
 def cplx(arr: AFArray, /) -> AFArray:

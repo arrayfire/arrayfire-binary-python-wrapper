@@ -10,14 +10,9 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from arrayfire_wrapper.version import ARRAYFIRE_VER_MAJOR
-
 from ._logger import logger
-
-
-def is_arch_x86() -> bool:
-    machine = platform.machine()
-    return platform.architecture()[0][0:2] == "32" and (machine[-2:] == "86" or machine[0:3] == "arm")
+from .defines import is_arch_x86
+from .version import ARRAYFIRE_VER_MAJOR
 
 
 class _LibPrefixes(Enum):
