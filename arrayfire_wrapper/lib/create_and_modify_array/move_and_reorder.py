@@ -1,7 +1,7 @@
 import ctypes
 
 from arrayfire_wrapper.backend import _backend
-from arrayfire_wrapper.defines import AFArray
+from arrayfire_wrapper.defines import AFArray, CShape
 from arrayfire_wrapper.lib._error_handler import safe_call
 
 
@@ -44,3 +44,91 @@ def join_many(dim: int, n_arrays: int, *inputs: AFArray) -> AFArray:
 
     safe_call(_backend.clib.af_join_many(ctypes.pointer(out), dim, n_arrays, ctypes.pointer(inputs_arr_vector)))
     return out
+
+
+def moddims(arr: AFArray, shape: tuple[int, ...], /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__manip__func__moddims.htm#ga50442cfa497c34054c3dc4404e92667a
+    """
+    out = AFArray.create_null_pointer()
+    c_shape = CShape(*shape)
+    safe_call(_backend.clib.af_moddims(ctypes.pointer(out), arr, len(c_shape), c_shape.c_array))
+    return out
+
+
+def reorder(arr: AFArray, d0: int = 1, d1: int = 0, d2: int = 2, d3: int = 3, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__manip__func__reorder.htm#ga57383f4d00a3a86eab08dddd52c3ad3d
+    """
+    out = AFArray.create_null_pointer()
+    safe_call(_backend.clib.af_reorder(ctypes.pointer(out), arr, d0, d1, d2, d3))
+    return out
+
+
+def replace(lhs: AFArray, cond_arr: AFArray, rhs: AFArray, /) -> None:
+    """
+    source: https://arrayfire.org/docs/group__data__func__replace.htm#ga6d285cd28d8c380fbc0dafd5296703b5
+    """
+    safe_call(_backend.clib.af_replace(lhs, cond_arr, rhs))
+
+
+def replace_scalar(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> None:
+    """
+    source: https://arrayfire.org/docs/group__data__func__replace.htm#ga58449937228761176de47b1d75d689d8
+    """
+    safe_call(_backend.clib.af_replace(lhs, cond_arr, ctypes.c_double(rhs)))
+
+
+def select(lhs: AFArray, cond_arr: AFArray, rhs: AFArray, /) -> None:
+    """
+    source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
+    """
+    safe_call(_backend.clib.af_select(cond_arr, lhs, rhs))
+
+
+def select_scalar_l(lhs: int | float, cond_arr: AFArray, rhs: AFArray, /) -> None:
+    """
+    source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
+    """
+    safe_call(_backend.clib.af_select_scalar_l(cond_arr, ctypes.c_double(lhs), rhs))
+
+
+def select_scalar_r(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> None:
+    """
+    source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
+    """
+    safe_call(_backend.clib.af_select_scalar_l(cond_arr, lhs, ctypes.c_double(rhs)))
+
+
+def shift(arr: AFArray, d0: int, d1: int = 0, d2: int = 0, d3: int = 0, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__manip__func__shift.htm#ga64a0cd7680b71e87f3ab372876153b66
+    """
+    out = AFArray.create_null_pointer()
+    safe_call(_backend.clib.af_shift(ctypes.pointer(out), arr, d0, d1, d2, d3))
+    return out
+
+
+def tile(arr: AFArray, d0: int, d1: int = 1, d2: int = 1, d3: int = 1, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__manip__func__tile.htm#ga3540329723c9876839e0c790075ab076
+    """
+    out = AFArray.create_null_pointer()
+    safe_call(_backend.clib.af_tile(ctypes.pointer(out), arr, d0, d1, d2, d3))
+    return out
+
+
+def transpose(arr: AFArray, conjugate: bool, /) -> AFArray:
+    """
+    https://arrayfire.org/docs/group__blas__func__transpose.htm#ga716b2b9bf190c8f8d0970aef2b57d8e7
+    """
+    out = AFArray.create_null_pointer()
+    safe_call(_backend.clib.af_transpose(ctypes.pointer(out), arr, conjugate))
+    return out
+
+
+def transpose_inplace(arr: AFArray, conjugate: bool, /) -> None:
+    """
+    https://arrayfire.org/docs/group__blas__func__transpose.htm#ga716b2b9bf190c8f8d0970aef2b57d8e7
+    """
+    safe_call(_backend.clib.af_transpose(arr, conjugate))

@@ -3,6 +3,7 @@ from __future__ import annotations
 import ctypes
 import platform
 from dataclasses import dataclass
+from enum import Enum
 from typing import Type
 
 
@@ -47,3 +48,11 @@ class CShape(tuple):
     def c_array(self):  # type: ignore[no-untyped-def]
         c_shape = CDimT * 4  # ctypes.c_int | ctypes.c_longlong * 4
         return c_shape(CDimT(self.x1), CDimT(self.x2), CDimT(self.x3), CDimT(self.x4))
+
+
+class Moment(Enum):
+    M00 = 1
+    M01 = 2
+    M10 = 4
+    M11 = 8
+    FIRST_ORDER = M00 | M01 | M10 | M11
