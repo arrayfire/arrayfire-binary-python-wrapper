@@ -4,7 +4,7 @@ import ctypes
 import math
 from typing import Any
 
-from arrayfire_wrapper.backend import _backend
+from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.lib._broadcast import bcast_var
 
 from ..._error_handler import safe_call

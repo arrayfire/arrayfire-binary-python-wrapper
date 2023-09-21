@@ -24,20 +24,19 @@ class Dtype:
 
 
 # Specification required
-int8 = Dtype("int8", "i8", ctypes.c_char, "int8", 4)  # HACK int8 - Not Supported, b8?
-int16 = Dtype("int16", "h", ctypes.c_short, "short int", 10)
-int32 = Dtype("int32", "i", ctypes.c_int, "int", 5)
-int64 = Dtype("int64", "l", ctypes.c_longlong, "long int", 8)
-uint8 = Dtype("uint8", "B", ctypes.c_ubyte, "unsigned_char", 7)
-uint16 = Dtype("uint16", "H", ctypes.c_ushort, "unsigned short int", 11)
-uint32 = Dtype("uint32", "I", ctypes.c_uint, "unsigned int", 6)
-uint64 = Dtype("uint64", "L", ctypes.c_ulonglong, "unsigned long int", 9)
-float16 = Dtype("float16", "e", ctypes.c_uint16, "half", 12)
-float32 = Dtype("float32", "f", ctypes.c_float, "float", 0)
-float64 = Dtype("float64", "d", ctypes.c_double, "double", 2)
-complex64 = Dtype("complex64", "F", ctypes.c_float * 2, "float complex", 1)  # type: ignore[arg-type]
-complex128 = Dtype("complex128", "D", ctypes.c_double * 2, "double complex", 3)  # type: ignore[arg-type]
-bool = Dtype("bool", "b", ctypes.c_bool, "bool", 4)
+int16 = s16 = Dtype("int16", "h", ctypes.c_short, "short int", 10)
+int32 = s32 = Dtype("int32", "i", ctypes.c_int, "int", 5)
+int64 = s64 = Dtype("int64", "l", ctypes.c_longlong, "long int", 8)
+uint8 = u8 = Dtype("uint8", "B", ctypes.c_ubyte, "unsigned_char", 7)
+uint16 = u16 = Dtype("uint16", "H", ctypes.c_ushort, "unsigned short int", 11)
+uint32 = u32 = Dtype("uint32", "I", ctypes.c_uint, "unsigned int", 6)
+uint64 = u64 = Dtype("uint64", "L", ctypes.c_ulonglong, "unsigned long int", 9)
+float16 = f16 = Dtype("float16", "e", ctypes.c_uint16, "half", 12)
+float32 = f32 = Dtype("float32", "f", ctypes.c_float, "float", 0)
+float64 = f64 = Dtype("float64", "d", ctypes.c_double, "double", 2)
+complex32 = c32 = Dtype("complex64", "F", ctypes.c_float * 2, "float complex", 1)  # type: ignore[arg-type]
+complex64 = c64 = Dtype("complex128", "D", ctypes.c_double * 2, "double complex", 3)  # type: ignore[arg-type]
+bool = b8 = Dtype("bool", "b", ctypes.c_bool, "bool", 4)
 
 supported_dtypes = (
     int16,
@@ -51,14 +50,26 @@ supported_dtypes = (
     float32,
     float64,
     complex64,
-    complex128,
+    complex32,
     bool,
-    int8,  # BUG if place on top of the list
+    s16,
+    s32,
+    s64,
+    u8,
+    u16,
+    u32,
+    u64,
+    f16,
+    f32,
+    f64,
+    c32,
+    c64,
+    b8,
 )
 
 
 def is_complex_dtype(dtype: Dtype) -> _python_bool:
-    return dtype in {complex64, complex128}
+    return dtype in {complex32, complex64}
 
 
 def to_str(c_str: ctypes.c_char_p | ctypes.Array[ctypes.c_char]) -> str:
@@ -71,19 +82,19 @@ def implicit_dtype(number: int | float | _python_bool | complex, array_dtype: Dt
     elif isinstance(number, int):
         number_dtype = int64
     elif isinstance(number, float):
-        number_dtype = float64
+        number_dtype = float32
     elif isinstance(number, complex):
-        number_dtype = complex128
+        number_dtype = complex64
     else:
         raise TypeError(f"{type(number)} is not supported and can not be converted to af.Dtype.")
 
-    if not (array_dtype == float32 or array_dtype == complex64):
+    if not (array_dtype == float32 or array_dtype == complex32):
         return number_dtype
 
     if number_dtype == float64:
         return float32
 
-    if number_dtype == complex128:
+    if number_dtype == complex64:
         return complex64
 
     return number_dtype

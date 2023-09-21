@@ -1,7 +1,7 @@
 import ctypes
 from enum import Enum
 
-from arrayfire_wrapper.backend import _backend
+from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray
 from arrayfire_wrapper.lib._error_handler import safe_call
 

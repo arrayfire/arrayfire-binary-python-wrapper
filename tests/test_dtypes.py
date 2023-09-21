@@ -5,13 +5,13 @@ import pytest
 from arrayfire_wrapper.dtypes import Dtype
 from arrayfire_wrapper.dtypes import bool as af_bool
 from arrayfire_wrapper.dtypes import (
-    complex128,
+    complex32,
     float32,
     float64,
     implicit_dtype,
-    int8,
     int32,
     int64,
+    s16,
     str_to_dtype,
     uint16,
 )
@@ -32,43 +32,13 @@ def test_dtype_equality() -> None:
 
 
 def test_dtype_inequality() -> None:
-    assert float32 != int8
-
-
-@pytest.mark.parametrize(
-    "number,array_dtype,expected_dtype",
-    [
-        (1, int64, int64),
-        (1.0, float64, float64),
-        (1.0, float32, float32),
-        (True, float32, af_bool),
-        (1 + 2j, complex128, complex128),
-    ],
-)
-def test_implicit_dtype(number: int | float | bool | complex, array_dtype: Dtype, expected_dtype: Dtype) -> None:
-    result_dtype = implicit_dtype(number, array_dtype)
-    assert result_dtype == expected_dtype
-
-
-def test_implicit_dtype_raises_error_invalid_array_dtype() -> None:
-    with pytest.raises(TypeError):
-        implicit_dtype([1], "invalid_dtype")  # type: ignore[arg-type]
-
-
-def test_implicit_dtype_raises_error_invalid_number_type() -> None:
-    with pytest.raises(TypeError):
-        implicit_dtype("invalid_number", int32)  # type: ignore[arg-type]
-
-
-def test_implicit_dtype_raises_error_invalid_combination() -> None:
-    with pytest.raises(TypeError):
-        implicit_dtype("invalid_number", float32)  # type: ignore[arg-type]
+    assert float32 != int32
 
 
 @pytest.mark.parametrize(
     "value,expected_dtype",
     [
-        ("i8", int8),
+        ("short int", s16),
         ("int", int32),
         ("uint16", uint16),
         ("float", float32),

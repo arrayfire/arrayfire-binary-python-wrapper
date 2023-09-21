@@ -1,6 +1,6 @@
 import ctypes
 
-from arrayfire_wrapper.backend import _backend
+from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray, CDimT
 from arrayfire_wrapper.dtypes import to_str
 from arrayfire_wrapper.lib._error_handler import safe_call
@@ -17,15 +17,15 @@ def alloc_host(num_bytes: int, /) -> int:
     return out.value
 
 
-def allooutice(num_bytes: int, /) -> int:
-    # NOTE af_allooutice is marked as deprecated, so used af_allooutice_v2 instead
+def alloc_device(num_bytes: int, /) -> int:
+    # NOTE af_alloc_device is marked as deprecated, so used af_alloc_device_v2 instead
     """
     source: https://arrayfire.org/docs/group__device__func__alloc.htm#gaa8868199b29eae4bac42cc22ff5891a9
 
     Allocate a buffer on the device with specified number of bytes.
     """
     out = AFArray.create_null_pointer()
-    safe_call(_backend.clib.af_allooutice_v2(ctypes.pointer(out), CDimT(num_bytes)))
+    safe_call(_backend.clib.af_alloc_device_v2(ctypes.pointer(out), CDimT(num_bytes)))
     return out.value
 
 
