@@ -1,5 +1,18 @@
 # flake8: noqa
-__all__ = [
+
+__all__ = ["assign_gen", "assign_seq"]
+
+from .assignment_and_indexing.assign import assign_gen, assign_seq
+
+__all__ += ["lookup"]
+
+from .assignment_and_indexing.lookup import lookup
+
+__all__ += ["CIndexStructure", "IndexStructure", "ParallelRange", "get_indices"]
+
+from .assignment_and_indexing.indexing import CIndexStructure, IndexStructure, ParallelRange, get_indices
+
+__all__ += [
     "AFRandomEngineHandle",
     "create_random_engine",
     "random_engine_get_seed",

@@ -56,3 +56,11 @@ class Moment(Enum):
     M10 = 4
     M11 = 8
     FIRST_ORDER = M00 | M01 | M10 | M11
+
+
+class PointerSource(Enum):
+    """
+    Source of the pointer.
+    """
+    device = 0  # gpu
+    host = 1  # cpu
