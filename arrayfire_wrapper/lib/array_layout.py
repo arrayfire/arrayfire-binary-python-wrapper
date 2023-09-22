@@ -1,8 +1,9 @@
 import ctypes
 
 from arrayfire_wrapper._backend import _backend
-from arrayfire_wrapper.defines import AFArray, ArrayBuffer, CDimT, CShape, CType, PointerSource
+from arrayfire_wrapper.defines import AFArray, ArrayBuffer, CDimT, CShape, CType
 from arrayfire_wrapper.dtypes import Dtype
+from arrayfire_wrapper.lib._constants import PointerSource
 from arrayfire_wrapper.lib._error_handler import safe_call
 
 

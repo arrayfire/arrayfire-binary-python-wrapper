@@ -1,21 +1,9 @@
 import ctypes
-from enum import Enum
 
 from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray
+from arrayfire_wrapper.lib._constants import TopK, VarianceBias
 from arrayfire_wrapper.lib._error_handler import safe_call
-
-
-class VarianceBias(Enum):
-    DEFAULT = 0
-    SAMPLE = 1
-    POPULATION = 2
-
-
-class TopK(Enum):
-    DEFAULT = 0
-    MIN = 1
-    MAX = 2
 
 
 def corrcoef(x: AFArray, y: AFArray, /) -> complex:
