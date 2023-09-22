@@ -7,7 +7,7 @@ from arrayfire_wrapper.lib._constants import ErrorCodes
 
 
 def safe_call(c_err: int) -> None:
-    if c_err == ErrorCodes.none.value:
+    if c_err == ErrorCodes.NONE.value:
         return
 
     err_str = ctypes.c_char_p(0)

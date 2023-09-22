@@ -388,6 +388,101 @@ __all__ += ["acos", "asin", "atan", "atan2", "cos", "sin", "tan"]
 
 from .mathematical_functions.trigonometric_functions import acos, asin, atan, atan2, cos, sin, tan
 
+# Vector Algorithms
+
+__all__ += [
+    "accum",
+    "scan",
+    "scan_by_key",
+    "where",
+]
+
+from .vector_algorithms.inclusive_scan_operations import accum, scan, scan_by_key, where
+
+__all__ += [
+    "diff1",
+    "diff2",
+    "gradient",
+]
+
+from .vector_algorithms.numerical_differentiation import diff1, diff2, gradient
+
+__all__ += [
+    "all_true",
+    "all_true_all",
+    "all_true_by_key",
+    "any_true",
+    "any_true_all",
+    "any_true_by_key",
+    "count",
+    "count_all",
+    "count_by_key",
+    "imax",
+    "imax_all",
+    "imin",
+    "imin_all",
+    "max",
+    "max_all",
+    "max_by_key",
+    "max_ragged",
+    "min",
+    "min_all",
+    "product",
+    "product_all",
+    "product_nan",
+    "product_nan_all",
+    "sum",
+    "sum_all",
+    "sum_nan",
+    "sum_nan_all",
+]
+
+from .vector_algorithms.reduction_operations import (
+    all_true,
+    all_true_all,
+    all_true_by_key,
+    any_true,
+    any_true_all,
+    any_true_by_key,
+    count,
+    count_all,
+    count_by_key,
+    imax,
+    imax_all,
+    imin,
+    imin_all,
+    max,
+    max_all,
+    max_by_key,
+    max_ragged,
+    min,
+    min_all,
+    product,
+    product_all,
+    product_nan,
+    product_nan_all,
+    sum,
+    sum_all,
+    sum_nan,
+    sum_nan_all,
+)
+
+__all__ += [
+    "set_intersect",
+    "set_union",
+    "set_unique",
+]
+
+from .vector_algorithms.set_operations import set_intersect, set_union, set_unique
+
+__all__ += [
+    "sort",
+    "sort_by_key",
+    "sort_index",
+]
+
+from .vector_algorithms.sort_operations import sort, sort_by_key, sort_index
+
 # Functions to Work with Internal Array Layout
 
 __all__ += [
@@ -403,8 +498,6 @@ from .array_layout import create_strided_array, get_offset, get_strides, is_line
 # Statistics
 
 __all__ += [
-    "TopK",
-    "VarianceBias",
     "corrcoef",
     "cov",
     "mean",
@@ -423,8 +516,6 @@ __all__ += [
 ]
 
 from .statistics import (
-    TopK,
-    VarianceBias,
     corrcoef,
     cov,
     mean,
@@ -441,3 +532,9 @@ from .statistics import (
     var_all_weighted,
     var_weighted,
 )
+
+# Constants
+
+__all__ += ["BinaryOperator", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+
+from ._constants import BinaryOperator, Moment, Pad, PointerSource, TopK, VarianceBias
