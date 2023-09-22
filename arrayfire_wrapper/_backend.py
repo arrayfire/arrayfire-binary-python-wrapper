@@ -115,7 +115,7 @@ class BackendType(enum.Enum):  # TODO change name - avoid using _backend_type - 
 
     def __iter__(self) -> Iterator:
         # NOTE cpu comes last because we want to keep this order priorty during backend initialization
-        return iter((self.unified, self.cuda, self.opencl, self.cpu))
+        return iter((self.unified, self.cuda, self.oneapi, self.opencl, self.cpu))
 
 
 class Backend:
