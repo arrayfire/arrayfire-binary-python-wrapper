@@ -2,13 +2,23 @@
 from .version import ARRAYFIRE_VERSION, VERSION
 
 __all__ = ["__version__"]
+
 __version__ = VERSION
 
 __all__ += ["__arrayfire_version__"]
+
 __arrayfire_version__ = ARRAYFIRE_VERSION
 
 __all__ += ["AFArray", "ArrayBuffer", "CType"]
+
 from .defines import AFArray, ArrayBuffer, CType
+
+__all__ += [
+    "Backend",
+    "BackendType",
+    "get_backend",
+]
+from ._backend import Backend, BackendType, get_backend
 
 __all__ += [
     "Dtype",
