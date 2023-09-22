@@ -10,7 +10,7 @@ from .assignment_and_indexing.lookup import lookup
 
 __all__ += ["CIndexStructure", "IndexStructure", "ParallelRange", "get_indices"]
 
-from .assignment_and_indexing.indexing import CIndexStructure, IndexStructure, ParallelRange, get_indices
+from .assignment_and_indexing._indexing import CIndexStructure, IndexStructure, ParallelRange, get_indices
 
 __all__ += [
     "AFRandomEngineHandle",

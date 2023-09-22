@@ -14,7 +14,7 @@ def alloc_host(num_bytes: int, /) -> int:
     """
     out = AFArray.create_null_pointer()
     safe_call(_backend.clib.af_alloc_host(ctypes.pointer(out), CDimT(num_bytes)))
-    return out.value
+    return out.value  # type: ignore[return-value]
 
 
 def alloc_device(num_bytes: int, /) -> int:
@@ -26,7 +26,7 @@ def alloc_device(num_bytes: int, /) -> int:
     """
     out = AFArray.create_null_pointer()
     safe_call(_backend.clib.af_alloc_device_v2(ctypes.pointer(out), CDimT(num_bytes)))
-    return out.value
+    return out.value  # type: ignore[return-value]
 
 
 def device_info() -> dict[str, str]:
@@ -131,7 +131,7 @@ def get_device_ptr(arr: AFArray) -> int:
     """
     out = AFArray.create_null_pointer()
     safe_call(_backend.clib.af_get_device_ptr(ctypes.pointer(out), arr))
-    return out.value
+    return out.value  # type: ignore[return-value]
 
 
 def get_kernel_cache_directory(length: int, path: str, /) -> None:
@@ -246,7 +246,7 @@ def set_kernel_cache_directory(path: str, override_env: int, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga880be5cb0035d4f173d074ad06bce6a7
     """
-    safe_call(_backend.clib.af_set_kernel_cache_directory(path.encode("utf-8", override_env)))
+    safe_call(_backend.clib.af_set_kernel_cache_directory(path.encode("utf-8"), override_env))
 
 
 def set_mem_step_size(step_bytes: int, /) -> None:
@@ -397,7 +397,7 @@ def alloc_pinned(num_bytes: int, /) -> int:
     """
     out = ctypes.c_void_p(0)
     safe_call(_backend.clib.af_alloc_pinned(ctypes.pointer(out), CDimT(num_bytes)))
-    return out.value
+    return out.value  # type: ignore[return-value]
 
 
 def get_device() -> int:
