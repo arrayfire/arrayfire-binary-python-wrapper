@@ -2,7 +2,7 @@ import ctypes
 
 from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray
-from arrayfire_wrapper.dtypes import Dtype
+from arrayfire_wrapper.dtypes import Dtype, to_str
 from arrayfire_wrapper.lib._error_handler import safe_call
 from arrayfire_wrapper.lib._utility import unary_op
 
@@ -35,3 +35,12 @@ def iszero(arr: AFArray, /) -> AFArray:
     source: https://arrayfire.org/docs/group__arith__func__iszero.htm#ga559003777ce5148277b07903c351ecea
     """
     return unary_op(_backend.clib.af_iszero, arr)
+
+
+def array_to_string(exp: str, arr: AFArray, precision: int, transpose: bool, /) -> str:
+    """
+    source: https://arrayfire.org/docs/group__print__func__tostring.htm#ga01f32ef2420b5d4592c6e4b4964b863b
+    """
+    out = ctypes.c_char_p(0)
+    safe_call(_backend.clib.af_array_to_string(ctypes.pointer(out), exp, arr, precision, transpose))
+    return to_str(out)
