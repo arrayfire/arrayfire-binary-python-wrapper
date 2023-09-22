@@ -69,3 +69,7 @@ from .dtypes import (
     uint32,
     uint64,
 )
+
+__all__ += ["lib"]
+
+from . import lib

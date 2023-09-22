@@ -2,19 +2,7 @@ import ctypes
 
 import pytest
 
-from arrayfire_wrapper.dtypes import Dtype
-from arrayfire_wrapper.dtypes import bool as af_bool
-from arrayfire_wrapper.dtypes import (
-    complex32,
-    float32,
-    float64,
-    implicit_dtype,
-    int32,
-    int64,
-    s16,
-    str_to_dtype,
-    uint16,
-)
+from arrayfire_wrapper.dtypes import Dtype, float32, int32, s16, str_to_dtype, uint16
 
 
 def test_dtype_str_representation() -> None:
