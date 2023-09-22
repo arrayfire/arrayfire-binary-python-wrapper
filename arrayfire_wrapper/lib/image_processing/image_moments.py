@@ -1,7 +1,8 @@
 import ctypes
 
 from arrayfire_wrapper._backend import _backend
-from arrayfire_wrapper.defines import AFArray, Moment
+from arrayfire_wrapper.defines import AFArray
+from arrayfire_wrapper.lib._constants import Moment
 from arrayfire_wrapper.lib._error_handler import safe_call
 
 

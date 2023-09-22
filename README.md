@@ -18,4 +18,4 @@ Arrayfire python C library wrapper
 - [ ] Signal Processing
 - [x] Statistics
 - [ ] Unified API Functions
-- [ ] Vector Algorithms
+- [x] Vector Algorithms

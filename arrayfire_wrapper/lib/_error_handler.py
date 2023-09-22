@@ -1,17 +1,13 @@
 import ctypes
-from enum import Enum
 
 from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import CDimT
 from arrayfire_wrapper.dtypes import to_str
-
-
-class _ErrorCodes(Enum):
-    none = 0
+from arrayfire_wrapper.lib._constants import ErrorCodes
 
 
 def safe_call(c_err: int) -> None:
-    if c_err == _ErrorCodes.none.value:
+    if c_err == ErrorCodes.NONE.value:
         return
 
     err_str = ctypes.c_char_p(0)
