@@ -4,10 +4,8 @@ import ctypes
 import math
 from typing import Any
 
-from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.lib._broadcast import bcast_var
-
-from ..._error_handler import safe_call
+from arrayfire_wrapper.lib.create_and_modify_array.manage_array import release_array
 
 
 class _IndexSequence(ctypes.Structure):
@@ -227,7 +225,7 @@ class IndexStructure(ctypes.Structure):
             # converted to basic C types so we have to
             # build the void_p from the value again.
             arr = ctypes.c_void_p(self.idx.arr)
-            safe_call(_backend.clib.af_release_array(arr))
+            release_array(arr)  # type: ignore[arg-type]
 
 
 class CIndexStructure:

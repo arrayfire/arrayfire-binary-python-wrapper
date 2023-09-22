@@ -1,9 +1,8 @@
 import ctypes
 
-from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray, CDimT
 from arrayfire_wrapper.dtypes import to_str
-from arrayfire_wrapper.lib._error_handler import safe_call
+from arrayfire_wrapper.lib._utility import call_from_clib
 
 
 def alloc_host(num_bytes: int, /) -> int:
@@ -13,7 +12,7 @@ def alloc_host(num_bytes: int, /) -> int:
     Allocate a buffer on the host with specified number of bytes.
     """
     out = AFArray.create_null_pointer()
-    safe_call(_backend.clib.af_alloc_host(ctypes.pointer(out), CDimT(num_bytes)))
+    call_from_clib(alloc_host.__name__, ctypes.pointer(out), CDimT(num_bytes))
     return out.value  # type: ignore[return-value]
 
 
@@ -25,7 +24,7 @@ def alloc_device(num_bytes: int, /) -> int:
     Allocate a buffer on the device with specified number of bytes.
     """
     out = AFArray.create_null_pointer()
-    safe_call(_backend.clib.af_alloc_device_v2(ctypes.pointer(out), CDimT(num_bytes)))
+    call_from_clib("alloc_device_v2", ctypes.pointer(out), CDimT(num_bytes))
     return out.value  # type: ignore[return-value]
 
 
@@ -47,10 +46,12 @@ def device_info() -> dict[str, str]:
     toolkit = c_char_256()
     compute = c_char_256()
 
-    safe_call(
-        _backend.clib.af_device_info(
-            ctypes.pointer(device_name), ctypes.pointer(backend_name), ctypes.pointer(toolkit), ctypes.pointer(compute)
-        )
+    call_from_clib(
+        device_info.__name__,
+        ctypes.pointer(device_name),
+        ctypes.pointer(backend_name),
+        ctypes.pointer(toolkit),
+        ctypes.pointer(compute),
     )
 
     out["device"] = to_str(device_name)
@@ -67,7 +68,7 @@ def device_gc() -> None:
 
     Ask the garbage collector to free all unlocked memory
     """
-    safe_call(_backend.clib.af_device_gc())
+    call_from_clib(device_gc.__name__)
 
 
 def device_mem_info() -> dict[str, dict[str, int]]:
@@ -95,13 +96,12 @@ def device_mem_info() -> dict[str, dict[str, int]]:
     alloc_buffers = ctypes.c_size_t(0)
     lock_bytes = ctypes.c_size_t(0)
     lock_buffers = ctypes.c_size_t(0)
-    safe_call(
-        _backend.clib.af_device_mem_info(
-            ctypes.pointer(alloc_bytes),
-            ctypes.pointer(alloc_buffers),
-            ctypes.pointer(lock_bytes),
-            ctypes.pointer(lock_buffers),
-        )
+    call_from_clib(
+        device_mem_info.__name__,
+        ctypes.pointer(alloc_bytes),
+        ctypes.pointer(alloc_buffers),
+        ctypes.pointer(lock_bytes),
+        ctypes.pointer(lock_buffers),
     )
 
     out["alloc"] = {"buffers": alloc_buffers.value, "bytes": alloc_bytes.value}
@@ -130,7 +130,7 @@ def get_device_ptr(arr: AFArray) -> int:
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga58fda2d491cd27f31108e699b5aef506
     """
     out = AFArray.create_null_pointer()
-    safe_call(_backend.clib.af_get_device_ptr(ctypes.pointer(out), arr))
+    call_from_clib(get_device_ptr.__name__, ctypes.pointer(out), arr)
     return out.value  # type: ignore[return-value]
 
 
@@ -138,14 +138,14 @@ def get_kernel_cache_directory(length: int, path: str, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga0cca43230149189dcc46cceb5dba5588
     """
-    safe_call(_backend.clib.af_get_kernel_cache_directory(ctypes.c_size_t(length), path.encode("utf-8")))
+    call_from_clib(get_kernel_cache_directory.__name__, ctypes.c_size_t(length), path.encode("utf-8"))
 
 
 def get_mem_step_size(step_bytes: int, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga4c04df1ae248a6a8aa0a28263323872a
     """
-    safe_call(_backend.clib.af_get_mem_step_size(ctypes.c_size_t(step_bytes)))
+    call_from_clib(get_mem_step_size.__name__, ctypes.c_size_t(step_bytes))
 
 
 def is_locked_array(arr: AFArray, /) -> bool:
@@ -164,7 +164,7 @@ def is_locked_array(arr: AFArray, /) -> bool:
     source: https://arrayfire.org/docs/group__device__func__mem.htm#gab99cb6a3744802742c98714fc88fb991
     """
     out = ctypes.c_bool(False)
-    safe_call(_backend.clib.af_is_locked_array(ctypes.pointer(out), arr))
+    call_from_clib(is_locked_array.__name__, ctypes.pointer(out), arr)
     return bool(out.value)
 
 
@@ -183,14 +183,14 @@ def lock_array(arr: AFArray, /) -> None:
 
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga825e21412e9c8e3609c759f8106fd384
     """
-    safe_call(_backend.clib.af_lock_array(arr))
+    call_from_clib(lock_array.__name__, arr)
 
 
 def lock_device_ptr(arr: AFArray, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#gac2ad5089cbca1a6cca8d87d42279c6a8
     """
-    safe_call(_backend.clib.af_lock_device_ptr(arr))
+    call_from_clib(lock_device_ptr.__name__, arr)
 
 
 def print_mem_info(msg: str = "Memory Info", device_id: None | int = None, /) -> None:
@@ -239,21 +239,21 @@ def print_mem_info(msg: str = "Memory Info", device_id: None | int = None, /) ->
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga7c928031579de47fe21594fd745e9188
     """
     device_id = device_id if device_id else get_device()
-    safe_call(_backend.clib.af_print_mem_info(msg.encode("utf-8"), device_id))
+    call_from_clib(print_mem_info.__name__, msg.encode("utf-8"), device_id)
 
 
 def set_kernel_cache_directory(path: str, override_env: int, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga880be5cb0035d4f173d074ad06bce6a7
     """
-    safe_call(_backend.clib.af_set_kernel_cache_directory(path.encode("utf-8"), override_env))
+    call_from_clib(set_kernel_cache_directory.__name__, path.encode("utf-8"), override_env)
 
 
 def set_mem_step_size(step_bytes: int, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga3be9c5ea9ee828868f5d906333a11499
     """
-    safe_call(_backend.clib.af_set_mem_step_size(ctypes.c_size_t(step_bytes)))
+    call_from_clib(set_mem_step_size.__name__, ctypes.c_size_t(step_bytes))
 
 
 def unlock_array(arr: AFArray, /) -> None:
@@ -267,14 +267,14 @@ def unlock_array(arr: AFArray, /) -> None:
 
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga07151f8b3d69c1afe3cbd860fd98c36f
     """
-    safe_call(_backend.clib.af_unlock_array(arr))
+    call_from_clib(unlock_array.__name__, arr)
 
 
 def unlock_device_ptr(arr: AFArray, /) -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga39817b0ba24db34f00c20cc3a20df6d4
     """
-    safe_call(_backend.clib.af_unlock_device_ptr(arr))
+    call_from_clib(unlock_device_ptr.__name__, arr)
     return None
 
 
@@ -285,7 +285,7 @@ def free_host(pointer: int) -> None:
     source: https://arrayfire.org/docs/group__device__func__free__host.htm#ga3f1149a837a7ebbe8002d5d2244e3370
     """
     out = ctypes.c_void_p(pointer)
-    safe_call(_backend.clib.af_free_host(out))
+    call_from_clib(free_host.__name__, out)
 
 
 def free_pinned(pointer: int) -> None:
@@ -295,7 +295,7 @@ def free_pinned(pointer: int) -> None:
     source: https://arrayfire.org/docs/group__device__func__free__pinned.htm#ga92ed71f45aa719b9be792afbab7415f2
     """
     out = ctypes.c_void_p(pointer)
-    safe_call(_backend.clib.af_free_pinned(out))
+    call_from_clib(free_pinned.__name__, out)
 
 
 def free_device(pointer: int) -> None:
@@ -306,7 +306,7 @@ def free_device(pointer: int) -> None:
     source: https://arrayfire.org/docs/group__device__func__free.htm#gadc0a469d9f5d885e73ee645a6dbf19f5
     """
     out = ctypes.c_void_p(pointer)
-    safe_call(_backend.clib.af_free_pinned(out))
+    call_from_clib(free_pinned.__name__, out)
 
 
 def get_device_count() -> int:
@@ -316,7 +316,7 @@ def get_device_count() -> int:
     source: https://arrayfire.org/docs/group__device__func__count.htm#ga0f163c809fb48e4cba530c6505f6e7b6
     """
     out = ctypes.c_int(0)
-    safe_call(_backend.clib.af_get_device_count(ctypes.pointer(out)))
+    call_from_clib(get_device_count.__name__, ctypes.pointer(out))
     return out.value
 
 
@@ -324,7 +324,9 @@ def info() -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__info.htm#ga55e3054334c0fbc23676bc93a2bec066
     """
-    safe_call(_backend.clib.af_info())
+    call_from_clib(
+        info.__name__,
+    )
     return None
 
 
@@ -332,7 +334,9 @@ def init() -> None:
     """
     source: https://arrayfire.org/docs/group__device__func__info.htm#gacbdf7b79d778344d30deb77c06ac7367
     """
-    safe_call(_backend.clib.af_init())
+    call_from_clib(
+        init.__name__,
+    )
     return None
 
 
@@ -341,7 +345,7 @@ def info_string(verbose: bool = False, /) -> str:
     source: https://arrayfire.org/docs/group__device__func__info__string.htm#gacc0f17e14982d390284347d4dc82b461
     """
     out = ctypes.c_char_p(0)
-    safe_call(_backend.clib.af_info_string(ctypes.pointer(out), verbose))
+    call_from_clib(info_string.__name__, ctypes.pointer(out), verbose)
     return to_str(out)
 
 
@@ -363,7 +367,7 @@ def get_dbl_support(device_id: None | int = None, /) -> bool:
     """
     device_id = device_id if device_id else get_device()
     out = ctypes.c_bool(False)
-    safe_call(_backend.clib.af_get_dbl_support(ctypes.pointer(out), device_id))
+    call_from_clib(get_dbl_support.__name__, ctypes.pointer(out), device_id)
     return bool(out.value)
 
 
@@ -385,7 +389,7 @@ def get_half_support(device_id: None | int = None, /) -> bool:
     """
     device_id = device_id if device_id else get_device()  # FIXME
     out = ctypes.c_bool(False)
-    safe_call(_backend.clib.af_get_half_support(ctypes.pointer(out), device_id))
+    call_from_clib(get_half_support.__name__, ctypes.pointer(out), device_id)
     return bool(out.value)
 
 
@@ -396,7 +400,7 @@ def alloc_pinned(num_bytes: int, /) -> int:
     source: https://arrayfire.org/docs/group__device__func__pinned.htm#ga0f8fd76dc179e7bd877e268a5579b215
     """
     out = ctypes.c_void_p(0)
-    safe_call(_backend.clib.af_alloc_pinned(ctypes.pointer(out), CDimT(num_bytes)))
+    call_from_clib(alloc_pinned.__name__, ctypes.pointer(out), CDimT(num_bytes))
     return out.value  # type: ignore[return-value]
 
 
@@ -407,7 +411,7 @@ def get_device() -> int:
     source: https://arrayfire.org/docs/group__device__func__set.htm#ga54120b126cfcb1b0b3ee25e0fc66b8a4
     """
     out = ctypes.c_int(0)
-    safe_call(_backend.clib.af_get_device(ctypes.pointer(out)))
+    call_from_clib(get_device.__name__, ctypes.pointer(out))
     return out.value
 
 
@@ -420,4 +424,4 @@ def set_device(device_id: int, /) -> None:
     num: int.
          id of the desired device.
     """
-    safe_call(_backend.clib.af_set_device(device_id))
+    call_from_clib(set_device.__name__, device_id)
