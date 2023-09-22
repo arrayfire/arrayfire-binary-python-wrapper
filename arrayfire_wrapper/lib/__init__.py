@@ -15,6 +15,10 @@ from .create_and_modify_array.assignment_and_indexing._indexing import (
     get_indices,
 )
 
+__all__ += ["index_gen"]
+
+from .create_and_modify_array.assignment_and_indexing.index import index_gen
+
 __all__ += ["lookup"]
 
 from .create_and_modify_array.assignment_and_indexing.lookup import lookup
@@ -79,9 +83,9 @@ __all__ += ["upper"]
 
 from .create_and_modify_array.create_array.upper import upper
 
-__all__ += ["cast", "isinf", "isnan", "iszero"]
+__all__ += ["array_to_string", "cast", "isinf", "isnan", "iszero"]
 
-from .create_and_modify_array.helper_functions import cast, isinf, isnan, iszero
+from .create_and_modify_array.helper_functions import array_to_string, cast, isinf, isnan, iszero
 
 __all__ += [
     "copy_array",
