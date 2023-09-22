@@ -7,10 +7,10 @@ __version__ = VERSION
 __all__ += ["__arrayfire_version__"]
 __arrayfire_version__ = ARRAYFIRE_VERSION
 
-__all__ += ["AFArray"]
-from .defines import AFArray
+__all__ += ["AFArray", "ArrayBuffer", "CType"]
+from .defines import AFArray, ArrayBuffer, CType
 
-__all__ = [
+__all__ += [
     "Dtype",
     "b8",
     "bool",
