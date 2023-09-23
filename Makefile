@@ -23,24 +23,25 @@ install :
 
 # Testing
 
-.PHONY : flake8
-flake8 :
-	flake8 arrayfire_wrapper tests examples
+.PHONY : code-style
+code-style :
+	black --check arrayfire_wrapper tests
 
-.PHONY : import-sort
-import-sort :
-	isort arrayfire_wrapper tests examples
+.PHONY : linting
+linting :
+	flake8 --count --show-source --statistics arrayfire_wrapper tests
+
+.PHONY : import-check
+import-check :
+	isort --check arrayfire_wrapper tests
 
 .PHONY : typecheck
 typecheck :
-	mypy arrayfire_wrapper tests examples --cache-dir=/dev/null
+	mypy arrayfire_wrapper tests --cache-dir=/dev/null
 
 .PHONY : tests
 tests :
-	pytest --color=yes -v -rf --durations=40 \
-			--cov-config=.coveragerc \
-			--cov=$(SRC) \
-			--cov-report=xml
+	pytest --color=yes -v -rf
 
 # Cleaning
 
