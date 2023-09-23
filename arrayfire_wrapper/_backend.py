@@ -220,7 +220,7 @@ class Backend:
 
 
 # Initialize the backend
-_backend = Backend()
+__backend = Backend()
 
 
 def get_backend() -> Backend:
@@ -233,4 +233,4 @@ def get_backend() -> Backend:
         Current active backend.
     """
 
-    return _backend
+    return __backend

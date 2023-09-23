@@ -71,7 +71,7 @@ __all__ += [
     "or_",
 ]
 
-from .numeric_functions import abs_, arg, ceil, clamp, floor, hypot, max_, min_, mod, neg, rem, round_, sign, trunc
+from .numeric_functions import abs_, arg, ceil, clamp, floor, hypot, maxof, minof, mod, neg, rem, round_, sign, trunc
 
 __all__ += [
     "abs_",
@@ -80,8 +80,8 @@ __all__ += [
     "clamp",
     "floor",
     "hypot",
-    "max_",
-    "min_",
+    "maxof",
+    "minof",
     "mod",
     "neg",
     "rem",

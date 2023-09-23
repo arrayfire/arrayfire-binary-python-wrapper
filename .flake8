@@ -4,7 +4,6 @@ import-order-style = pep8
 inline-quotes = double
 max-line-length = 119
 
-
 exclude =
     .venv/**
     build/**

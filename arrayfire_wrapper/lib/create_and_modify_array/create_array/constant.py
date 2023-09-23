@@ -1,10 +1,8 @@
 import ctypes
 
-from arrayfire_wrapper._backend import _backend
 from arrayfire_wrapper.defines import AFArray, CShape
 from arrayfire_wrapper.dtypes import Dtype
-
-from ..._error_handler import safe_call
+from arrayfire_wrapper.lib._utility import call_from_clib
 
 
 def constant(number: int | float, shape: tuple[int, ...], dtype: Dtype, /) -> AFArray:
@@ -14,10 +12,13 @@ def constant(number: int | float, shape: tuple[int, ...], dtype: Dtype, /) -> AF
     out = AFArray.create_null_pointer()
     c_shape = CShape(*shape)
 
-    safe_call(
-        _backend.clib.af_constant(
-            ctypes.pointer(out), ctypes.c_double(number), 4, ctypes.pointer(c_shape.c_array), dtype.c_api_value
-        )
+    call_from_clib(
+        constant.__name__,
+        ctypes.pointer(out),
+        ctypes.c_double(number),
+        4,
+        ctypes.pointer(c_shape.c_array),
+        dtype.c_api_value,
     )
     return out
 
@@ -29,15 +30,14 @@ def constant_complex(number: int | float | complex, shape: tuple[int, ...], dtyp
     out = AFArray.create_null_pointer()
     c_shape = CShape(*shape)
 
-    safe_call(
-        _backend.clib.af_constant_complex(
-            ctypes.pointer(out),
-            ctypes.c_double(number.real),
-            ctypes.c_double(number.imag),
-            4,
-            ctypes.pointer(c_shape.c_array),
-            dtype.c_api_value,
-        )
+    call_from_clib(
+        constant_complex.__name__,
+        ctypes.pointer(out),
+        ctypes.c_double(number.real),
+        ctypes.c_double(number.imag),
+        4,
+        ctypes.pointer(c_shape.c_array),
+        dtype.c_api_value,
     )
     return out
 
@@ -49,10 +49,12 @@ def constant_long(number: int | float, shape: tuple[int, ...], dtype: Dtype, /) 
     out = AFArray.create_null_pointer()
     c_shape = CShape(*shape)
 
-    safe_call(
-        _backend.clib.af_constant_long(
-            ctypes.pointer(out), ctypes.c_longlong(int(number.real)), 4, ctypes.pointer(c_shape.c_array)
-        )
+    call_from_clib(
+        constant_long.__name__,
+        ctypes.pointer(out),
+        ctypes.c_longlong(int(number.real)),
+        4,
+        ctypes.pointer(c_shape.c_array),
     )
     return out
 
@@ -66,9 +68,11 @@ def constant_ulong(number: int | float, shape: tuple[int, ...], dtype: Dtype, /)
     out = AFArray.create_null_pointer()
     c_shape = CShape(*shape)
 
-    safe_call(
-        _backend.clib.af_constant_ulong(
-            ctypes.pointer(out), ctypes.c_ulonglong(int(number.real)), 4, ctypes.pointer(c_shape.c_array)
-        )
+    call_from_clib(
+        constant_ulong.__name__,
+        ctypes.pointer(out),
+        ctypes.c_ulonglong(int(number.real)),
+        4,
+        ctypes.pointer(c_shape.c_array),
     )
     return out
