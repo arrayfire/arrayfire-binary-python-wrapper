@@ -51,4 +51,5 @@ clean :
 	rm -rf arrayfire_wrapper.egg-info/
 	rm -rf dist/
 	rm -rf build/
+	rm final_requirements.txt
 	find . | grep -E '(\.mypy_cache|__pycache__|\.pyc|\.pyo$$)' | xargs rm -rf

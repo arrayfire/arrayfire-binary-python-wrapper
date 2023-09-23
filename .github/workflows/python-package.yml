@@ -39,6 +39,7 @@ jobs:
     - name: Check static type checking with mypy
       run: |
         make typecheck
-    - name: Test with pytest
-      run: |
-        make tests
+    # FIXME when C backend will be added to CI cache
+    # - name: Test with pytest
+    #   run: |
+    #     make tests
