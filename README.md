@@ -12,7 +12,7 @@ Arrayfire python C library wrapper
 - [ ] Input and Output Functions
 - [x] Interface Functions
 - [ ] Linear Algebra
-- [ ] Machine Learning
+- [x] Machine Learning
 - [x] Mathematical Functions
 - [ ] Memory Management
 - [ ] Signal Processing

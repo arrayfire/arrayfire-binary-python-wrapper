@@ -286,6 +286,12 @@ __all__ += [
 
 from .interface_functions.cuda import cublas_set_math_mode, get_native_id, get_stream, set_native_id
 
+# Machine Learning
+
+__all__ += ["convolve2_gradient_nn"]
+
+from .machine_learning.convolutions import convolve2_gradient_nn
+
 # Mathematical Functions
 
 __all__ += ["add", "bitshiftl", "bitshiftr", "div", "mul", "sub"]
@@ -583,6 +589,6 @@ from .event_api import AFEvent, block_event, create_event, delete_event, enqueue
 
 # Constants
 
-__all__ += ["BinaryOperator", "Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+__all__ += ["BinaryOperator", "ConvGradient", "Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
 
-from ._constants import BinaryOperator, Match, Moment, Pad, PointerSource, TopK, VarianceBias
+from ._constants import BinaryOperator, ConvGradient, Match, Moment, Pad, PointerSource, TopK, VarianceBias

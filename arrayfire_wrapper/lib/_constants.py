@@ -8,6 +8,13 @@ class BinaryOperator(Enum):  # Binary Operators
     MAX = 3
 
 
+class ConvGradient(Enum):  # Convolution Gradient Types
+    DEFAULT = 0
+    FILTER = 1
+    DATA = 2
+    BIAS = 3
+
+
 class ErrorCodes(Enum):  # Error Values
     NONE = 0
 
