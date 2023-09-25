@@ -25,13 +25,12 @@ def ceil(arr: AFArray, /) -> AFArray:
     return unary_op(ceil.__name__, arr)
 
 
-def clamp(arr: AFArray, /, lo: float, hi: float) -> AFArray:
+def clamp(arr: AFArray, lo: AFArray, hi: AFArray, batch: bool, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__arith__func__clamp.htm#gac4e785c5c877c7905e56f44ef0cb5e61
     """
-    # TODO: check if lo and hi are of type float. Can be ArrayFire array as well
     out = AFArray.create_null_pointer()
-    call_from_clib(clamp.__name__, ctypes.pointer(out), arr, lo, hi)
+    call_from_clib(clamp.__name__, ctypes.pointer(out), arr, lo, hi, ctypes.c_bool(batch))
     return out
 
 

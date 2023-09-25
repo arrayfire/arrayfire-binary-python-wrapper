@@ -1,8 +1,26 @@
 # flake8: noqa
 
+# Computer Vision
+
+__all__ = ["gloh", "orb", "sift"]
+
+from .computer_vision.feature_descriptors import gloh, orb, sift
+
+__all__ += ["dog", "fast", "harris", "susan"]
+
+from .computer_vision.feature_detector import dog, fast, harris, susan
+
+__all__ += ["hamming_matcher", "nearest_neighbour"]
+
+from .computer_vision.feature_matchers import hamming_matcher, nearest_neighbour
+
+__all__ += ["match_template"]
+
+from .computer_vision.template_matching import match_template
+
 # Functions to Create and Modify Arrays
 
-__all__ = ["assign_gen", "assign_seq"]
+__all__ += ["assign_gen", "assign_seq"]
 
 from .create_and_modify_array.assignment_and_indexing.assign import assign_gen, assign_seq
 
@@ -537,8 +555,34 @@ from .statistics import (
     var_weighted,
 )
 
+# Unified API functions
+
+__all__ += [
+    "get_active_backend",
+    "get_available_backends",
+    "get_backend_count",
+    "get_backend_id",
+    "get_device_id",
+    "set_backend",
+]
+
+from .unified_api_functions import (
+    get_active_backend,
+    get_available_backends,
+    get_backend_count,
+    get_backend_id,
+    get_device_id,
+    set_backend,
+)
+
+# Events
+
+__all__ += ["AFEvent", "block_event", "create_event", "delete_event", "enqueue_wait_event", "mark_event"]
+
+from .event_api import AFEvent, block_event, create_event, delete_event, enqueue_wait_event, mark_event
+
 # Constants
 
-__all__ += ["BinaryOperator", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+__all__ += ["BinaryOperator", "Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
 
-from ._constants import BinaryOperator, Moment, Pad, PointerSource, TopK, VarianceBias
+from ._constants import BinaryOperator, Match, Moment, Pad, PointerSource, TopK, VarianceBias

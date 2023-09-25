@@ -45,6 +45,18 @@ class ErrorCodes(Enum):  # Error Values
     UNKNOWN = 999
 
 
+class Match(Enum):
+    SAD = 0  # Sum of absolute differences
+    ZSAD = 1  # Zero mean SAD
+    LSAD = 2  # Locally scaled SAD
+    SSD = 3  # Sum of squared differences
+    ZSSD = 4  # Zero mean SSD
+    LSSD = 5  # Locally scaled SSD
+    NCC = 6  # Normalized cross correlation
+    ZNCC = 7  # Zero mean NCC
+    SHD = 8  # Sum of hamming distances
+
+
 class Moment(Enum):  # Image moments types
     M00 = 1
     M01 = 2

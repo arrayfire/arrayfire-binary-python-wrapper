@@ -12,6 +12,7 @@ def is_arch_x86() -> bool:
 
 
 # A handle for an internal array object
+# TODO solve duplicates with similar inheritance like AFRandomEngineHandle, ect.
 class AFArray(ctypes.c_void_p):
     @classmethod
     def create_null_pointer(cls) -> AFArray:

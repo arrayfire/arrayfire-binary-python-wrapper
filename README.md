@@ -4,8 +4,8 @@ Arrayfire python C library wrapper
 
 ## Completionist
 
-- [ ] Computer Vision
-- [ ] Events
+- [x] Computer Vision
+- [x] Events
 - [x] Functions to Create and Modify Arrays
 - [x] Functions to Work with Internal Array Layout
 - [ ] Image Processing
@@ -17,5 +17,5 @@ Arrayfire python C library wrapper
 - [ ] Memory Management
 - [ ] Signal Processing
 - [x] Statistics
-- [ ] Unified API Functions
+- [x] Unified API Functions
 - [x] Vector Algorithms
