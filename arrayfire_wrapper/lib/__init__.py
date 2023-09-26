@@ -511,10 +511,14 @@ from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
 =======
 # Machine Learning
 
-__all__ += ["convolve2_gradient_nn"]
+__all__ += ["ConvGradient", "convolve2_gradient_nn"]
 
+<<<<<<< HEAD
 from .machine_learning.convolutions import convolve2_gradient_nn
 >>>>>>> e04fb5e (Add machine learning)
+=======
+from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
+>>>>>>> c4496eb (Add image processing)
 
 # Mathematical Functions
 
