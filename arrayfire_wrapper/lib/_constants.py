@@ -94,6 +94,22 @@ class Interp(Enum):  # Interpolation method types
     BICUBIC_SPLINE = 9
 
 
+class ImageFormat(Enum):
+    BMP = 0
+    ICO = 1
+    JPEG = 2
+    JNG = 3
+    PNG = 13
+    PPM = 14
+    PPMRAW = 15
+    TIFF = 18
+    PSD = 20
+    HDR = 26
+    EXR = 29
+    JP2 = 31
+    RAW = 34
+
+
 class IterativeDeconv(Enum):  # Iterative deconvolution algorithm
     DEFAULT = 0
     LANDWEBER = 1
