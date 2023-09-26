@@ -275,6 +275,10 @@ from .create_and_modify_array.move_and_reorder import (
     transpose_inplace,
 )
 
+# Image Processing
+
+# TODO
+
 # Interface Functions
 
 __all__ += [
@@ -288,9 +292,9 @@ from .interface_functions.cuda import cublas_set_math_mode, get_native_id, get_s
 
 # Machine Learning
 
-__all__ += ["convolve2_gradient_nn"]
+__all__ += ["ConvGradient", "convolve2_gradient_nn"]
 
-from .machine_learning.convolutions import convolve2_gradient_nn
+from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
 
 # Mathematical Functions
 
@@ -419,13 +423,14 @@ from .mathematical_functions.trigonometric_functions import acos, asin, atan, at
 # Vector Algorithms
 
 __all__ += [
+    "BinaryOperator",
     "accum",
     "scan",
     "scan_by_key",
     "where",
 ]
 
-from .vector_algorithms.inclusive_scan_operations import accum, scan, scan_by_key, where
+from .vector_algorithms.inclusive_scan_operations import BinaryOperator, accum, scan, scan_by_key, where
 
 __all__ += [
     "diff1",
@@ -589,6 +594,8 @@ from .event_api import AFEvent, block_event, create_event, delete_event, enqueue
 
 # Constants
 
-__all__ += ["BinaryOperator", "ConvGradient", "Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+# TODO change and use as reimport from file where it is used
 
-from ._constants import BinaryOperator, ConvGradient, Match, Moment, Pad, PointerSource, TopK, VarianceBias
+__all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+
+from ._constants import Match, Moment, Pad, PointerSource, TopK, VarianceBias

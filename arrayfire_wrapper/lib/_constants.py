@@ -8,11 +8,34 @@ class BinaryOperator(Enum):  # Binary Operators
     MAX = 3
 
 
+class CannyThreshold(Enum):  # Canny Edge Threshold Types
+    MANUAL = 0
+    AUTO_OTSU = 1
+
+
+class Connectivity(Enum):  # Neighbourhood connectivity
+    FOUR = 4
+    EIGHT = 8
+
+
 class ConvGradient(Enum):  # Convolution Gradient Types
     DEFAULT = 0
     FILTER = 1
     DATA = 2
     BIAS = 3
+
+
+class CSpace(Enum):  # Colorspace formats
+    GRAY = 0
+    RGB = 1
+    HSV = 2
+    YCbCr = 3
+
+
+class Diffusion(Enum):  # Diffusion equations
+    DEFAULT = 0
+    GRAD = 1
+    MCDE = 2
 
 
 class ErrorCodes(Enum):  # Error Values
@@ -50,6 +73,31 @@ class ErrorCodes(Enum):  # Error Values
     # 900-999 Errors from upstream libraries and runtimes
     INTERNAL = 998
     UNKNOWN = 999
+
+
+class Flux(Enum):
+    DEFAULT = 0
+    QUADRATIC = 1
+    EXPONENTIAL = 2
+
+
+class Interp(Enum):  # Interpolation method types
+    NEAREST = 0
+    LINEAR = 1
+    BILINEAR = 2
+    CUBIC = 3
+    LOWER = 4
+    LINEAR_COSINE = 5
+    BILINEAR_COSINE = 6
+    BICUBIC = 7
+    CUBIC_SPLINE = 8
+    BICUBIC_SPLINE = 9
+
+
+class IterativeDeconv(Enum):  # Iterative deconvolution algorithm
+    DEFAULT = 0
+    LANDWEBER = 1
+    RICHARDSONLUCY = 2
 
 
 class Match(Enum):
@@ -94,3 +142,9 @@ class VarianceBias(Enum):  # Variance Bias types
     DEFAULT = 0
     SAMPLE = 1
     POPULATION = 2
+
+
+class YCCStd(Enum):  # YCC Standard formats
+    YCC_601 = 601
+    YCC_709 = 709
+    YCC_2020 = 2020
