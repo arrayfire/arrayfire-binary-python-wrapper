@@ -1,8 +1,26 @@
 # flake8: noqa
 
+# Computer Vision
+
+__all__ = ["gloh", "orb", "sift"]
+
+from .computer_vision.feature_descriptors import gloh, orb, sift
+
+__all__ += ["dog", "fast", "harris", "susan"]
+
+from .computer_vision.feature_detector import dog, fast, harris, susan
+
+__all__ += ["hamming_matcher", "nearest_neighbour"]
+
+from .computer_vision.feature_matchers import hamming_matcher, nearest_neighbour
+
+__all__ += ["match_template"]
+
+from .computer_vision.template_matching import match_template
+
 # Functions to Create and Modify Arrays
 
-__all__ = ["assign_gen", "assign_seq"]
+__all__ += ["assign_gen", "assign_seq"]
 
 from .create_and_modify_array.assignment_and_indexing.assign import assign_gen, assign_seq
 
@@ -257,6 +275,150 @@ from .create_and_modify_array.move_and_reorder import (
     transpose_inplace,
 )
 
+# Image Processing
+
+__all__ += [
+    "CSpace",
+    "YCCStd",
+    "color_space",
+    "gray2rgb",
+    "hsv2rgb",
+    "rgb2gray",
+    "rgb2hsv",
+    "rgb2ycbcr",
+    "ycbcr2rgb",
+    "CannyThreshold",
+    "Diffusion",
+    "Flux",
+    "IterativeDeconv",
+    "Pad",
+    "anisotropic_diffusion",
+    "bilateral",
+    "canny",
+    "inverse_deconv",
+    "iterative_deconv",
+    "maxfilt",
+    "mean_shift",
+    "medfilt",
+    "medfilt1",
+    "medfilt2",
+    "minfilt",
+    "sat",
+    "sobel_operator",
+    "gaussian_kernel",
+    "hist_equal",
+    "histogram",
+    "Moment",
+    "moments",
+    "moments_all",
+    "Interp",
+    "resize",
+    "rotate",
+    "scale",
+    "skew",
+    "transform",
+    "transform_coordinates",
+    "transform_v2",
+    "translate",
+    "Connectivity",
+    "confidence_cc",
+    "regions",
+    "dilate",
+    "dilate3",
+    "erode",
+    "erode3",
+    "unwrap",
+    "wrap",
+    "wrap_v2",
+]
+
+from .image_processing import (
+    CannyThreshold,
+    Connectivity,
+    CSpace,
+    Diffusion,
+    Flux,
+    Interp,
+    IterativeDeconv,
+    Moment,
+    Pad,
+    YCCStd,
+    anisotropic_diffusion,
+    bilateral,
+    canny,
+    color_space,
+    confidence_cc,
+    dilate,
+    dilate3,
+    erode,
+    erode3,
+    gaussian_kernel,
+    gray2rgb,
+    hist_equal,
+    histogram,
+    hsv2rgb,
+    inverse_deconv,
+    iterative_deconv,
+    maxfilt,
+    mean_shift,
+    medfilt,
+    medfilt1,
+    medfilt2,
+    minfilt,
+    moments,
+    moments_all,
+    regions,
+    resize,
+    rgb2gray,
+    rgb2hsv,
+    rgb2ycbcr,
+    rotate,
+    sat,
+    scale,
+    skew,
+    sobel_operator,
+    transform,
+    transform_coordinates,
+    transform_v2,
+    translate,
+    unwrap,
+    wrap,
+    wrap_v2,
+    ycbcr2rgb,
+)
+
+# Input and Output Functions
+
+__all__ += [
+    "delete_image_memory",
+    "is_image_io_available",
+    "load_image",
+    "load_image_memory",
+    "load_image_native",
+    "read_array_index",
+    "read_array_key",
+    "read_array_key_check",
+    "save_array",
+    "save_image",
+    "save_image_memory",
+    "save_image_native",
+]
+
+from .input_and_output import (
+    delete_image_memory,
+    is_image_io_available,
+    load_image,
+    load_image_memory,
+    load_image_native,
+    read_array_index,
+    read_array_key,
+    read_array_key_check,
+    save_array,
+    save_image,
+    save_image_memory,
+    save_image_native,
+)
+
 # Interface Functions
 
 __all__ += [
@@ -267,6 +429,84 @@ __all__ += [
 ]
 
 from .interface_functions.cuda import cublas_set_math_mode, get_native_id, get_stream, set_native_id
+
+# Linear Algebra
+
+__all__ += [
+    "dot",
+    "dot_all",
+    "matmul",
+    "is_lapack_available",
+    "cholesky",
+    "cholesky_inplace",
+    "lu",
+    "lu_inplace",
+    "qr",
+    "qr_inplace",
+    "svd",
+    "svd_inplace",
+    "Norm",
+    "det",
+    "inverse",
+    "norm",
+    "pinverse",
+    "rank",
+    "solve",
+    "solve_lu",
+    "Storage",
+    "create_sparse_array",
+    "create_sparse_array_from_dense",
+    "create_sparse_array_from_ptr",
+    "sparse_convert_to",
+    "sparse_get_col_idx",
+    "sparse_get_info",
+    "sparse_get_nnz",
+    "sparse_get_row_idx",
+    "sparse_get_storage",
+    "sparse_get_values",
+    "sparse_to_dense",
+]
+
+from .linear_algebra import (
+    Norm,
+    Storage,
+    cholesky,
+    cholesky_inplace,
+    create_sparse_array,
+    create_sparse_array_from_dense,
+    create_sparse_array_from_ptr,
+    det,
+    dot,
+    dot_all,
+    inverse,
+    is_lapack_available,
+    lu,
+    lu_inplace,
+    matmul,
+    norm,
+    pinverse,
+    qr,
+    qr_inplace,
+    rank,
+    solve,
+    solve_lu,
+    sparse_convert_to,
+    sparse_get_col_idx,
+    sparse_get_info,
+    sparse_get_nnz,
+    sparse_get_row_idx,
+    sparse_get_storage,
+    sparse_get_values,
+    sparse_to_dense,
+    svd,
+    svd_inplace,
+)
+
+# Machine Learning
+
+__all__ += ["ConvGradient", "convolve2_gradient_nn"]
+
+from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
 
 # Mathematical Functions
 
@@ -395,13 +635,14 @@ from .mathematical_functions.trigonometric_functions import acos, asin, atan, at
 # Vector Algorithms
 
 __all__ += [
+    "BinaryOperator",
     "accum",
     "scan",
     "scan_by_key",
     "where",
 ]
 
-from .vector_algorithms.inclusive_scan_operations import accum, scan, scan_by_key, where
+from .vector_algorithms.inclusive_scan_operations import BinaryOperator, accum, scan, scan_by_key, where
 
 __all__ += [
     "diff1",
@@ -499,6 +740,31 @@ __all__ += [
 
 from .array_layout import create_strided_array, get_offset, get_strides, is_linear, is_owner
 
+# Features
+
+__all__ += [
+    "create_features",
+    "get_features_num",
+    "get_features_orientation",
+    "get_features_score",
+    "get_features_size",
+    "get_features_xpos",
+    "get_features_ypos",
+    "release_features",
+    "retain_features",
+]
+from .features import (
+    create_features,
+    get_features_num,
+    get_features_orientation,
+    get_features_score,
+    get_features_size,
+    get_features_xpos,
+    get_features_ypos,
+    release_features,
+    retain_features,
+)
+
 # Statistics
 
 __all__ += [
@@ -537,8 +803,36 @@ from .statistics import (
     var_weighted,
 )
 
+# Unified API functions
+
+__all__ += [
+    "get_active_backend",
+    "get_available_backends",
+    "get_backend_count",
+    "get_backend_id",
+    "get_device_id",
+    "set_backend",
+]
+
+from .unified_api_functions import (
+    get_active_backend,
+    get_available_backends,
+    get_backend_count,
+    get_backend_id,
+    get_device_id,
+    set_backend,
+)
+
+# Events
+
+__all__ += ["AFEvent", "block_event", "create_event", "delete_event", "enqueue_wait_event", "mark_event"]
+
+from .event_api import AFEvent, block_event, create_event, delete_event, enqueue_wait_event, mark_event
+
 # Constants
 
-__all__ += ["BinaryOperator", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+# TODO change and use as reimport from file where it is used
 
-from ._constants import BinaryOperator, Moment, Pad, PointerSource, TopK, VarianceBias
+__all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+
+from ._constants import Match, Moment, Pad, PointerSource, TopK, VarianceBias
