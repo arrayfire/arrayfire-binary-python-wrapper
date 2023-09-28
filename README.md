@@ -2,7 +2,7 @@
 
 Arrayfire python C library wrapper
 
-## Completionist
+## Coverage
 
 - [x] Computer Vision
 - [x] Events
