@@ -430,7 +430,6 @@ __all__ += [
 
 from .interface_functions.cuda import cublas_set_math_mode, get_native_id, get_stream, set_native_id
 
-<<<<<<< HEAD
 # Linear Algebra
 
 __all__ += [
@@ -508,17 +507,6 @@ from .linear_algebra import (
 __all__ += ["ConvGradient", "convolve2_gradient_nn"]
 
 from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
-=======
-# Machine Learning
-
-__all__ += ["ConvGradient", "convolve2_gradient_nn"]
-
-<<<<<<< HEAD
-from .machine_learning.convolutions import convolve2_gradient_nn
->>>>>>> e04fb5e (Add machine learning)
-=======
-from .machine_learning.convolutions import ConvGradient, convolve2_gradient_nn
->>>>>>> c4496eb (Add image processing)
 
 # Mathematical Functions
 
