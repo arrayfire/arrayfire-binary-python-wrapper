@@ -2,16 +2,13 @@ from __future__ import annotations
 
 import ctypes
 
-from arrayfire_wrapper.defines import AFArray, CShape
+from arrayfire_wrapper.defines import AFArray, CShape, _AFBase
 from arrayfire_wrapper.dtypes import Dtype
 from arrayfire_wrapper.lib._utility import call_from_clib
 
 
-class AFRandomEngineHandle(ctypes.c_void_p):
-    @classmethod
-    def create_null_pointer(cls) -> AFRandomEngineHandle:
-        cls.value = 0
-        return cls()
+class AFRandomEngineHandle(_AFBase):
+    pass
 
 
 def create_random_engine(engine_type: int, seed: int, /) -> AFRandomEngineHandle:

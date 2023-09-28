@@ -2,14 +2,12 @@ from __future__ import annotations
 
 import ctypes
 
+from arrayfire_wrapper.defines import _AFBase
 from arrayfire_wrapper.lib._utility import call_from_clib
 
 
-class AFEvent(ctypes.c_void_p):
-    @classmethod
-    def create_null_pointer(cls) -> AFEvent:
-        cls.value = None
-        return cls()
+class AFEvent(_AFBase):
+    pass
 
 
 def block_event(event: AFEvent, /) -> None:

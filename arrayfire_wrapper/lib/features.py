@@ -2,19 +2,16 @@ from __future__ import annotations
 
 import ctypes
 
-from arrayfire_wrapper.defines import AFArray, CDimT
+from arrayfire_wrapper.defines import AFArray, CDimT, _AFBase
 from arrayfire_wrapper.lib._utility import call_from_clib
 
 
-class AFFeatures(ctypes.c_void_p):
+class AFFeatures(_AFBase):
     """
     source: https://arrayfire.org/docs/features_8h.htm#a294c8f0e20b10dfc4f4f18566dba06bc
     """
 
-    @classmethod
-    def create_null_pointer(cls) -> AFFeatures:
-        cls.value = None
-        return cls()
+    pass
 
 
 def create_features(num: int, /) -> AFFeatures:

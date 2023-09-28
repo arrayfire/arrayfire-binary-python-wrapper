@@ -3,7 +3,7 @@ from __future__ import annotations
 import ctypes
 import platform
 from dataclasses import dataclass
-from typing import Type
+from typing import Type, TypeVar
 
 
 def is_arch_x86() -> bool:
@@ -11,13 +11,19 @@ def is_arch_x86() -> bool:
     return platform.architecture()[0][0:2] == "32" and (machine[-2:] == "86" or machine[0:3] == "arm")
 
 
-# A handle for an internal array object
-# TODO solve duplicates with similar inheritance like AFRandomEngineHandle, ect.
-class AFArray(ctypes.c_void_p):
+# Define a generic type variable for the base class
+T = TypeVar("T", bound=ctypes.c_void_p)
+
+
+class _AFBase(ctypes.c_void_p):
     @classmethod
-    def create_null_pointer(cls) -> AFArray:
+    def create_null_pointer(cls: Type[T]) -> T:
         cls.value = None
         return cls()
+
+
+class AFArray(_AFBase):
+    pass
 
 
 CType = Type[ctypes._SimpleCData]
