@@ -430,6 +430,78 @@ __all__ += [
 
 from .interface_functions.cuda import cublas_set_math_mode, get_native_id, get_stream, set_native_id
 
+# Linear Algebra
+
+__all__ += [
+    "dot",
+    "dot_all",
+    "matmul",
+    "is_lapack_available",
+    "cholesky",
+    "cholesky_inplace",
+    "lu",
+    "lu_inplace",
+    "qr",
+    "qr_inplace",
+    "svd",
+    "svd_inplace",
+    "Norm",
+    "det",
+    "inverse",
+    "norm",
+    "pinverse",
+    "rank",
+    "solve",
+    "solve_lu",
+    "Storage",
+    "create_sparse_array",
+    "create_sparse_array_from_dense",
+    "create_sparse_array_from_ptr",
+    "sparse_convert_to",
+    "sparse_get_col_idx",
+    "sparse_get_info",
+    "sparse_get_nnz",
+    "sparse_get_row_idx",
+    "sparse_get_storage",
+    "sparse_get_values",
+    "sparse_to_dense",
+]
+
+from .linear_algebra import (
+    Norm,
+    Storage,
+    cholesky,
+    cholesky_inplace,
+    create_sparse_array,
+    create_sparse_array_from_dense,
+    create_sparse_array_from_ptr,
+    det,
+    dot,
+    dot_all,
+    inverse,
+    is_lapack_available,
+    lu,
+    lu_inplace,
+    matmul,
+    norm,
+    pinverse,
+    qr,
+    qr_inplace,
+    rank,
+    solve,
+    solve_lu,
+    sparse_convert_to,
+    sparse_get_col_idx,
+    sparse_get_info,
+    sparse_get_nnz,
+    sparse_get_row_idx,
+    sparse_get_storage,
+    sparse_get_values,
+    sparse_to_dense,
+    svd,
+    svd_inplace,
+)
+
 # Machine Learning
 
 __all__ += ["ConvGradient", "convolve2_gradient_nn"]
@@ -667,6 +739,31 @@ __all__ += [
 ]
 
 from .array_layout import create_strided_array, get_offset, get_strides, is_linear, is_owner
+
+# Features
+
+__all__ += [
+    "create_features",
+    "get_features_num",
+    "get_features_orientation",
+    "get_features_score",
+    "get_features_size",
+    "get_features_xpos",
+    "get_features_ypos",
+    "release_features",
+    "retain_features",
+]
+from .features import (
+    create_features,
+    get_features_num,
+    get_features_orientation,
+    get_features_score,
+    get_features_size,
+    get_features_xpos,
+    get_features_ypos,
+    release_features,
+    retain_features,
+)
 
 # Statistics
 

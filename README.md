@@ -9,12 +9,12 @@ Arrayfire python C library wrapper
 - [x] Functions to Create and Modify Arrays
 - [x] Functions to Work with Internal Array Layout
 - [x] Image Processing
+  - [x] Features
 - [x] Input and Output Functions
 - [x] Interface Functions
-- [ ] Linear Algebra
+- [x] Linear Algebra
 - [x] Machine Learning
 - [x] Mathematical Functions
-- [ ] Memory Management
 - [ ] Signal Processing
 - [x] Statistics
 - [x] Unified API Functions

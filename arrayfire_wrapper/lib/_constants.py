@@ -128,12 +128,39 @@ class Match(Enum):
     SHD = 8  # Sum of hamming distances
 
 
+class MatProp(Enum):  # Matrix properties
+    NONE = 0
+    TRANS = 1
+    CTRANS = 2
+    CONJ = 3
+    UPPER = 32
+    LOWER = 64
+    DIAG_UNIT = 128
+    SYM = 512
+    POSDEF = 1024
+    ORTHOG = 2048
+    TRI_DIAG = 4096
+    BLOCK_DIAG = 8192
+
+
 class Moment(Enum):  # Image moments types
     M00 = 1
     M01 = 2
     M10 = 4
     M11 = 8
     FIRST_ORDER = M00 | M01 | M10 | M11
+
+
+class Norm(Enum):  # Norm types
+    VECTOR_1 = 0
+    VECTOR_INF = 1
+    VECTOR_2 = 2
+    VECTOR_P = 3
+    MATRIX_1 = 4
+    MATRIX_INF = 5
+    MATRIX_2 = 6
+    MATRIX_L_PQ = 7
+    EUCLID = VECTOR_2
 
 
 class Pad(Enum):  # Edge padding types
@@ -146,6 +173,13 @@ class Pad(Enum):  # Edge padding types
 class PointerSource(Enum):
     device = 0  # gpu
     host = 1  # cpu
+
+
+class Storage(Enum):  # Matrix Storage types
+    DENSE = 0
+    CSR = 1
+    CSC = 2
+    COO = 3
 
 
 class TopK(Enum):  # Top-K ordering
