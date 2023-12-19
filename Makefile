@@ -21,6 +21,10 @@ install :
 	pip-compile requirements.txt -o final_requirements.txt --allow-unsafe --rebuild --verbose
 	pip install -e . -r final_requirements.txt
 
+.PHONY : build
+build :
+	python -m build
+
 # Testing
 
 .PHONY : code-style
@@ -41,7 +45,10 @@ typecheck :
 
 .PHONY : tests
 tests :
-	pytest --color=yes -v -rf
+	pytest --color=yes -v -rf --durations=40 \
+			--cov-config=.coveragerc \
+			--cov=$(SRC) \
+			--cov-report=html
 
 # Cleaning
 

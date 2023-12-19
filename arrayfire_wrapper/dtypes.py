@@ -68,10 +68,6 @@ supported_dtypes = (
 )
 
 
-def is_complex_dtype(dtype: Dtype) -> _python_bool:
-    return dtype in {complex32, complex64}
-
-
 def to_str(c_str: ctypes.c_char_p | ctypes.Array[ctypes.c_char]) -> str:
     return str(c_str.value.decode("utf-8"))  # type: ignore[union-attr]
 
@@ -88,11 +84,15 @@ def implicit_dtype(number: int | float | _python_bool | complex, array_dtype: Dt
     else:
         raise TypeError(f"{type(number)} is not supported and can not be converted to af.Dtype.")
 
+    if array_dtype not in supported_dtypes:
+        raise ValueError(f"{array_dtype} is not in supported dtypes.")
+
     if not (array_dtype == float32 or array_dtype == complex32):
         return number_dtype
 
-    if number_dtype == float64:
-        return float32
+    # FIXME
+    # if number_dtype == float64:
+    #     return float32
 
     if number_dtype == complex64:
         return complex64
