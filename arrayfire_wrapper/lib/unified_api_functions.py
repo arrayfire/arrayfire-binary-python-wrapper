@@ -21,6 +21,9 @@ def get_available_backends() -> list[str]:
     out = ctypes.c_int(0)
     call_from_clib(get_available_backends.__name__, ctypes.pointer(out))
     # return out.value  # # TODO help needed - returns 7. how to parse?
+    # Resolve:
+    # list.append(returnval & af.ONEAPI_ENUMVAL)
+    # or returnval & cpu
     return NotImplemented
 
 

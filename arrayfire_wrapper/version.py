@@ -10,6 +10,8 @@ _PATCH = "0"
 _SUFFIX = os.environ.get("AF_VERSION_SUFFIX", "")
 
 VERSION_SHORT = "{0}.{1}".format(_MAJOR, _MINOR)
+# TODO include AF version, e.g. 0.1.0-AF3.9.1
+# TODO think about backend suffix, e.g. 0.1.0-AF3.9.1+cuda
 VERSION = "{0}.{1}.{2}{3}".format(_MAJOR, _MINOR, _PATCH, _SUFFIX)
 
 FORGE_VER_MAJOR = "1"
