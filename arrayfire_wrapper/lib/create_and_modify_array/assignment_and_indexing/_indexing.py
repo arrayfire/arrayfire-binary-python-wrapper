@@ -203,7 +203,7 @@ class IndexStructure(ctypes.Structure):
         self.isBatch = False
         self.isSeq = True
 
-        # FIXME cyclic reimport
+        # BUG cyclic reimport
         # if isinstance(idx, Array):
         #     if idx.dtype == af_bool:
         #         self.idx.arr = everything.where(idx.arr)

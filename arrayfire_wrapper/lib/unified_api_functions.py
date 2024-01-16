@@ -14,17 +14,14 @@ def get_active_backend() -> str:
     return BackendType(out.value).name
 
 
-def get_available_backends() -> list[str]:
+def get_available_backends() -> list[int]:
     """
     source: https://arrayfire.org/docs/group__unified__func__getavailbackends.htm#ga92a9ce85385763bfa83911cda905afe8
     """
     out = ctypes.c_int(0)
     call_from_clib(get_available_backends.__name__, ctypes.pointer(out))
-    # return out.value  # # TODO help needed - returns 7. how to parse?
-    # Resolve:
-    # list.append(returnval & af.ONEAPI_ENUMVAL)
-    # or returnval & cpu
-    return NotImplemented
+    rv = out.value
+    return [bt.value & rv for bt in BackendType]
 
 
 def get_backend_count() -> int:

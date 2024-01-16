@@ -87,14 +87,12 @@ def implicit_dtype(number: int | float | _python_bool | complex, array_dtype: Dt
     if array_dtype not in supported_dtypes:
         raise ValueError(f"{array_dtype} is not in supported dtypes.")
 
-    if not (array_dtype == float32 or array_dtype == complex32):
-        return number_dtype
+    _a32 = array_dtype == float32 or array_dtype == complex32
 
-    # FIXME
-    # if number_dtype == float64:
-    #     return float32
+    if number_dtype == float64 and _a32:
+        return float32
 
-    if number_dtype == complex64:
+    if number_dtype == complex64 and _a32:
         return complex64
 
     return number_dtype

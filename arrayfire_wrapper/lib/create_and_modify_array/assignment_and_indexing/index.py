@@ -4,8 +4,6 @@ from typing import Any
 from arrayfire_wrapper.defines import AFArray, CDimT
 from arrayfire_wrapper.lib._utility import call_from_clib
 
-# TODO unfinished module
-
 
 def index_gen(arr: AFArray, ndims: int, indices: Any, /) -> AFArray:
     """

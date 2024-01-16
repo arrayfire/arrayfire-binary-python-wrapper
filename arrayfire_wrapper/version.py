@@ -1,7 +1,7 @@
 import os
 
 _MAJOR = "0"
-_MINOR = "1"
+_MINOR = "2"
 # On main and in a nightly release the patch should be one ahead of the last
 # released build.
 _PATCH = "0"
@@ -9,12 +9,12 @@ _PATCH = "0"
 # https://semver.org/#is-v123-a-semantic-version for the semantics.
 _SUFFIX = os.environ.get("AF_VERSION_SUFFIX", "")
 
-VERSION_SHORT = "{0}.{1}".format(_MAJOR, _MINOR)
-# TODO include AF version, e.g. 0.1.0-AF3.9.1
-# TODO think about backend suffix, e.g. 0.1.0-AF3.9.1+cuda
-VERSION = "{0}.{1}.{2}{3}".format(_MAJOR, _MINOR, _PATCH, _SUFFIX)
+WRAPPER_VERSION = "{0}.{1}.{2}{3}".format(_MAJOR, _MINOR, _PATCH, _SUFFIX)
 
 FORGE_VER_MAJOR = "1"
 ARRAYFIRE_VER_MAJOR = "3"
 ARRAYFIRE_VER_MINOR = "9"
-ARRAYFIRE_VERSION = "{0}.{1}".format(ARRAYFIRE_VER_MAJOR, ARRAYFIRE_VER_MINOR)
+ARRAYFIRE_VER_PATCH = "0"
+ARRAYFIRE_VERSION = "AF{0}.{1}.{2}".format(ARRAYFIRE_VER_MAJOR, ARRAYFIRE_VER_MINOR, ARRAYFIRE_VER_PATCH)
+
+VERSION = "{0}+{1}".format(WRAPPER_VERSION, ARRAYFIRE_VERSION)

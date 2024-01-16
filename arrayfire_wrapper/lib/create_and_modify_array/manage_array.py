@@ -89,7 +89,6 @@ def eval(arr: AFArray, /) -> None:
     return None
 
 
-# TODO Discussion needed
 def eval_multiple(arr: AFArray, data: int, /) -> None:
     """
     source: https://arrayfire.org/docs/group__c__api__mat.htm#ga9e08f4cda2471a477d2fa91c2356f72c
@@ -110,7 +109,7 @@ def get_data_ptr(arr: AFArray, size: int, dtype: Dtype, /) -> ctypes.Array:
 
 
 def get_data_ref_count() -> int:
-    # FIXME
+    # TODO
     return NotImplemented
 
 
@@ -340,5 +339,5 @@ def write_array() -> None:
     """
     source: https://arrayfire.org/docs/group__c__api__mat.htm#gafef13633d184acc726ad9daca7a7bc99
     """
-    # FIXME
+    # TODO
     return None

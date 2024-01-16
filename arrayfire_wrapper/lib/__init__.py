@@ -803,6 +803,98 @@ from .statistics import (
     var_weighted,
 )
 
+# Signal Processing
+
+__all__ += [
+    "convolve1",
+    "convolve2",
+    "convolve2_nn",
+    "convolve2_sep",
+    "convolve3",
+    "fft_convolve1",
+    "fft_convolve2",
+    "fft_convolve3",
+]
+
+from .signal_processing.convolutions import (
+    convolve1,
+    convolve2,
+    convolve2_nn,
+    convolve2_sep,
+    convolve3,
+    fft_convolve1,
+    fft_convolve2,
+    fft_convolve3,
+)
+
+__all__ += [
+    "fft",
+    "fft2",
+    "fft2_c2r",
+    "fft2_inplace",
+    "fft2_r2c",
+    "fft3",
+    "fft3_c2r",
+    "fft3_inplace",
+    "fft3_r2c",
+    "fft_c2r",
+    "fft_inplace",
+    "fft_r2c",
+    "ifft",
+    "ifft2",
+    "ifft2_inplace",
+    "ifft3",
+    "ifft3_inplace",
+    "ifft_inplace",
+]
+
+from .signal_processing.fast_fourier_transforms import (
+    fft,
+    fft2,
+    fft2_c2r,
+    fft2_inplace,
+    fft2_r2c,
+    fft3,
+    fft3_c2r,
+    fft3_inplace,
+    fft3_r2c,
+    fft_c2r,
+    fft_inplace,
+    fft_r2c,
+    ifft,
+    ifft2,
+    ifft2_inplace,
+    ifft3,
+    ifft3_inplace,
+    ifft_inplace,
+)
+
+__all__ += ["fir", "iir"]
+
+from .signal_processing.filter import fir, iir
+
+__all__ += [
+    "approx1",
+    "approx1_uniform",
+    "approx1_uniform_v2",
+    "approx1_v2",
+    "approx2",
+    "approx2_uniform",
+    "approx2_uniform_v2",
+    "approx2_v2",
+]
+
+from .signal_processing.interpolation_and_approximation import (
+    approx1,
+    approx1_uniform,
+    approx1_uniform_v2,
+    approx1_v2,
+    approx2,
+    approx2_uniform,
+    approx2_uniform_v2,
+    approx2_v2,
+)
+
 # Unified API functions
 
 __all__ += [
@@ -830,8 +922,6 @@ __all__ += ["AFEvent", "block_event", "create_event", "delete_event", "enqueue_w
 from .event_api import AFEvent, block_event, create_event, delete_event, enqueue_wait_event, mark_event
 
 # Constants
-
-# TODO change and use as reimport from file where it is used
 
 __all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
 

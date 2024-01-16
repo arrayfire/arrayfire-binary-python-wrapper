@@ -18,11 +18,22 @@ class Connectivity(Enum):  # Neighbourhood connectivity
     EIGHT = 8
 
 
+class ConvDomain(Enum):  # Convolution domain
+    AUTO = 0
+    SPATIAL = 1
+    FREQ = 2
+
+
 class ConvGradient(Enum):  # Convolution Gradient Types
     DEFAULT = 0
     FILTER = 1
     DATA = 2
     BIAS = 3
+
+
+class ConvMode(Enum):  # Convolution output formats
+    DEFAULT = 0
+    EXPAND = 1
 
 
 class CSpace(Enum):  # Colorspace formats
