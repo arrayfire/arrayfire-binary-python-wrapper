@@ -10,9 +10,10 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from ._logger import logger
 from .defines import is_arch_x86
 from .version import ARRAYFIRE_VER_MAJOR
+
+VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
 
 
 class _LibPrefixes(Enum):
@@ -120,10 +121,6 @@ class BackendType(enum.Enum):  # TODO change name - avoid using _backend_type - 
 
 class Backend:
     _backend_type: BackendType
-    # HACK for osx
-    # _backend.clib = ctypes.CDLL("/opt/arrayfire//lib/libafcpu.3.dylib")
-    # HACK for windows
-    # _backend.clib = ctypes.CDLL("C:/Program Files/ArrayFire/v3/lib/afcpu.dll")
     _clib: ctypes.CDLL
 
     def __init__(self) -> None:
@@ -136,10 +133,12 @@ class Backend:
         for lib_name in self._lib_names("forge", _LibPrefixes.forge):
             try:
                 ctypes.cdll.LoadLibrary(str(lib_name))
-                logger.info(f"Loaded {lib_name}")
+                if VERBOSE_LOADS:
+                    print(f"Loaded {lib_name}")
                 break
             except OSError:
-                logger.warning(f"Unable to load {lib_name}")
+                if VERBOSE_LOADS:
+                    print(f"Unable to load {lib_name}")
                 pass
 
     def _load_backend_libs(self) -> None:
@@ -147,7 +146,8 @@ class Backend:
             self._load_backend_lib(backend_type)
 
             if self._backend_type:
-                logger.info(f"Setting {backend_type.name} as backend.")
+                if VERBOSE_LOADS:
+                    print(f"Setting {backend_type.name} as backend.")
                 break
 
         if not self._backend_type and not self._clib:
@@ -169,19 +169,23 @@ class Backend:
                 if _backend_type == BackendType.cuda:
                     self._load_nvrtc_builtins_lib(lib_name.parent)
 
-                logger.info(f"Loaded {lib_name}")
+                if VERBOSE_LOADS:
+                    print(f"Loaded {lib_name}")
                 break
             except OSError:
-                logger.warning(f"Unable to load {lib_name}")
+                if VERBOSE_LOADS:
+                    print(f"Unable to load {lib_name}")
                 pass
 
     def _load_nvrtc_builtins_lib(self, lib_path: Path) -> None:
         nvrtc_name = self._find_nvrtc_builtins_lib_name(lib_path)
         if nvrtc_name:
             ctypes.cdll.LoadLibrary(str(lib_path / nvrtc_name))
-            logger.info(f"Loaded {lib_path / nvrtc_name}")
+            if VERBOSE_LOADS:
+                print(f"Loaded {lib_path / nvrtc_name}")
         else:
-            logger.warning("Could not find local nvrtc-builtins library")
+            if VERBOSE_LOADS:
+                print("Could not find local nvrtc-builtins library")
 
     def _lib_names(self, name: str, lib: _LibPrefixes, ver_major: str | None = None) -> list[Path]:
         post = self._backend_path_config.lib_postfix if ver_major is None else ver_major

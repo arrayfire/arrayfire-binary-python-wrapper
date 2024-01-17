@@ -15,7 +15,7 @@ Arrayfire python C library wrapper
 - [x] Linear Algebra
 - [x] Machine Learning
 - [x] Mathematical Functions
-- [ ] Signal Processing
+- [x] Signal Processing
 - [x] Statistics
 - [x] Unified API Functions
 - [x] Vector Algorithms

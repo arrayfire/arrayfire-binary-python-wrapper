@@ -2,6 +2,7 @@ import ctypes
 
 from arrayfire_wrapper.defines import AFArray
 from arrayfire_wrapper.lib._utility import binary_op, call_from_clib, unary_op
+from arrayfire_wrapper.lib.mathematical_functions.arithmetic_operations import sub
 
 
 def abs_(arr: AFArray, /) -> AFArray:
@@ -70,8 +71,7 @@ def mod(lhs: AFArray, rhs: AFArray, /) -> AFArray:
 
 
 def neg(arr: AFArray) -> AFArray:
-    # TODO
-    return NotImplemented
+    return sub(AFArray(0), arr)
 
 
 def rem(lhs: AFArray, rhs: AFArray, /) -> AFArray:
