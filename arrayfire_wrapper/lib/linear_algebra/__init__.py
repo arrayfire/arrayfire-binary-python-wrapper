@@ -1,7 +1,7 @@
 # flake8: noqa
 
-__all__ = ["dot", "dot_all", "matmul"]
-from .blas_operations import dot, dot_all, matmul
+__all__ = ["dot", "dot_all", "matmul", "gemm"]
+from .blas_operations import dot, dot_all, gemm, matmul
 
 __all__ += ["is_lapack_available"]
 from .lapack_helpers import is_lapack_available

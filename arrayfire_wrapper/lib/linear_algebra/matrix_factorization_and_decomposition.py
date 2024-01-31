@@ -74,7 +74,7 @@ def svd(arr: AFArray, /) -> tuple[AFArray, AFArray, AFArray]:
     return (u, s, vt)
 
 
-def svd_inplace(arr: AFArray, /) -> tuple[AFArray, AFArray, AFArray]:
+def svd_inplace(arr: AFArray, /) -> tuple[AFArray, AFArray, AFArray, AFArray]:
     """
     source: https://arrayfire.org/docs/group__lapack__factor__func__svd.htm#ga80b31f7671bf00143dd992df8d585a2d
     """
@@ -82,4 +82,4 @@ def svd_inplace(arr: AFArray, /) -> tuple[AFArray, AFArray, AFArray]:
     s = AFArray.create_null_pointer()
     vt = AFArray.create_null_pointer()
     call_from_clib(svd.__name__, ctypes.pointer(u), ctypes.pointer(s), ctypes.pointer(vt), arr)
-    return (u, s, vt)
+    return (u, s, vt, arr)

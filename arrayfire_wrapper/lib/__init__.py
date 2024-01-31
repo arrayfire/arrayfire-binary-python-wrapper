@@ -439,6 +439,7 @@ __all__ += [
     "is_lapack_available",
     "cholesky",
     "cholesky_inplace",
+    "gemm",
     "lu",
     "lu_inplace",
     "qr",
@@ -478,6 +479,7 @@ from .linear_algebra import (
     det,
     dot,
     dot_all,
+    gemm,
     inverse,
     is_lapack_available,
     lu,
@@ -923,6 +925,6 @@ from .event_api import AFEvent, block_event, create_event, delete_event, enqueue
 
 # Constants
 
-__all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias"]
+__all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias", "MatProp", "ImageFormat"]
 
-from ._constants import Match, Moment, Pad, PointerSource, TopK, VarianceBias
+from ._constants import ImageFormat, Match, MatProp, Moment, Pad, PointerSource, TopK, VarianceBias
