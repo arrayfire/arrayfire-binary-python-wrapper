@@ -17,8 +17,9 @@ __all__ += [
     "Backend",
     "BackendType",
     "get_backend",
+    "set_backend",
 ]
-from ._backend import Backend, BackendType, get_backend
+from ._backend import Backend, BackendType, get_backend, set_backend
 
 __all__ += [
     "Dtype",

@@ -144,8 +144,9 @@ def _find_site_local_path() -> Path:
             query_libnames = ['afcpu', 'afoneapi', 'afopencl', 'afcuda', 'af', 'forge']
             found_lib_in_dir = any(q in f for q in query_libnames for f in files)
             if found_lib_in_dir:
-                print( lpath)
-                print( lpath / module_name / "binaries")
+                if VERBOSE_LOADS:
+                    print( lpath)
+                    print( lpath / module_name / "binaries")
                 return lpath / module_name / "binaries"
     raise ValueError("No binaries detected in site path.")
 
@@ -166,7 +167,7 @@ class BackendType(enum.Enum):  # TODO change name - avoid using _backend_type - 
 
     def __iter__(self) -> Iterator:
         # NOTE cpu comes last because we want to keep this order priorty during backend initialization
-        return iter((self.unified, self.cuda, self.opencl, self.oneapi, self.cpu))
+        return iter((self.cuda, self.opencl, self.oneapi, self.cpu, self.unified))
 
 
 class Backend:
@@ -184,7 +185,6 @@ class Backend:
     def set_backend(self, backend_type : BackendType) -> None:
         # if unified is available, do dynamic module loading through libaf
         if self._backend_type == BackendType.unified:
-            import pdb;pdb.set_trace()
             from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
             try:
                 unified_set_backend(backend_type)
@@ -198,11 +198,8 @@ class Backend:
                 self._backend_type = backend_type
             else:
                 self._backend_path_config = _get_backend_path_config()
-
-                self._backend_type = None
-                #self._clib = None
                 self._load_backend_libs(backend_type)
-                #self._load_forge_lib() needed to reload?
+                #self._load_forge_lib() # needed to reload?
 
     def _load_forge_lib(self) -> None:
         for lib_name in self._lib_names("forge", _LibPrefixes.forge):
@@ -219,7 +216,6 @@ class Backend:
     def _load_backend_libs(self, specific_backend : BackendType | None = None) -> None:
         available_backends = [specific_backend] if specific_backend else list(BackendType)
         for backend_type in available_backends:
-            print(backend_type)
             self._load_backend_lib(backend_type)
 
             if hasattr(self, "_backend_type"):
@@ -240,6 +236,8 @@ class Backend:
 
         for lib_name in self._lib_names(name, _LibPrefixes.arrayfire):
             try:
+                if VERBOSE_LOADS:
+                    print(f"Attempting to load {lib_name}")
                 ctypes.cdll.LoadLibrary(str(lib_name))
                 self._backend_type = _backend_type
                 self._clibs[_backend_type] = ctypes.CDLL(str(lib_name))
@@ -272,8 +270,12 @@ class Backend:
         lib_paths = [Path("", lib_name)]
 
         # use local or site packaged arrayfire libraries if they exist
-        local_path = _find_site_local_path()
-        lib_paths.append(local_path / lib_name)
+        try:
+            local_path = _find_site_local_path()
+            lib_paths.append(local_path / lib_name)
+        except ValueError as e:
+            if VERBOSE_LOADS:
+                print(str(e))
 
         if self._backend_path_config.af_path:  # prefer specified AF_PATH if exists
             lib64_path = self._backend_path_config.af_path / "lib64"
