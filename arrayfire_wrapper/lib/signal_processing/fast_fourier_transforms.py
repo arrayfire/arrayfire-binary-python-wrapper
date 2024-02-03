@@ -18,7 +18,7 @@ def fft_inplace(arr: AFArray, norm_factor: float, /) -> AFArray:
     source: https://arrayfire.org/docs/group__signal__func__fft.htm#gaa2f03c9ee1cb80dc184c0b0a13176da1
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(fft_inplace.__name__, ctypes.pointer(out), arr, ctypes.c_double(norm_factor))
+    call_from_clib(fft_inplace.__name__, arr, ctypes.c_double(norm_factor))
     return out
 
 
@@ -44,7 +44,7 @@ def fft2_inplace(arr: AFArray, norm_factor: float, /) -> AFArray:
     source: https://arrayfire.org/docs/group__signal__func__fft2.htm#gacdeebb3f221ae698833dc4900a172b8c
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(fft2_inplace.__name__, ctypes.pointer(out), arr, ctypes.c_double(norm_factor))
+    call_from_clib(fft2_inplace.__name__, arr, ctypes.c_double(norm_factor))
     return out
 
 

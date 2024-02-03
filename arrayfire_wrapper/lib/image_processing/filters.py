@@ -15,6 +15,7 @@ def anisotropic_diffusion(
     call_from_clib(
         anisotropic_diffusion.__name__,
         ctypes.pointer(out),
+        image,
         ctypes.c_float(timestep),
         ctypes.c_float(conductance),
         ctypes.c_uint(iterations),
@@ -133,7 +134,7 @@ def medfilt1(image: AFArray, wind_length: int, edge_pad: Pad, /) -> AFArray:
     source: https://arrayfire.org/docs/group__image__func__medfilt.htm#gad108ea62cbbb5371bd14a17d06384359
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(medfilt1.__name__, ctypes.pointer(out), CDimT(wind_length), edge_pad.value)
+    call_from_clib(medfilt1.__name__, ctypes.pointer(out), image, CDimT(wind_length), edge_pad.value)
     return out
 
 
