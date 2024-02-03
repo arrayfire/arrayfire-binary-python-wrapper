@@ -202,6 +202,7 @@ __all__ += [
     "lock_device_ptr",
     "print_mem_info",
     "set_device",
+    "sync",
     "set_kernel_cache_directory",
     "set_mem_step_size",
     "unlock_array",
@@ -235,6 +236,7 @@ from .create_and_modify_array.manage_device import (
     set_device,
     set_kernel_cache_directory,
     set_mem_step_size,
+    sync,
     unlock_array,
     unlock_device_ptr,
 )
@@ -745,6 +747,7 @@ from .array_layout import create_strided_array, get_offset, get_strides, is_line
 # Features
 
 __all__ += [
+    "AFFeatures",
     "create_features",
     "get_features_num",
     "get_features_orientation",
@@ -756,6 +759,7 @@ __all__ += [
     "retain_features",
 ]
 from .features import (
+    AFFeatures,
     create_features,
     get_features_num,
     get_features_orientation,
@@ -848,6 +852,7 @@ __all__ += [
     "ifft3",
     "ifft3_inplace",
     "ifft_inplace",
+    "set_fft_plan_cache_size",
 ]
 
 from .signal_processing.fast_fourier_transforms import (
@@ -869,6 +874,7 @@ from .signal_processing.fast_fourier_transforms import (
     ifft3,
     ifft3_inplace,
     ifft_inplace,
+    set_fft_plan_cache_size,
 )
 
 __all__ += ["fir", "iir"]
@@ -925,6 +931,30 @@ from .event_api import AFEvent, block_event, create_event, delete_event, enqueue
 
 # Constants
 
-__all__ += ["Match", "Moment", "Pad", "PointerSource", "TopK", "VarianceBias", "MatProp", "ImageFormat"]
+__all__ += [
+    "Match",
+    "Moment",
+    "Pad",
+    "PointerSource",
+    "TopK",
+    "VarianceBias",
+    "MatProp",
+    "ImageFormat",
+    "ConvMode",
+    "ConvDomain",
+    "ConvGradient",
+]
 
-from ._constants import ImageFormat, Match, MatProp, Moment, Pad, PointerSource, TopK, VarianceBias
+from ._constants import (
+    ConvDomain,
+    ConvGradient,
+    ConvMode,
+    ImageFormat,
+    Match,
+    MatProp,
+    Moment,
+    Pad,
+    PointerSource,
+    TopK,
+    VarianceBias,
+)

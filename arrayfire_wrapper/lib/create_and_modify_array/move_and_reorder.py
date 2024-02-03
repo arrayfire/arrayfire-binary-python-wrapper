@@ -55,7 +55,7 @@ def moddims(arr: AFArray, shape: tuple[int, ...], /) -> AFArray:
     return out
 
 
-def reorder(arr: AFArray, d0: int = 1, d1: int = 0, d2: int = 2, d3: int = 3, /) -> AFArray:
+def reorder(arr: AFArray, /, d0: int = 1, d1: int = 0, d2: int = 2, d3: int = 3) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__manip__func__reorder.htm#ga57383f4d00a3a86eab08dddd52c3ad3d
     """
@@ -99,7 +99,7 @@ def select_scalar_r(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> Non
     call_from_clib(select_scalar_l.__name__, cond_arr, lhs, ctypes.c_double(rhs))
 
 
-def shift(arr: AFArray, d0: int, d1: int = 0, d2: int = 0, d3: int = 0, /) -> AFArray:
+def shift(arr: AFArray, /, d0: int, d1: int = 0, d2: int = 0, d3: int = 0) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__manip__func__shift.htm#ga64a0cd7680b71e87f3ab372876153b66
     """
@@ -108,7 +108,7 @@ def shift(arr: AFArray, d0: int, d1: int = 0, d2: int = 0, d3: int = 0, /) -> AF
     return out
 
 
-def tile(arr: AFArray, d0: int, d1: int = 1, d2: int = 1, d3: int = 1, /) -> AFArray:
+def tile(arr: AFArray, /, d0: int, d1: int = 1, d2: int = 1, d3: int = 1) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__manip__func__tile.htm#ga3540329723c9876839e0c790075ab076
     """

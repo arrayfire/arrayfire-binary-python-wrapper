@@ -420,8 +420,20 @@ def set_device(device_id: int, /) -> None:
     Change the active device to the specified id.
 
     Parameters
-    -----------
+    ----------
     num: int.
          id of the desired device.
     """
     call_from_clib(set_device.__name__, device_id)
+
+
+def sync(device_id: int, /) -> None:
+    """
+    Blocks until all operations on device are finished.
+
+    Parameters
+    ----------
+    device_id: int
+        Id of the target device.
+    """
+    call_from_clib(sync.__name__, device_id)
