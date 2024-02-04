@@ -41,13 +41,14 @@ __all__ += ["lookup"]
 
 from .create_and_modify_array.assignment_and_indexing.lookup import lookup
 
-__all__ += [
-    "constant",
-    "constant_complex",
-    "constant_long",
-    "constant_ulong",
-]
-from .create_and_modify_array.create_array.constant import constant, constant_complex, constant_long, constant_ulong
+__all__ += ["constant", "constant_complex", "constant_long", "constant_ulong", "create_constant_array"]
+from .create_and_modify_array.create_array.constant import (
+    constant,
+    constant_complex,
+    constant_long,
+    constant_ulong,
+    create_constant_array,
+)
 
 __all__ += ["diag_create", "diag_extract"]
 
@@ -539,6 +540,7 @@ __all__ += [
     "root",
     "rsqrt",
     "sqrt",
+    "sigmoid",
     "tgamma",
 ]
 
@@ -558,6 +560,7 @@ from .mathematical_functions.exp_and_log_functions import (
     pow2,
     root,
     rsqrt,
+    sigmoid,
     sqrt,
     tgamma,
 )

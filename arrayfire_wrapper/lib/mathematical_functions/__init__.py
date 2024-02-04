@@ -25,6 +25,7 @@ from .exp_and_log_functions import (
     pow2,
     root,
     rsqrt,
+    sigmoid,
     sqrt,
     tgamma,
 )
@@ -46,6 +47,7 @@ __all__ += [
     "root",
     "rsqrt",
     "sqrt",
+    "sigmoid",
     "tgamma",
 ]
 

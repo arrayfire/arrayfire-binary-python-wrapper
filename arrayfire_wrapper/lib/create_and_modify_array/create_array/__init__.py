@@ -1,7 +1,7 @@
 # flake8: noqa
-__all__ = ["constant", "constant_complex", "constant_long", "constant_ulong"]
+__all__ = ["constant", "constant_complex", "constant_long", "constant_ulong", "create_constant_array"]
 
-from .constant import constant, constant_complex, constant_long, constant_ulong
+from .constant import constant, constant_complex, constant_long, constant_ulong, create_constant_array
 
 __all__ += [
     "create_random_engine",

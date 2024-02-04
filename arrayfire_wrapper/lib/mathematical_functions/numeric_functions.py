@@ -1,7 +1,9 @@
 import ctypes
 
 from arrayfire_wrapper.defines import AFArray
+from arrayfire_wrapper.dtypes import float32
 from arrayfire_wrapper.lib._utility import binary_op, call_from_clib, unary_op
+from arrayfire_wrapper.lib.create_and_modify_array.create_array import create_constant_array
 from arrayfire_wrapper.lib.mathematical_functions.arithmetic_operations import sub
 
 
@@ -46,7 +48,9 @@ def hypot(lhs: AFArray, rhs: AFArray, /) -> AFArray:
     """
     source:
     """
-    return binary_op(hypot.__name__, lhs, rhs)
+    out = AFArray.create_null_pointer()
+    call_from_clib(hypot.__name__, lhs, rhs)
+    return out
 
 
 def maxof(lhs: AFArray, rhs: AFArray, /) -> AFArray:
@@ -71,7 +75,7 @@ def mod(lhs: AFArray, rhs: AFArray, /) -> AFArray:
 
 
 def neg(arr: AFArray) -> AFArray:
-    return sub(AFArray(0), arr)
+    return sub(create_constant_array(0, (1,), float32), arr)
 
 
 def rem(lhs: AFArray, rhs: AFArray, /) -> AFArray:

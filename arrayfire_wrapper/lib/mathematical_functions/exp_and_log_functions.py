@@ -114,6 +114,13 @@ def sqrt(arr: AFArray, /) -> AFArray:
     return unary_op(sqrt.__name__, arr)
 
 
+def sigmoid(arr: AFArray, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__arith__func__sigmoid.htm#gadf4280e3283b65264de75194e0a6d565
+    """
+    return unary_op(sigmoid.__name__, arr)
+
+
 def tgamma(arr: AFArray, /) -> AFArray:
     """
     source:

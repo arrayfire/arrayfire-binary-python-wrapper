@@ -1,7 +1,7 @@
 import ctypes
 
 from arrayfire_wrapper.defines import AFArray, CShape
-from arrayfire_wrapper.dtypes import Dtype
+from arrayfire_wrapper.dtypes import Dtype, complex32, complex64, implicit_dtype, int64, uint64
 from arrayfire_wrapper.lib._utility import call_from_clib
 
 
@@ -76,3 +76,19 @@ def constant_ulong(number: int | float, shape: tuple[int, ...], dtype: Dtype, /)
         ctypes.pointer(c_shape.c_array),
     )
     return out
+
+
+def create_constant_array(number: int | float | complex, shape: tuple[int, ...], dtype: Dtype, /) -> AFArray:
+    if not dtype:
+        dtype = implicit_dtype(number, dtype)
+
+    if isinstance(number, complex):
+        return constant_complex(number, shape, dtype if dtype in {complex32, complex64} else complex32)
+
+    if dtype == int64:
+        return constant_long(number, shape, dtype)
+
+    if dtype == uint64:
+        return constant_ulong(number, shape, dtype)
+
+    return constant(number, shape, dtype)
