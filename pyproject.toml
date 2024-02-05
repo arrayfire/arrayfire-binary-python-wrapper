@@ -22,13 +22,14 @@ exclude = '''
 requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
-#[tool.setuptools.dynamic]
-#version = { attr = "arrayfire_wrapper.VERSION" }
+# TODO: re-enable if/when scikit-core can support
+# [tool.setuptools.dynamic]
+# version = { attr = "arrayfire_wrapper.__version__" }
+# dynamic = ["version"]
 
 [project]
 name = "arrayfire-binary-python-wrapper"
-#dynamic = ["version"]
-version = "3.9"
+version = "0.5.0+AF3.9.0"
 requires-python = ">=3.10"
 authors = [
   { name = "ArrayFire", email = "technical@arrayfire.com"},
@@ -72,9 +73,6 @@ Website = "http://arrayfire.com"
 [tool.scikit-build]
 # The build directory. Defaults to a temporary directory, but can be set.
 build-dir = "build"
-
-#[tool.scikit-build.sdist]
-#packages = ["arrayfire_wrapper"]
 
 [tool.scikit-build.wheel]
 py-api = "py3"

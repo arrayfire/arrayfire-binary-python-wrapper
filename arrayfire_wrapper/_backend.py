@@ -13,6 +13,7 @@ import sysconfig
 
 from .defines import is_arch_x86
 from .version import ARRAYFIRE_VER_MAJOR
+from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
 
 VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
 
@@ -185,7 +186,6 @@ class Backend:
     def set_backend(self, backend_type : BackendType) -> None:
         # if unified is available, do dynamic module loading through libaf
         if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
             try:
                 unified_set_backend(backend_type)
             except RuntimeError:
@@ -267,7 +267,7 @@ class Backend:
         post = self._backend_path_config.lib_postfix if ver_major is None else ver_major
         lib_name = self._backend_path_config.lib_prefix + lib.value + name + post
 
-        lib_paths = [Path("", lib_name)]
+        lib_paths = [Path(lib_name)]
 
         # use local or site packaged arrayfire libraries if they exist
         try:
