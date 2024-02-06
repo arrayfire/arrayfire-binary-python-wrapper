@@ -910,26 +910,6 @@ from .signal_processing.interpolation_and_approximation import (
     approx2_v2,
 )
 
-# Unified API functions
-
-__all__ += [
-    "get_active_backend",
-    "get_available_backends",
-    "get_backend_count",
-    "get_backend_id",
-    "get_device_id",
-    "set_backend",
-]
-
-from .unified_api_functions import (
-    get_active_backend,
-    get_available_backends,
-    get_backend_count,
-    get_backend_id,
-    get_device_id,
-    set_backend,
-)
-
 # Events
 
 __all__ += ["AFEvent", "block_event", "create_event", "delete_event", "enqueue_wait_event", "mark_event"]

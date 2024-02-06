@@ -1,8 +1,10 @@
 # arrayfire-binary-python-wrapper
 
-[ArrayFire](https://github.com/arrayfire/arrayfire) is a high performance library for parallel computing with an easy-to-use API. It enables users to write scientific computing code that is portable across CUDA, OpenCL and CPU devices.
-This project is meant to provide thin Python bindings for the ArrayFire C library. It also decouples releases of the main C/C++ library from the Python library by acting as a intermediate library and only wrapping the provided C calls.
-This allows the building of large binary wheels only when the underlying ArrayFire version is increased, and the fully-featured Python library can be developed atop independently. This package is not intended to be used directly and merely exposes the 
+[ArrayFire](https://github.com/arrayfire/arrayfire) is a high performance library for parallel computing with an easy-to-use API. It enables users to write scientific computing code that is portable across CUDA, OpenCL and CPU devices.  
+
+This project is meant to provide thin Python bindings for the ArrayFire C library. It also decouples releases of the main C/C++ library from the Python library by acting as a intermediate library and only wrapping the provided C calls.  
+
+This allows the building of large binary wheels only when the underlying ArrayFire version is increased, and the fully-featured Python library can be developed atop independently. The package is not intended to be used directly and merely exposes the 
 C functionality required by downstream implementations. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
 
 # Installing

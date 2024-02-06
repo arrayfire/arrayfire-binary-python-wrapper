@@ -5,6 +5,7 @@ import enum
 import os
 import platform
 import sys
+from arrayfire_wrapper.defines import AFArray
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -13,7 +14,6 @@ import sysconfig
 
 from .defines import is_arch_x86
 from .version import ARRAYFIRE_VER_MAJOR
-from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
 
 VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
 
@@ -149,7 +149,7 @@ def _find_site_local_path() -> Path:
                     print( lpath)
                     print( lpath / module_name / "binaries")
                 return lpath / module_name / "binaries"
-    raise ValueError("No binaries detected in site path.")
+    raise RuntimeError("No binaries detected in site path.")
 
 def _find_default_path(*args: str) -> Path:
     for path in args:
@@ -183,15 +183,14 @@ class Backend:
         self._load_backend_libs()
         self._load_forge_lib()
 
-    def set_backend(self, backend_type : BackendType) -> None:
+    def _change_backend(self, backend_type : BackendType) -> None:
         # if unified is available, do dynamic module loading through libaf
         if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
             try:
                 unified_set_backend(backend_type)
-            except RuntimeError:
-                if VERBOSE_LOADS:
-                    print(f"Unable to change backend using unified loader")
-                raise RuntimeError
+            except RuntimeError as e:
+                print(f"Unable to change backend using unified loader: {str(e)}")
         # if unified not available
         else:
             if backend_type in self._clibs:
@@ -273,9 +272,10 @@ class Backend:
         try:
             local_path = _find_site_local_path()
             lib_paths.append(local_path / lib_name)
-        except ValueError as e:
+        except RuntimeError as e:
             if VERBOSE_LOADS:
-                print(str(e))
+                print(f"Moving on to system libraries, site local load failed due to: {str(e)}")
+            pass
 
         if self._backend_path_config.af_path:  # prefer specified AF_PATH if exists
             lib64_path = self._backend_path_config.af_path / "lib64"
@@ -293,6 +293,38 @@ class Backend:
             if "nvrtc-builtins" in f.name:
                 return f.name
         return None
+
+
+    # unified backend functions
+    def get_active_backend(self) -> str:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_active_backend as unified_get_active_backend
+            return unified_get_active_backend()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_available_backends(self) -> list[int]:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_available_backends as unified_get_available_backends
+            return unified_get_available_backends()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_backend_count(self) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_backend_count as unified_get_backend_count
+            return unified_get_backend_count()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_backend_id(self, arr: AFArray, /) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_backend_id as unified_get_backend_id
+            return unified_get_backend_id(arr)
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_device_id(self, arr: AFArray, /) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_device_id as unified_get_device_id
+            return unified_get_device_id(arr)
+        raise RuntimeError("Using unified function on non-unified backend")
 
     @property
     def backend_type(self) -> BackendType:
@@ -320,10 +352,9 @@ def get_backend() -> Backend:
     return __backend
 
 def set_backend(backend_type : BackendType) -> None:
-
         try:
             backend = get_backend()
-            backend.set_backend(backend_type)
+            backend._change_backend(backend_type)
         except RuntimeError:
             print(f"Requested backend {backend_type.name} could not be found")
 
