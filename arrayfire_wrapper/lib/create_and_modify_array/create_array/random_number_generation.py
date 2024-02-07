@@ -62,3 +62,23 @@ def random_uniform(shape: tuple[int, ...], dtype: Dtype, engine: AFRandomEngineH
     c_shape = CShape(*shape)
     call_from_clib(random_uniform.__name__, ctypes.pointer(out), 4, c_shape.c_array, dtype.c_api_value, engine)
     return out
+
+
+def randn(shape: tuple[int, ...], dtype: Dtype, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__random__func__randn.htm#ga4925856392881453e4356a581c761ab9
+    """
+    out = AFArray.create_null_pointer()
+    c_shape = CShape(*shape)
+    call_from_clib(randn.__name__, ctypes.pointer(out), 4, c_shape.c_array, dtype.c_api_value)
+    return out
+
+
+def random_normal(shape: tuple[int, ...], dtype: Dtype, engine: AFRandomEngineHandle, /) -> AFArray:
+    """
+    source: https://arrayfire.org/docs/group__random__func__randu.htm#ga2ca76d970cfac076f9006755582a4a4c
+    """
+    out = AFArray.create_null_pointer()
+    c_shape = CShape(*shape)
+    call_from_clib(random_normal.__name__, ctypes.pointer(out), 4, c_shape.c_array, dtype.c_api_value, engine)
+    return out

@@ -77,7 +77,6 @@ class _IndexSequence(ctypes.Structure):
 
 
 class ParallelRange(_IndexSequence):
-
     """
     Class used to parallelize for loop.
 

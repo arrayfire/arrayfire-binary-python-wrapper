@@ -2,7 +2,7 @@
 
 .eggs/
 .mypy_cache
-arrayfire_python_wrapper.egg-info/
+arrayfire_binary_python_wrapper.egg-info/
 build/
 dist/
 

@@ -1,24 +1,24 @@
 # Testing-related packages
 
 # Checks style, syntax, etc.
-flake8>=6.1.0
+flake8~=7.0.0
 
 # Static type checking
-mypy==1.7.1
+mypy==1.8.0
 
 # Check import order style
-isort>=5.13.2
+isort~=5.13.2
 
 # Automatic code formatting
-black>=23.12.0
+black~=24.1.1
 
 # Allows generation of coverage reports with pytest.
-pytest>=7.4.3
+pytest>=8.0.0
 pytest-cov>=4.1.0
-pytest-mock>=3.11.1
+pytest-mock>=3.12.0
 
 # Allows codecov to generate coverage reports
-coverage[toml]>=6.4
+coverage[toml]>=7.4.1
 codecov>=2.1.12
 
 # Package building
