@@ -87,10 +87,12 @@ __all__ += [
 from .create_and_modify_array.create_array.random_number_generation import (
     AFRandomEngineHandle,
     create_random_engine,
+    randn,
     random_engine_get_seed,
     random_engine_get_type,
     random_engine_set_seed,
     random_engine_set_type,
+    random_normal,
     random_uniform,
     randu,
     release_random_engine,
