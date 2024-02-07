@@ -44,9 +44,12 @@ jobs:
       run: |
         make typecheck
 
-    - name: Test with pytest
-      run: |
-        make tests
+    # TODO
+    # add binaries to cache and make them available for library. Then uncomment
+  
+    # - name: Test with pytest
+    #   run: |
+    #     make tests
 
     - name: Test package build without pre-installed AF binaries
       run: |
