@@ -145,12 +145,12 @@ class Backend:
         for backend_type in BackendType:
             self._load_backend_lib(backend_type)
 
-            if self._backend_type:
+            if hasattr(self, "_backend_type"):
                 if VERBOSE_LOADS:
                     print(f"Setting {backend_type.name} as backend.")
                 break
 
-        if not self._backend_type and not self._clib:
+        if not (hasattr(self, "_backend_type") and hasattr(self, "_clib")):
             raise RuntimeError(
                 "Could not load any ArrayFire libraries.\n"
                 "Please look at https://github.com/arrayfire/arrayfire-python/wiki for more information."

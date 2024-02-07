@@ -48,6 +48,6 @@ jobs:
       run: |
         make tests
 
-    - name: Test package build
+    - name: Test package build without pre-installed AF binaries
       run: |
-        make build
+        bash ./scripts/build_package_without_binaries.sh

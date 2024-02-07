@@ -1,4 +1,4 @@
-# arrayfire-python-wrapper
+# arrayfire-binary-python-wrapper
 
 Arrayfire python C library wrapper
 

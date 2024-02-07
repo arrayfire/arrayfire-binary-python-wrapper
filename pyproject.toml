@@ -31,7 +31,7 @@ build-backend = "setuptools.build_meta"
 version = { attr = "arrayfire_wrapper.VERSION" }
 
 [project]
-name = "arrayfire-python-wrapper"
+name = "arrayfire-binary-python-wrapper"
 dynamic = ["version"]
 requires-python = ">=3.10"
 authors = [
