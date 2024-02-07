@@ -72,11 +72,13 @@ from .create_and_modify_array.create_array.pad import pad
 
 __all__ += [
     "AFRandomEngineHandle",
+    "randn",
     "create_random_engine",
     "random_engine_get_seed",
     "random_engine_get_type",
     "random_engine_set_seed",
     "random_engine_set_type",
+    "random_normal",
     "random_uniform",
     "randu",
     "release_random_engine",

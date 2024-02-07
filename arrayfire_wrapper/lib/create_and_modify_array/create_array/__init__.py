@@ -5,10 +5,12 @@ from .constant import constant, constant_complex, constant_long, constant_ulong,
 
 __all__ += [
     "create_random_engine",
+    "randn",
     "random_engine_get_seed",
     "random_engine_get_type",
     "random_engine_set_seed",
     "random_engine_set_type",
+    "random_normal",
     "random_uniform",
     "randu",
     "release_random_engine",
@@ -16,10 +18,12 @@ __all__ += [
 
 from .random_number_generation import (
     create_random_engine,
+    randn,
     random_engine_get_seed,
     random_engine_get_type,
     random_engine_set_seed,
     random_engine_set_type,
+    random_normal,
     random_uniform,
     randu,
     release_random_engine,
