@@ -93,7 +93,9 @@ def eval_multiple(num: int, /, *arrs: AFArray) -> None:
     """
     source: https://arrayfire.org/docs/group__c__api__mat.htm#ga9e08f4cda2471a477d2fa91c2356f72c
     """
-    call_from_clib(eval_multiple.__name__, ctypes.c_int(num), ctypes.pointer(arrs))
+    ctypes_arrs = (ctypes.c_void_p * num)(*[arr for arr in arrs])
+
+    call_from_clib(eval_multiple.__name__, ctypes.c_int(num), ctypes.pointer(ctypes_arrs))
     return None
 
 
