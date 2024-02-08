@@ -5,12 +5,13 @@ import enum
 import os
 import platform
 import sys
-from arrayfire_wrapper.defines import AFArray
+import sysconfig
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Iterator
-import sysconfig
+
+from arrayfire_wrapper.defines import AFArray
 
 from .defines import is_arch_x86
 from .version import ARRAYFIRE_VER_MAJOR
