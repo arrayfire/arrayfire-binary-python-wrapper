@@ -13,7 +13,6 @@ from typing import Iterator
 
 from arrayfire_wrapper.defines import AFArray
 
-from .defines import is_arch_x86
 from .version import ARRAYFIRE_VER_MAJOR
 
 VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
