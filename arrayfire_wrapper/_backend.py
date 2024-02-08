@@ -5,12 +5,14 @@ import enum
 import os
 import platform
 import sys
+import sysconfig
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from .defines import is_arch_x86
+from arrayfire_wrapper.defines import AFArray
+
 from .version import ARRAYFIRE_VER_MAJOR
 
 VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
@@ -36,6 +38,7 @@ class _BackendPathConfig:
     lib_prefix: str
     lib_postfix: str
     af_path: Path
+    af_is_user_path: bool
     cuda_found: bool
 
     def __iter__(self) -> Iterator:
@@ -46,16 +49,20 @@ def _get_backend_path_config() -> _BackendPathConfig:
     platform_name = platform.system()
     cuda_found = False
 
+    # try to use user provided AF_PATH if explicitly set
     try:
         af_path = Path(os.environ["AF_PATH"])
+        af_is_user_path = True
     except KeyError:
         af_path = None
+        af_is_user_path = False
 
     try:
         cuda_path = Path(os.environ["CUDA_PATH"])
     except KeyError:
         cuda_path = None
 
+    # try to find default arrayfire installation paths
     if platform_name == _SupportedPlatforms.windows.value or _SupportedPlatforms.is_cygwin(platform_name):
         if platform_name == _SupportedPlatforms.windows.value:
             # HACK Supressing crashes caused by missing dlls
@@ -64,29 +71,42 @@ def _get_backend_path_config() -> _BackendPathConfig:
             ctypes.windll.kernel32.SetErrorMode(0x0001 | 0x0002)  # type: ignore[attr-defined]
 
         if not af_path:
-            af_path = _find_default_path(f"C:/Program Files/ArrayFire/v{ARRAYFIRE_VER_MAJOR}")
+            try:
+                af_path = _find_default_path(f"C:/Program Files/ArrayFire/v{ARRAYFIRE_VER_MAJOR}")
+            except ValueError:
+                af_path = None
 
         if cuda_path and (cuda_path / "bin").is_dir() and (cuda_path / "nvvm/bin").is_dir():
             cuda_found = True
 
-        return _BackendPathConfig("", ".dll", af_path, cuda_found)
+        return _BackendPathConfig("", ".dll", af_path, af_is_user_path, cuda_found)
 
     if platform_name == _SupportedPlatforms.darwin.value:
         default_cuda_path = Path("/usr/local/cuda/")
 
         if not af_path:
             af_path = _find_default_path("/opt/arrayfire", "/usr/local")
+            try:
+                af_path = _find_default_path(
+                    f"C:/Program Files/ArrayFire/v{ARRAYFIRE_VER_MAJOR}",
+                    "C:/Program Files (x86)/ArrayFire/v{ARRAYFIRE_VER_MAJOR}",
+                )
+            except ValueError:
+                af_path = None
 
         if not (cuda_path and default_cuda_path.exists()):
             cuda_found = (default_cuda_path / "lib").is_dir() and (default_cuda_path / "/nvvm/lib").is_dir()
 
-        return _BackendPathConfig("lib", f".{ARRAYFIRE_VER_MAJOR}.dylib", af_path, cuda_found)
+        return _BackendPathConfig("lib", f".{ARRAYFIRE_VER_MAJOR}.dylib", af_path, af_is_user_path, cuda_found)
 
     if platform_name == _SupportedPlatforms.linux.value:
         default_cuda_path = Path("/usr/local/cuda/")
 
         if not af_path:
-            af_path = _find_default_path(f"/opt/arrayfire-{ARRAYFIRE_VER_MAJOR}", "/opt/arrayfire/", "/usr/local/")
+            try:
+                af_path = _find_default_path(f"/opt/arrayfire-{ARRAYFIRE_VER_MAJOR}", "/opt/arrayfire/", "/usr/local/")
+            except ValueError:
+                af_path = None
 
         if not (cuda_path and default_cuda_path.exists()):
             if "64" in platform.architecture()[0]:  # Check either is 64 bit arch is selected
@@ -94,9 +114,44 @@ def _get_backend_path_config() -> _BackendPathConfig:
             else:
                 cuda_found = (default_cuda_path / "lib").is_dir() and (default_cuda_path / "nvvm/lib").is_dir()
 
-        return _BackendPathConfig("lib", f".so.{ARRAYFIRE_VER_MAJOR}", af_path, cuda_found)
+        return _BackendPathConfig("lib", f".so.{ARRAYFIRE_VER_MAJOR}", af_path, af_is_user_path, cuda_found)
 
     raise OSError(f"{platform_name} is not supported.")
+
+
+# finds paths to locally packaged arrayfire libraries if they exist in site
+def _find_site_local_path() -> Path:
+    local_paths = ["."]
+
+    # module search paths
+    af_module = __import__(__name__)
+    module_paths = af_module.__path__ if af_module.__path__ else []
+    for path in module_paths:
+        local_paths.append(path)
+
+    # site search path
+    purelib_path = sysconfig.get_path("purelib")
+    platlib_path = sysconfig.get_path("platlib")
+    local_paths.append(purelib_path)
+    local_paths.append(platlib_path)
+
+    # sys search path
+    local_paths.extend(sys.path)
+
+    module_name = af_module.__name__
+    for path in local_paths:
+        lpath = Path(path)
+        if lpath.exists():
+            p = lpath.glob(f"{module_name}/binaries/*")
+            files = [x.name for x in p if x.is_file()]
+            query_libnames = ["afcpu", "afoneapi", "afopencl", "afcuda", "af", "forge"]
+            found_lib_in_dir = any(q in f for q in query_libnames for f in files)
+            if found_lib_in_dir:
+                if VERBOSE_LOADS:
+                    print(lpath)
+                    print(lpath / module_name / "binaries")
+                return lpath / module_name / "binaries"
+    raise RuntimeError("No binaries detected in site path.")
 
 
 def _find_default_path(*args: str) -> Path:
@@ -108,26 +163,46 @@ def _find_default_path(*args: str) -> Path:
 
 
 class BackendType(enum.Enum):  # TODO change name - avoid using _backend_type - e.g. type
-    unified = 0  # NOTE It is set as Default value on Arrayfire backend
-    cpu = 1
     cuda = 2
     opencl = 4
     oneapi = 8
+    cpu = 1
+    unified = 0  # NOTE It is set as Default value on Arrayfire backend
 
     def __iter__(self) -> Iterator:
         # NOTE cpu comes last because we want to keep this order priorty during backend initialization
-        return iter((self.unified, self.cuda, self.oneapi, self.opencl, self.cpu))
+        return iter((self.cuda, self.opencl, self.oneapi, self.cpu, self.unified))
 
 
 class Backend:
     _backend_type: BackendType
-    _clib: ctypes.CDLL
+    _clibs: dict[BackendType, ctypes.CDLL]
 
     def __init__(self) -> None:
         self._backend_path_config = _get_backend_path_config()
 
-        self._load_forge_lib()
+        self._backend_type = None
+        self._clibs = {}
         self._load_backend_libs()
+        self._load_forge_lib()
+
+    def _change_backend(self, backend_type: BackendType) -> None:
+        # if unified is available, do dynamic module loading through libaf
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import set_backend as unified_set_backend
+
+            try:
+                unified_set_backend(backend_type)
+            except RuntimeError as e:
+                print(f"Unable to change backend using unified loader: {str(e)}")
+        # if unified not available
+        else:
+            if backend_type in self._clibs:
+                self._backend_type = backend_type
+            else:
+                self._backend_path_config = _get_backend_path_config()
+                self._load_backend_libs(backend_type)
+                # self._load_forge_lib() # needed to reload?
 
     def _load_forge_lib(self) -> None:
         for lib_name in self._lib_names("forge", _LibPrefixes.forge):
@@ -141,16 +216,17 @@ class Backend:
                     print(f"Unable to load {lib_name}")
                 pass
 
-    def _load_backend_libs(self) -> None:
-        for backend_type in BackendType:
+    def _load_backend_libs(self, specific_backend: BackendType | None = None) -> None:
+        available_backends = [specific_backend] if specific_backend else list(BackendType)
+        for backend_type in available_backends:
             self._load_backend_lib(backend_type)
 
-            if hasattr(self, "_backend_type"):
+            if self._backend_type:
                 if VERBOSE_LOADS:
                     print(f"Setting {backend_type.name} as backend.")
                 break
 
-        if not (hasattr(self, "_backend_type") and hasattr(self, "_clib")):
+        if not self._backend_type and not self._clibs:
             raise RuntimeError(
                 "Could not load any ArrayFire libraries.\n"
                 "Please look at https://github.com/arrayfire/arrayfire-python/wiki for more information."
@@ -162,9 +238,11 @@ class Backend:
 
         for lib_name in self._lib_names(name, _LibPrefixes.arrayfire):
             try:
+                if VERBOSE_LOADS:
+                    print(f"Attempting to load {lib_name}")
                 ctypes.cdll.LoadLibrary(str(lib_name))
                 self._backend_type = _backend_type
-                self._clib = ctypes.CDLL(str(lib_name))
+                self._clibs[_backend_type] = ctypes.CDLL(str(lib_name))
 
                 if _backend_type == BackendType.cuda:
                     self._load_nvrtc_builtins_lib(lib_name.parent)
@@ -191,22 +269,27 @@ class Backend:
         post = self._backend_path_config.lib_postfix if ver_major is None else ver_major
         lib_name = self._backend_path_config.lib_prefix + lib.value + name + post
 
-        lib64_path = self._backend_path_config.af_path / "lib64"
-        search_path = lib64_path if lib64_path.is_dir() else self._backend_path_config.af_path / "lib"
+        lib_paths = [Path(lib_name)]
 
-        site_path = Path(sys.prefix) / "lib64" if not is_arch_x86() else Path(sys.prefix) / "lib"
-
-        # prefer locally packaged arrayfire libraries if they exist
-        af_module = __import__(__name__)
-        local_path = Path(af_module.__path__[0]) if af_module.__path__ else Path("")
-
-        lib_paths = [Path("", lib_name), site_path / lib_name, local_path / lib_name]
+        # use local or site packaged arrayfire libraries if they exist
+        try:
+            local_path = _find_site_local_path()
+            lib_paths.append(local_path / lib_name)
+        except RuntimeError as e:
+            if VERBOSE_LOADS:
+                print(f"Moving on to system libraries, site local load failed due to: {str(e)}")
+            pass
 
         if self._backend_path_config.af_path:  # prefer specified AF_PATH if exists
-            return [search_path / lib_name] + lib_paths
-        else:
-            lib_paths.insert(2, Path(str(search_path), lib_name))
-            return lib_paths
+            lib64_path = self._backend_path_config.af_path / "lib64"
+            search_path = lib64_path if lib64_path.is_dir() else self._backend_path_config.af_path / "lib"
+            # prefer path explicitly set by user through AF_PATH
+            if self._backend_path_config.af_is_user_path:
+                return [search_path / lib_name] + lib_paths
+            # otherwise, prefer to use site-packaged or local path
+            return lib_paths + [search_path / lib_name]
+
+        return lib_paths
 
     def _find_nvrtc_builtins_lib_name(self, search_path: Path) -> str | None:
         for f in search_path.iterdir():
@@ -214,13 +297,51 @@ class Backend:
                 return f.name
         return None
 
+    # unified backend functions
+    def get_active_backend(self) -> str:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_active_backend as unified_get_active_backend
+
+            return unified_get_active_backend()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_available_backends(self) -> list[int]:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import (
+                get_available_backends as unified_get_available_backends,
+            )
+
+            return unified_get_available_backends()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_backend_count(self) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_backend_count as unified_get_backend_count
+
+            return unified_get_backend_count()
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_backend_id(self, arr: AFArray, /) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_backend_id as unified_get_backend_id
+
+            return unified_get_backend_id(arr)
+        raise RuntimeError("Using unified function on non-unified backend")
+
+    def get_device_id(self, arr: AFArray, /) -> int:
+        if self._backend_type == BackendType.unified:
+            from arrayfire_wrapper.lib.unified_api_functions import get_device_id as unified_get_device_id
+
+            return unified_get_device_id(arr)
+        raise RuntimeError("Using unified function on non-unified backend")
+
     @property
     def backend_type(self) -> BackendType:
         return self._backend_type
 
     @property
     def clib(self) -> ctypes.CDLL:
-        return self._clib
+        return self._clibs[self._backend_type]
 
 
 # Initialize the backend
@@ -238,3 +359,11 @@ def get_backend() -> Backend:
     """
 
     return __backend
+
+
+def set_backend(backend_type: BackendType) -> None:
+    try:
+        backend = get_backend()
+        backend._change_backend(backend_type)
+    except RuntimeError:
+        print(f"Requested backend {backend_type.name} could not be found")
