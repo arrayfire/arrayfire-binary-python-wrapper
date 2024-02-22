@@ -37,10 +37,13 @@ def test_identity_invalid_shape() -> None:
             random.randint(1, 10),
             random.randint(1, 10),
         )
-        assert (
-            f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given"
-            in str(excinfo.value)
-        )
+        dtype = dtypes.s16
+
+        identity(invalid_shape, dtype)
+
+    assert f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given" in str(
+        excinfo.value
+    )
 
 
 def test_identity_nonsquare_shape() -> None:
