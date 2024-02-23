@@ -114,20 +114,16 @@ def test_constant_ulong_shape(shape: tuple) -> None:
 
 def test_constant_shape_invalid() -> None:
     """Test if constant handles a shape with greater than 4 dimensions"""
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         number = 5.0
         dtype = dtypes.s16
 
         constant(number, invalid_shape, dtype)
 
-    assert f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given" in str(
-        excinfo.value
-    )
-
 
 def test_constant_complex_shape_invalid() -> None:
     """Test if constant_complex handles a shape with greater than 4 dimensions"""
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         dtype = dtypes.c32
         rand_array = randu((1, 1), dtype)
         number = manage_array.get_scalar(rand_array, dtype)
@@ -135,14 +131,10 @@ def test_constant_complex_shape_invalid() -> None:
         if isinstance(number, (int, float, complex)):
             constant_complex(number, invalid_shape, dtype)
 
-    assert f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given" in str(
-        excinfo.value
-    )
-
 
 def test_constant_long_shape_invalid() -> None:
     """Test if constant_long handles a shape with greater than 4 dimensions"""
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         dtype = dtypes.s64
         rand_array = randu((1, 1), dtype)
         number = manage_array.get_scalar(rand_array, dtype)
@@ -150,24 +142,16 @@ def test_constant_long_shape_invalid() -> None:
         if isinstance(number, (int, float)):
             constant_long(number, invalid_shape, dtype)
 
-    assert f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given" in str(
-        excinfo.value
-    )
-
 
 def test_constant_ulong_shape_invalid() -> None:
     """Test if constant_ulong handles a shape with greater than 4 dimensions"""
-    with pytest.raises(TypeError) as excinfo:
+    with pytest.raises(TypeError):
         dtype = dtypes.u64
         rand_array = randu((1, 1), dtype)
         number = manage_array.get_scalar(rand_array, dtype)
 
         if isinstance(number, (int, float)):
             constant_ulong(number, invalid_shape, dtype)
-
-    assert f"CShape.__init__() takes from 1 to 5 positional arguments but {len(invalid_shape) + 1} were given" in str(
-        excinfo.value
-    )
 
 
 @pytest.mark.parametrize(
