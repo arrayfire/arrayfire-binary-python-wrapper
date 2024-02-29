@@ -2,7 +2,7 @@ import ctypes
 from typing import cast
 
 from arrayfire_wrapper.defines import AFArray, ArrayBuffer, CDimT, CShape
-from arrayfire_wrapper.dtypes import Dtype
+from arrayfire_wrapper.dtypes import Dtype, c32, c64
 from arrayfire_wrapper.lib._utility import call_from_clib
 
 
@@ -165,7 +165,10 @@ def get_scalar(arr: AFArray, dtype: Dtype, /) -> int | float | complex | bool | 
     """
     out = dtype.c_type()
     call_from_clib(get_scalar.__name__, ctypes.pointer(out), arr)
-    return cast(int | float | complex | bool | None, out.value)
+    if dtype == c32 or dtype == c64:
+        return complex(out[0], out[1]) # type: ignore
+    else:
+        return cast(int | float | complex | bool | None, out.value)
 
 
 def get_type(arr: AFArray, /) -> int:
