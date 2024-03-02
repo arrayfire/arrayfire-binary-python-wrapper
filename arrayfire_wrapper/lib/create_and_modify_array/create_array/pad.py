@@ -22,4 +22,4 @@ def pad(arr: AFArray, begin_shape: tuple[int, ...], end_shape: tuple[int, ...], 
         end_c_shape.c_array,
         border_type.value,
     )
-    return NotImplemented
+    return out
