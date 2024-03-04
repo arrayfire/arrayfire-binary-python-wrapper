@@ -5,14 +5,6 @@ import pytest
 import arrayfire_wrapper.dtypes as dtypes
 import arrayfire_wrapper.lib as wrapper
 
-invalid_shape = (
-    random.randint(1, 10),
-    random.randint(1, 10),
-    random.randint(1, 10),
-    random.randint(1, 10),
-    random.randint(1, 10),
-)
-
 
 @pytest.mark.parametrize(
     "shape",
