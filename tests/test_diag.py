@@ -3,11 +3,6 @@ import pytest
 import arrayfire_wrapper.dtypes as dtypes
 import arrayfire_wrapper.lib as wrapper
 
-# tests to include
-# - if diagonal created is same shape as the input diagonal
-# - if diagonal value is same value as input diagonal
-# - if invalid diagonal is passed in
-
 
 @pytest.mark.parametrize("diagonal_shape", [(2,), (10,), (100,), (1000,)])
 def test_diagonal_shape(diagonal_shape: tuple) -> None:
