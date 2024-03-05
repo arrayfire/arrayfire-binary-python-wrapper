@@ -40,6 +40,4 @@ def test_invalid_diagonal(diagonal_shape: tuple) -> None:
         in_arr = wrapper.constant(1, diagonal_shape, dtypes.s16)
         diag_array = wrapper.diag_create(in_arr, 0)
 
-        extracted_diagonal = wrapper.diag_extract(diag_array, 0)
-
-        assert wrapper.get_dims(extracted_diagonal)[0 : len(diagonal_shape)] == diagonal_shape  # noqa: E203
+        wrapper.diag_extract(diag_array, 0)
