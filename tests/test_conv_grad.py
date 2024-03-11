@@ -3,7 +3,6 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 from arrayfire_wrapper.lib._constants import ConvGradient
-from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
 
 
 # First parameterization for grad_types
@@ -16,7 +15,6 @@ from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array
         3,  # ConvGradient.BIAS
     ],
 )
-
 # Second parameterization for dtypes
 @pytest.mark.parametrize(
     "dtypes",
@@ -112,9 +110,6 @@ def test_convolve2_gradient_input(inputShape: tuple[int, int]) -> None:
     result = wrapper.convolve2_gradient_nn(
         incoming_gradient, original_signal, original_filter, convolved_output, strides, padding, dilation, grad_type
     )
-    exp = "Input Shape"
-    precision = 4
-    transpose = False
     # print(array_to_string(exp, result, precision, transpose))
     match = (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1])
     # print(match)
