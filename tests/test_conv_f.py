@@ -3,6 +3,7 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 import arrayfire_wrapper.lib.signal_processing.convolutions as convolutions
+from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
 
 
 # Parameterization for input shapes
@@ -46,7 +47,7 @@ def test_convolve2_gradient_data(inputShape: tuple[int, int], dtypes: dtype) -> 
         dtype.complex32,  # Complex number with float 32-bit real and imaginary
     ],
 )
-def test_convolve2_gradient_invalid_data(invdtypes: dtype) -> None:
+def test_convolve2_nn_invalid_data(invdtypes: dtype) -> None:
     """Test if convolve gradient returns the correct shape with varying data type and grad type."""
     with pytest.raises(RuntimeError):
         original_signal = wrapper.randu((8, 8), invdtypes)
@@ -60,7 +61,7 @@ def test_convolve2_gradient_invalid_data(invdtypes: dtype) -> None:
 
 
 @pytest.mark.parametrize("padding", [(0, 0), (1, 1), (2, 2)])
-def test_convolve2_gradient_padding_variation(padding: tuple[int, int]) -> None:
+def test_convolve2_nn_padding_variation(padding: tuple[int, int]) -> None:
     """Test convolution with varying padding sizes."""
     original_signal = wrapper.randu((8, 8), dtype.float32)
     original_kernel = wrapper.randu((3, 3), dtype.float32)
@@ -78,7 +79,7 @@ def test_convolve2_gradient_padding_variation(padding: tuple[int, int]) -> None:
 
 
 @pytest.mark.parametrize("strides", [(1, 1), (2, 2), (3, 3)])
-def test_convolve2_gradient_strides_variation(strides: tuple[int, int]) -> None:
+def test_convolve2_nn_strides_variation(strides: tuple[int, int]) -> None:
     """Test convolution with varying stride sizes."""
     original_signal = wrapper.randu((8, 8), dtype.float32)
     original_kernel = wrapper.randu((3, 3), dtype.float32)
@@ -97,7 +98,7 @@ def test_convolve2_gradient_strides_variation(strides: tuple[int, int]) -> None:
 
 # Parameterize for different dilation sizes
 @pytest.mark.parametrize("dilation", [(1, 1), (2, 2), (3, 3)])
-def test_convolve2_gradient_dilation_variation(dilation: tuple[int, int]) -> None:
+def test_convolve2_nn_dilation_variation(dilation: tuple[int, int]) -> None:
     """Test convolution with varying dilation sizes."""
     original_signal = wrapper.randu((8, 8), dtype.float32)
     original_kernel = wrapper.randu((3, 3), dtype.float32)
@@ -132,7 +133,7 @@ def test_convolve2_gradient_dilation_variation(dilation: tuple[int, int]) -> Non
 
 
 @pytest.mark.parametrize("kernel_size", [(3, 3), (5, 5), (7, 7)])
-def test_convolve2_gradient_kernel_size_variation(kernel_size: tuple[int, int]) -> None:
+def test_convolve2_nn_kernel_size_variation(kernel_size: tuple[int, int]) -> None:
     """Test convolution with varying kernel sizes."""
     original_signal = wrapper.randu((8, 8), dtype.float32)
     original_kernel = wrapper.randu(kernel_size, dtype.float32)
@@ -164,3 +165,252 @@ def test_convolve2_gradient_kernel_size_variation(kernel_size: tuple[int, int]) 
 
     match = (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1])
     assert match == expected_shape, f"Failed for kernel size: {kernel_size}"
+@pytest.mark.parametrize("input_size", [(8,), (12, 12), (10, 10, 10)])
+def test_convolve1_input_size(input_size) -> None:
+    """Test convolve1 with varying input sizes."""
+    signal = wrapper.randu(input_size, dtype.float32)
+    filter = wrapper.randu((3,), dtype.float32)
+    
+    result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(0))
+    
+    expected_output_size = wrapper.get_dims(signal)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for input_size: {input_size}"
+
+@pytest.mark.parametrize("filter_size", [3, 5, 7])
+def test_convolve1_filter_size(filter_size):
+    """Test convolve1 with varying filter sizes."""
+    signal = wrapper.randu((10,10), dtype.float32)
+    filter = wrapper.randu((filter_size,), dtype.float32)
+
+    result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(0))
+
+    # Assuming ConvMode(0) maintains the input size
+    expected_output_size = wrapper.get_dims(signal)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for filter_size: {filter_size}"
+
+@pytest.mark.parametrize("conv_mode", [0, 1])  # 0: AF_CONV_DEFAULT, 1: AF_CONV_EXPAND
+def test_convolve1_conv_mode(conv_mode) -> None:
+    """Test convolve1 with varying convolution modes."""
+    input_size = 10
+    filter_size = 3
+    signal = wrapper.randu((input_size,input_size), dtype.float32)
+    filter = wrapper.randu((filter_size,), dtype.float32)
+
+    result = convolutions.convolve1(signal, filter, ConvMode(conv_mode), ConvDomain(0))
+
+    if conv_mode == 0:  # AF_CONV_DEFAULT
+        expected_output_size = input_size
+    elif conv_mode == 1:  # AF_CONV_EXPAND
+        expected_output_size = input_size + filter_size - 1
+
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for conv_mode: {conv_mode}"
+
+import pytest
+
+@pytest.mark.parametrize("conv_domain", [0, 1, 2])  # AUTO, SPATIAL, and FREQ
+def test_convolve1_conv_domain(conv_domain) -> None:
+    """Test convolve1 with varying convolution domains."""
+    input_size = 10
+    filter_size = 3
+    signal = wrapper.randu((input_size,input_size), dtype.float32)
+    filter = wrapper.randu((filter_size,), dtype.float32)
+
+    result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(conv_domain))
+    
+    assert wrapper.get_dims(result)[0] == input_size, f"Failed for conv_domain: {ConvDomain(conv_domain)}"
+@pytest.mark.parametrize(
+    "invdtypes",
+    [
+        dtype.int32,  # Integer 32-bit
+        dtype.uint32,  # Unsigned Integer 32-bit
+        dtype.complex32,  # Complex number with float 32-bit real and imaginary
+    ],
+)
+def test_convolve1_valid(invdtypes: dtype) -> None:
+    """Test convolve1 with valid dtypes."""
+    input_size = 10
+    filter_size = 3
+    signal = wrapper.randu((input_size,input_size), invdtypes)
+    filter = wrapper.randu((filter_size,), invdtypes)
+
+    result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(0))
+    
+    assert wrapper.get_dims(result)[0] == input_size, f"Failed for dtype: {invdtypes}"
+
+@pytest.mark.parametrize("input_size", [(8,), (12, 12), (10, 10, 10)])
+def test_fft_convolve1_input_size(input_size) -> None:
+    """Test fft_convolve1 with varying input sizes."""
+    signal = wrapper.randu(input_size, dtype.float32)
+    filter = wrapper.randu((3,), dtype.float32)
+
+    result = convolutions.fft_convolve1(signal, filter, ConvMode(0))
+
+    expected_output_size = wrapper.get_dims(result)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for input_size: {input_size}"
+
+@pytest.mark.parametrize("filter_size", [3, 5, 7])
+def test_fft_convolve1_filter_size(filter_size):
+    """Test fft_convolve1 with varying filter sizes."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu((filter_size,), dtype.float32)
+
+    result = convolutions.fft_convolve1(signal, filter, ConvMode(0))
+
+    expected_output_size = wrapper.get_dims(signal)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for filter_size: {filter_size}"
+
+@pytest.mark.parametrize("conv_mode", [0, 1])
+def test_fft_convolve1_conv_mode(conv_mode):
+    """Test fft_convolve1 with varying convolution modes."""
+    input_size = (10, 10)
+    filter_size = 3
+    signal = wrapper.randu(input_size, dtype.float32)
+    filter = wrapper.randu((filter_size,), dtype.float32)
+
+    result = convolutions.fft_convolve1(signal, filter, ConvMode(conv_mode))
+
+    if conv_mode == 0:  # AF_CONV_DEFAULT
+        expected_output_size = input_size[0]
+    elif conv_mode == 1:  # AF_CONV_EXPAND
+        expected_output_size = input_size[0] + filter_size - 1
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for conv_mode: {conv_mode}"
+
+@pytest.mark.parametrize(
+    "invdtypes",
+    [
+        dtype.int32,  # Integer 32-bit
+        dtype.uint32,  # Unsigned Integer 32-bit
+        dtype.complex32,  # Complex number with float 32-bit real and imaginary
+    ],
+)
+def test_fft_convolve1_valid(invdtypes):
+    """Test fft_convolve1 with valid dtypes."""
+    signal = wrapper.randu((10, 10), invdtypes)
+    filter = wrapper.randu((3,), invdtypes)
+
+    result = convolutions.fft_convolve1(signal, filter, ConvMode(0))
+
+    expected_output_size = wrapper.get_dims(signal)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {invdtypes}"
+
+@pytest.mark.parametrize("input_size", [(8, 8), (12, 12, 12), (10, 10)])
+def test_convolve2_input_size(input_size):
+    """Test convolve2 with varying input sizes."""
+    signal = wrapper.randu(input_size, dtype.float32)
+    filter = wrapper.randu((3, 3), dtype.float32)
+    
+    result = convolutions.convolve2(signal, filter, ConvMode(0), ConvDomain(0))
+    
+    expected_output = (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1])
+    assert (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1]) == expected_output, f"Failed for input_size: {input_size}"
+
+@pytest.mark.parametrize("filter_size", [(3, 3), (5,), (7, 7, 7)])
+def test_convolve2_filter_size(filter_size):
+    """Test convolve2 with varying filter sizes."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu(filter_size, dtype.float32)
+
+    result = convolutions.convolve2(signal, filter, ConvMode(0), ConvDomain(0))
+
+    expected_output = (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1])
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for filter_size: {filter_size}"
+
+@pytest.mark.parametrize("conv_mode", [0, 1])  # 0: Default, 1: Expand
+def test_convolve2_conv_mode(conv_mode):
+    """Test convolve2 with varying convolution modes."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu((3, 3), dtype.float32)
+
+    result = convolutions.convolve2(signal, filter, ConvMode(conv_mode), ConvDomain(0))
+
+    if conv_mode == 0:  # Default
+        expected_output = (10, 10)
+    else:  # Expand
+        expected_output = (12, 12)
+
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for conv_mode: {conv_mode}"
+
+@pytest.mark.parametrize("conv_domain", [0, 1, 2])  # 0: Auto, 1: Spatial, 2: Frequency
+def test_convolve2_conv_domain(conv_domain):
+    """Test convolve2 with varying convolution domains."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu((3, 3), dtype.float32)
+
+    result = convolutions.convolve2(signal, filter, ConvMode(0), ConvDomain(conv_domain))
+
+    expected_output = (10, 10)
+    
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for conv_domain: {conv_domain}"
+
+@pytest.mark.parametrize(
+    "invdtypes",
+    [
+        dtype.int32,  # Integer 32-bit
+        dtype.uint32,  # Unsigned Integer 32-bit
+        dtype.complex32,  # Complex number with float 32-bit real and imaginary
+    ],
+)
+def test_convolve2_conv_valid_dtype(invdtypes):
+    """Test fft_convolve1 with valid dtypes."""
+    signal = wrapper.randu((10, 10), invdtypes)
+    filter = wrapper.randu((3, 3), invdtypes)
+
+    result = convolutions.convolve2(signal, filter, ConvMode(0), ConvDomain(0))
+
+    expected_output_size = wrapper.get_dims(signal)[0]
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {invdtypes}"
+
+@pytest.mark.parametrize("input_size", [(8, 8), (12, 12, 12), (10, 10)])
+def test_fftConvolve2_input_size(input_size):
+    """Test fftConvolve2 with varying input sizes."""
+    signal = wrapper.randu(input_size, dtype.float32)
+    filter = wrapper.randu((3, 3), dtype.float32)
+    
+    result = convolutions.fft_convolve2(signal, filter, ConvMode(0))
+    
+    expected_output = (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1])
+    assert (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1]) == expected_output, f"Failed for input_size: {input_size}"
+
+@pytest.mark.parametrize("filter_size", [(3, 3), (5,), (7, 7, 7)])
+def test_fftConvolve2_filter_size(filter_size):
+    """Test fftConvolve2 with varying filter sizes."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu(filter_size, dtype.float32)
+
+    result = convolutions.fft_convolve2(signal, filter, ConvMode(0))
+
+    expected_output = (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1])
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for filter_size: {filter_size}"
+
+@pytest.mark.parametrize("conv_mode", [0, 1])  # 0: Default, 1: Expand
+def test_fftConvolve2_conv_mode(conv_mode):
+    """Test fftConvolve2 with varying convolution modes."""
+    signal = wrapper.randu((10, 10), dtype.float32)
+    filter = wrapper.randu((3, 3), dtype.float32)
+
+    result = convolutions.fft_convolve2(signal, filter, ConvMode(conv_mode))
+
+    if conv_mode == 0:  # Default
+        expected_output = (10, 10)
+    else:  # Expand
+        expected_output = (12, 12)
+
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for conv_mode: {conv_mode}"
+
+@pytest.mark.parametrize(
+    "invdtypes",
+    [
+        dtype.int32,  # Integer 32-bit
+        dtype.uint32,  # Unsigned Integer 32-bit
+        dtype.complex32,  # Complex number with float 32-bit real and imaginary
+    ],
+)
+def test_fftConvolve2_valid_dtype(invdtypes):
+    """Test fft_convolve1 with valid dtypes."""
+    signal = wrapper.randu((10, 10), invdtypes)
+    filter = wrapper.randu((3, 3), invdtypes)
+
+    result = convolutions.fft_convolve2(signal, filter, ConvMode(0))
+
+    expected_output = (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1])
+    assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == expected_output, f"Failed for dtype: {invdtypes}"
