@@ -174,7 +174,7 @@ def test_constant_dtype(dtype_index: int) -> None:
 )
 def test_constant_complex_dtype(dtype_index: int) -> None:
     """Test if constant_complex creates an array with the correct dtype."""
-    if dtype_index not in [1, 3] or (dtype_index == 3 and not wrapper.get_dbl_support()):
+    if not 
         pytest.skip()
 
     dtype = dtypes.c_api_value_to_dtype(dtype_index)
@@ -219,3 +219,4 @@ def test_constant_ulong_dtype() -> None:
         assert dtypes.c_api_value_to_dtype(wrapper.get_type(result)) == dtype
     else:
         pytest.skip()
+    
