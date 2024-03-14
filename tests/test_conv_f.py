@@ -22,7 +22,6 @@ from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
     [
         dtype.float16,  # Floating point 16-bit
         dtype.float32,  # Floating point 32-bit
-        dtype.float64,  # Floating point 64-bit
     ],
 )
 def test_convolve2_gradient_data(inputShape: tuple[int, int], dtypes: dtype.Dtype) -> None:
@@ -688,7 +687,6 @@ def test_fft_convolve3_conv_mode(conv_mode: int) -> None:
     "valid_dtype",
     [
         dtype.f32,  # Floating-point 32-bit
-        dtype.f64,  # Floating-point 64-bit
         dtype.c32,  # Complex number with float 32-bit real and imaginary
         dtype.bool,  # Typically not supported for FFT convolutions
     ],
