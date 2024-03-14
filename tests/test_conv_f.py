@@ -449,7 +449,7 @@ def test_fftConvolve2_valid_dtype(invdtypes: dtype.Dtype) -> None:
     """Test fft_convolve1 with valid dtypes."""
     signal = wrapper.randu((10, 10), invdtypes)
     filter = wrapper.randu((3, 3), invdtypes)
-
+    print(filter)
     result = convolutions.fft_convolve2(signal, filter, ConvMode(0))
 
     expected_output = (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1])
