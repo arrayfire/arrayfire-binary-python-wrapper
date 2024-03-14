@@ -5,8 +5,6 @@ import arrayfire_wrapper.lib as wrapper
 import arrayfire_wrapper.lib.signal_processing.convolutions as convolutions
 from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
 
-# from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
-
 
 # Parameterization for input shapes
 @pytest.mark.parametrize(
