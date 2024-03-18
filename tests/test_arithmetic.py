@@ -95,14 +95,15 @@ def test_add_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
 
 def test_add_zero_sized_arrays() -> None:
     """Test addition with arrays where at least one array has zero size."""
-    zero_shape = (0, 5)
-    normal_shape = (5, 5)
-    zero_array = wrapper.randu(zero_shape, dtype.f32)
-    normal_array = wrapper.randu(normal_shape, dtype.f32)
+    with pytest.raises(RuntimeError):
+        zero_shape = (0, 5)
+        normal_shape = (5, 5)
+        zero_array = wrapper.randu(zero_shape, dtype.f32)
+        normal_array = wrapper.randu(normal_shape, dtype.f32)
 
-    # Test addition when lhs is zero-sized
-    result_lhs_zero = wrapper.add(zero_array, normal_array)
-    assert wrapper.get_dims(result_lhs_zero) == zero_shape
+        # Test addition when lhs is zero-sized
+        result_lhs_zero = wrapper.add(zero_array, normal_array)
+        assert wrapper.get_dims(result_lhs_zero) == zero_shape
 
 @pytest.mark.parametrize("values", [
     (-5, 10),  # Both negative and positive
@@ -184,13 +185,14 @@ def test_subtract_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
 
 def test_subtract_zero_sized_arrays() -> None:
     """Test subtraction with arrays where at least one array has zero size."""
-    zero_shape = (0, 5)
-    normal_shape = (5, 5)
-    zero_array = wrapper.randu(zero_shape, dtype.f32)
-    normal_array = wrapper.randu(normal_shape, dtype.f32)
+    with pytest.raises(RuntimeError):
+        zero_shape = (0, 5)
+        normal_shape = (5, 5)
+        zero_array = wrapper.randu(zero_shape, dtype.f32)
+        normal_array = wrapper.randu(normal_shape, dtype.f32)
 
-    result_lhs_zero = wrapper.sub(zero_array, normal_array)
-    assert wrapper.get_dims(result_lhs_zero) == zero_shape
+        result_lhs_zero = wrapper.sub(zero_array, normal_array)
+        assert wrapper.get_dims(result_lhs_zero) == zero_shape
 
 @pytest.mark.parametrize("values", [
     (-5, 10),  # Both negative and positive
