@@ -86,7 +86,7 @@ def test_bitshiftl_varying_shapes(shape: tuple) -> None:
 
     assert wrapper.get_dims(result)[0 : len(shape)] == shape
 
-@pytest.mark.parametrize("shift_amount", [0, 2, 30])
+@pytest.mark.parametrize("shift_amount", [-1, 0, 2, 30])
 def test_bitshift_left_varying_shift_amount(shift_amount):
     """Test bitshift left operation with varying shift amounts."""
     shape = (5, 5)
@@ -115,7 +115,7 @@ def test_bitshiftl_different_shapes(shape_a: tuple, shape_b: tuple) -> None:
         print(array_to_string("", result, 3, False))
         assert wrapper.get_dims(result)[0 : len(shape_a)] == shape_a, f"Failed for shapes {shape_a} and {shape_b}"
 
-@pytest.mark.parametrize("shift_amount", [0, 2, 30])
+@pytest.mark.parametrize("shift_amount", [-1, 0, 2, 30])
 def test_bitshift_right_varying_shift_amount(shift_amount):
     """Test bitshift right operation with varying shift amounts."""
     shape = (5, 5)
