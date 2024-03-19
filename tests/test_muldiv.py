@@ -164,7 +164,6 @@ def test_divide_shapes(shape: tuple) -> None:
     """Test division operation between two arrays of the same shape"""
     lhs = wrapper.randu(shape, dtype.f16)
     rhs = wrapper.randu(shape, dtype.f16)
-    # Ensure no division by zero for test integrity
     rhs = wrapper.add(rhs, wrapper.constant(0.001, shape, dtype.f16))
 
     result = wrapper.div(lhs, rhs)
@@ -208,29 +207,10 @@ def test_divide_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
-    # Ensure no division by zero for test integrity
     rhs = wrapper.add(rhs, wrapper.constant(0.001, shape, dtype_name))
 
     result = wrapper.div(lhs, rhs)
     assert dtype.c_api_value_to_dtype(wrapper.get_type(result)) == dtype_name, f"Failed for dtype: {dtype_name}"
-
-
-def test_divide_by0() -> None:
-    """Test division operation for undefined error type."""
-    shape = (2, 2)
-    lhs = wrapper.constant(5, shape, dtype.f16)
-    rhs = wrapper.constant(0, shape, dtype.f16)
-    lhsnp = np.full(shape, 5)
-    rhsnp = np.zeros(shape)
-    out = np.divide(lhsnp, rhsnp)
-    print(out)
-    with pytest.raises(RuntimeError):
-        divOut = wrapper.div(lhs, rhs)
-        print(array_to_string("", divOut, 3, False))
-        wrapper.div(lhs, rhs)
-
-    # result = wrapper.div(lhs, rhs)
-    # assert dtype.c_api_value_to_dtype(wrapper.get_type(result)) == dtype_name, f"Failed for dtype: {dtype_name}"
 
 
 @pytest.mark.parametrize(
