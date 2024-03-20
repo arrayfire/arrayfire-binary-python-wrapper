@@ -4,6 +4,7 @@ import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
+
 from . import utility_functions as util
 
 
@@ -97,6 +98,7 @@ def test_atan2_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
     """Test inverse tan operation for unsupported data types."""
     with pytest.raises(RuntimeError):
         wrapper.atan2(wrapper.randu((10, 10), invdtypes), wrapper.randu((10, 10), invdtypes))
+
 
 @pytest.mark.parametrize(
     "shape",
