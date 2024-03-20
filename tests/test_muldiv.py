@@ -7,36 +7,8 @@ import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 
 # import arrayfire_wrapper.lib.mathematical_functions as ops
-from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
 
-dtype_map = {
-    "int16": dtype.s16,
-    "int32": dtype.s32,
-    "int64": dtype.s64,
-    "uint8": dtype.u8,
-    "uint16": dtype.u16,
-    "uint32": dtype.u32,
-    "uint64": dtype.u64,
-    "float16": dtype.f16,
-    "float32": dtype.f32,
-    # 'float64': dtype.f64,
-    # 'complex64': dtype.c64,
-    "complex32": dtype.c32,
-    "bool": dtype.b8,
-    "s16": dtype.s16,
-    "s32": dtype.s32,
-    "s64": dtype.s64,
-    "u8": dtype.u8,
-    "u16": dtype.u16,
-    "u32": dtype.u32,
-    "u64": dtype.u64,
-    "f16": dtype.f16,
-    "f32": dtype.f32,
-    # 'f64': dtype.f64,
-    "c32": dtype.c32,
-    # 'c64': dtype.c64,
-    "b8": dtype.b8,
-}
+from . import utility_functions as util
 
 
 @pytest.mark.parametrize(
@@ -87,9 +59,10 @@ def test_multiply_negative_shapes() -> None:
         ), f"Failed for shapes {lhs_shape} and {rhs_shape}"
 
 
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", util.get_all_types())
 def test_multiply_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test multiplication operation across all supported data types."""
+    util.check_type_supported(dtype_name)
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
@@ -201,9 +174,10 @@ def test_divide_negative_shapes() -> None:
         ), f"Failed for shapes {lhs_shape} and {rhs_shape}"
 
 
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", util.get_all_types())
 def test_divide_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test division operation across all supported data types."""
+    util.check_type_supported(dtype_name)
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
