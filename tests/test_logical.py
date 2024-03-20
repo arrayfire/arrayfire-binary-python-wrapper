@@ -1,12 +1,9 @@
 import random
 
-import numpy as np
 import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
-
-from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
 
 dtype_map = {
     "int16": dtype.s16,
@@ -56,7 +53,10 @@ def test_and_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.and_(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -74,7 +74,11 @@ def test_and_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 
         result = wrapper.and_(lhs, rhs)
 
-        assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {invdtypes}"  # noqa
+        assert (
+            wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+        ), f"failed for shape: {shape} and dtype {invdtypes}"
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -88,14 +92,23 @@ def test_and_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_bitand_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitand operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
     result = wrapper.bitand(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -111,6 +124,8 @@ def test_bitand_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.bitand(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -124,13 +139,22 @@ def test_bitand_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_bitnot_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitnot operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.bitnot(out)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -145,6 +169,8 @@ def test_bitnot_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         shape = (3, 3)
         out = wrapper.randu(shape, invdtypes)
         wrapper.bitnot(out)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -158,14 +184,23 @@ def test_bitnot_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_bitor_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitor operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
     result = wrapper.bitor(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -182,6 +217,7 @@ def test_bitor_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.bitor(lhs, rhs)
 
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -195,14 +231,23 @@ def test_bitor_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_bitxor_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitxor operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
     result = wrapper.bitxor(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -218,6 +263,8 @@ def test_bitxor_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.bitxor(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -231,14 +278,23 @@ def test_bitxor_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_eq_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test eq operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
     result = wrapper.eq(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -254,6 +310,8 @@ def test_eq_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.eq(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -272,7 +330,10 @@ def test_ge_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.ge(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -288,6 +349,7 @@ def test_ge_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.ge(lhs, rhs)
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -307,7 +369,10 @@ def test_gt_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.gt(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -323,6 +388,7 @@ def test_gt_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.gt(lhs, rhs)
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -342,7 +408,10 @@ def test_le_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.le(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -358,6 +427,8 @@ def test_le_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.le(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -376,7 +447,10 @@ def test_lt_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.lt(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -392,6 +466,8 @@ def test_lt_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.lt(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -410,7 +486,10 @@ def test_neq_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.neq(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -426,6 +505,8 @@ def test_neq_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.neq(lhs, rhs)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -439,13 +520,22 @@ def test_neq_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 @pytest.mark.parametrize("dtype_name", dtype_map.values())
 def test_not_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test not operation between two arrays of the same shape"""
-    if dtype_name == dtype.c32 or dtype_name == dtype.c64 or dtype_name == dtype.f32 or dtype_name == dtype.f64 or dtype_name == dtype.f16:
+    if (
+        dtype_name == dtype.c32
+        or dtype_name == dtype.c64
+        or dtype_name == dtype.f32
+        or dtype_name == dtype.f64
+        or dtype_name == dtype.f16
+    ):
         pytest.skip()
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.not_(out)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
@@ -460,6 +550,8 @@ def test_not_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         shape = (3, 3)
         out = wrapper.randu(shape, invdtypes)
         wrapper.not_(out)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -478,7 +570,10 @@ def test_or_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
     result = wrapper.or_(lhs, rhs)
 
-    assert wrapper.get_dims(result)[0 : len(shape)] == shape, f"failed for shape: {shape} and dtype {dtype_name}"  # noqa
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "invdtypes",
