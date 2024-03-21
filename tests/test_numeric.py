@@ -355,7 +355,7 @@ def test_sign_shapes_invalid(invdtypes: dtype.Dtype) -> None:
 )
 @pytest.mark.parametrize("dtype_name", util.get_real_types())
 def test_trunc_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
-    """Test truncating operation between two arrays of the same shape"""
+    """Test truncating operation for an array with varying shape"""
     util.check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
@@ -366,7 +366,7 @@ def test_trunc_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
 
 @pytest.mark.parametrize("invdtypes", util.get_complex_types())
 def test_trunc_shapes_invalid(invdtypes: dtype.Dtype) -> None:
-    """Test trunc operation between two arrays of the same shape"""
+    """Test trunc operation for an array with varrying shape and invalid dtypes"""
     with pytest.raises(RuntimeError):
         shape = (3, 3)
         out = wrapper.randu(shape, invdtypes)
@@ -409,3 +409,25 @@ def test_hypot_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.hypot(rhs, lhs, True)
+@pytest.mark.parametrize(
+    "shape",
+    [
+        (),
+        (random.randint(1, 10),),
+        (random.randint(1, 10), random.randint(1, 10)),
+        (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
+        (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
+    ],
+)
+@pytest.mark.parametrize("dtype_name", util.get_real_types())
+def test_clamp_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
+    """Test clamp operation between two arrays of the same shape"""
+    util.check_type_supported(dtype_name)
+    og = wrapper.randu(shape, dtype_name)
+    low = wrapper.randu(shape, dtype_name)
+    high = wrapper.randu(shape, dtype_name)
+    # talked to stefan about this, testing broadcasting is unnecessary
+    result = wrapper.clamp(og, low, high, False)
+    assert (
+        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
+    ), f"failed for shape: {shape} and dtype {dtype_name}"
