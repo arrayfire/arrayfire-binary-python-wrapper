@@ -48,12 +48,12 @@ def floor(arr: AFArray, /) -> AFArray:
     return unary_op(floor.__name__, arr)
 
 
-def hypot(lhs: AFArray, rhs: AFArray, /) -> AFArray:
+def hypot(lhs: AFArray, rhs: AFArray, batch: bool, /) -> AFArray:
     """
     source:
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(hypot.__name__, lhs, rhs)
+    call_from_clib(hypot.__name__, ctypes.pointer(out), lhs, rhs, ctypes.c_bool(batch))
     return out
 
 

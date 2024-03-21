@@ -385,15 +385,27 @@ def test_trunc_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
-def test_hypot_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
+def test_hypot_shape_dtypes(shape: tuple) -> None:
     """Test hypotenuse operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
-    lhs = wrapper.randu(shape, dtype_name)
-    rhs = wrapper.randu(shape, dtype_name)
+    lhs = wrapper.randu(shape, dtype.f32)
+    rhs = wrapper.randu(shape, dtype.f32)
 
-    result = wrapper.hypot(lhs, rhs)
+    result = wrapper.hypot(lhs, rhs, True)
 
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
-    ), f"failed for shape: {shape} and dtype {dtype_name}"
+    ), f"failed for shape: {shape} and dtype {dtype.f32}"
+@pytest.mark.parametrize(
+    "invdtypes",
+    [
+        dtype.int32,
+        dtype.uint32,
+    ],
+)
+def test_hypot_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
+    """Test division operation for unsupported data types."""
+    with pytest.raises(RuntimeError):
+        shape = (5, 5)
+        lhs = wrapper.randu(shape, invdtypes)
+        rhs = wrapper.randu(shape, invdtypes)
+        wrapper.hypot(rhs, lhs, True)
