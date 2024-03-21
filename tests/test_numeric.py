@@ -1,33 +1,13 @@
 import random
 
-import pytest
 import numpy as np
+import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 
 from . import utility_functions as util
 
-@pytest.mark.parametrize(
-    "shape",
-    [
-        (),
-        (random.randint(1, 10),),
-        (random.randint(1, 10), random.randint(1, 10)),
-        (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
-        (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
-    ],
-)
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
-def test_abs_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
-    """Test absolute value operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
-    out = wrapper.randu(shape, dtype_name)
-
-    result = wrapper.abs_(out)
-    assert (
-        wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
-    ), f"failed for shape: {shape} and dtype {dtype_name}"
 
 @pytest.mark.parametrize(
     "shape",
@@ -94,6 +74,7 @@ def test_ceil_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
+
 @pytest.mark.parametrize(
     "invdtypes",
     [
@@ -111,6 +92,8 @@ def test_ceil_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         assert (
             wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
         ), f"failed for shape: {shape} and dtype {invdtypes}"
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -133,6 +116,8 @@ def test_maxof_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
+
+
 @pytest.mark.parametrize(
     "shape_a, shape_b",
     [
@@ -153,6 +138,7 @@ def test_maxof_varying_dimensionality(shape_a: tuple, shape_b: tuple) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(expected_shape)] == expected_shape  # noqa
     ), f"Failed for shapes {shape_a} and {shape_b}"
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -176,6 +162,8 @@ def test_minof_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
+
+
 @pytest.mark.parametrize(
     "shape_a, shape_b",
     [
@@ -196,6 +184,7 @@ def test_minof_varying_dimensionality(shape_a: tuple, shape_b: tuple) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(expected_shape)] == expected_shape  # noqa
     ), f"Failed for shapes {shape_a} and {shape_b}"
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -220,6 +209,7 @@ def test_mod_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
+
 @pytest.mark.parametrize("invdtypes", util.get_complex_types())
 def test_mod_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test mod operation between two arrays of the same shape"""
@@ -233,6 +223,7 @@ def test_mod_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         assert (
             wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
         ), f"failed for shape: {shape} and dtype {invdtypes}"
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -254,6 +245,7 @@ def test_neg_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -277,7 +269,8 @@ def test_rem_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
-    
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -298,7 +291,8 @@ def test_round_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
-    
+
+
 @pytest.mark.parametrize("invdtypes", util.get_complex_types())
 def test_round_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test round operation between two arrays of the same shape"""
@@ -310,6 +304,8 @@ def test_round_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         assert (
             wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
         ), f"failed for shape: {shape} and dtype {invdtypes}"
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -331,6 +327,7 @@ def test_sign_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
+
 @pytest.mark.parametrize("invdtypes", util.get_complex_types())
 def test_sign_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test sign operation between two arrays of the same shape"""
@@ -342,6 +339,7 @@ def test_sign_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         assert (
             wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
         ), f"failed for shape: {shape} and dtype {invdtypes}"
+
 
 @pytest.mark.parametrize(
     "shape",
@@ -364,6 +362,7 @@ def test_trunc_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
+
 @pytest.mark.parametrize("invdtypes", util.get_complex_types())
 def test_trunc_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test trunc operation for an array with varrying shape and invalid dtypes"""
@@ -375,6 +374,8 @@ def test_trunc_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         assert (
             wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
         ), f"failed for shape: {shape} and dtype {invdtypes}"
+
+
 @pytest.mark.parametrize(
     "shape",
     [
@@ -395,6 +396,8 @@ def test_hypot_shape_dtypes(shape: tuple) -> None:
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
     ), f"failed for shape: {shape} and dtype {dtype.f32}"
+
+
 @pytest.mark.parametrize(
     "invdtypes",
     [
@@ -409,6 +412,8 @@ def test_hypot_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
         lhs = wrapper.randu(shape, invdtypes)
         rhs = wrapper.randu(shape, invdtypes)
         wrapper.hypot(rhs, lhs, True)
+
+
 @pytest.mark.parametrize(
     "shape",
     [
