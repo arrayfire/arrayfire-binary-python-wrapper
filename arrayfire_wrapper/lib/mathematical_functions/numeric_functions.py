@@ -7,6 +7,10 @@ from arrayfire_wrapper.lib.create_and_modify_array.create_array import create_co
 from arrayfire_wrapper.lib.mathematical_functions.arithmetic_operations import sub
 
 
+import arrayfire_wrapper.dtypes as dtype
+import arrayfire_wrapper.lib as wrapper
+
+
 def abs_(arr: AFArray, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__arith__func__abs.htm#ga7e8b3c848e6cda3d1f3b0c8b2b4c3f8f
@@ -75,7 +79,7 @@ def mod(lhs: AFArray, rhs: AFArray, /) -> AFArray:
 
 
 def neg(arr: AFArray) -> AFArray:
-    return sub(create_constant_array(0, (1,), float32), arr)
+    return sub(create_constant_array(0, (1,), dtype.c_api_value_to_dtype(wrapper.get_type(arr))), arr)
 
 
 def rem(lhs: AFArray, rhs: AFArray, /) -> AFArray:
