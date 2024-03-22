@@ -26,6 +26,7 @@ def get_all_types() -> list:
     """Returns all types"""
     return [b8, s16, s32, s64, u8, u16, u32, u64, f16, f32, f64, c32, c64]
 
+
 def get_float_types() -> list:
     """Returns all types"""
     return [f16, f32, f64]
