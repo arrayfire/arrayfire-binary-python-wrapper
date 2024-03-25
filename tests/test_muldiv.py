@@ -2,10 +2,10 @@ import random
 
 import numpy as np
 import pytest
-from tests.utility_functions import check_type_supported, get_all_types
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
+from tests.utility_functions import check_type_supported, get_all_types
 
 
 @pytest.mark.parametrize(
