@@ -6,10 +6,7 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 
-# import arrayfire_wrapper.lib.mathematical_functions as ops
-
-from . import utility_functions as util
-
+from utility_functions import check_type_supported, get_all_types
 
 @pytest.mark.parametrize(
     "shape",
@@ -59,10 +56,10 @@ def test_multiply_negative_shapes() -> None:
         ), f"Failed for shapes {lhs_shape} and {rhs_shape}"
 
 
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_multiply_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test multiplication operation across all supported data types."""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
@@ -174,10 +171,10 @@ def test_divide_negative_shapes() -> None:
         ), f"Failed for shapes {lhs_shape} and {rhs_shape}"
 
 
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_divide_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test division operation across all supported data types."""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
