@@ -1,12 +1,10 @@
 import random
 
-# import numpy as np
 import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
-
-# from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
+from tests.utility_functions import check_type_supported, get_all_types
 
 
 @pytest.mark.parametrize(
@@ -41,39 +39,10 @@ def test_add_different_shapes() -> None:
         wrapper.add(lhs, rhs)
 
 
-dtype_map = {
-    "int16": dtype.s16,
-    "int32": dtype.s32,
-    "int64": dtype.s64,
-    "uint8": dtype.u8,
-    "uint16": dtype.u16,
-    "uint32": dtype.u32,
-    "uint64": dtype.u64,
-    "float16": dtype.f16,
-    "float32": dtype.f32,
-    # 'float64': dtype.f64,
-    # 'complex64': dtype.c64,
-    "complex32": dtype.c32,
-    "bool": dtype.b8,
-    "s16": dtype.s16,
-    "s32": dtype.s32,
-    "s64": dtype.s64,
-    "u8": dtype.u8,
-    "u16": dtype.u16,
-    "u32": dtype.u32,
-    "u64": dtype.u64,
-    "f16": dtype.f16,
-    "f32": dtype.f32,
-    # 'f64': dtype.f64,
-    "c32": dtype.c32,
-    # 'c64': dtype.c64,
-    "b8": dtype.b8,
-}
-
-
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_add_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test addition operation across all supported data types."""
+    check_type_supported(dtype_name)
     shape = (5, 5)  # Using a common shape for simplicity
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
@@ -143,9 +112,10 @@ def test_subtract_different_shapes() -> None:
         wrapper.sub(lhs, rhs)
 
 
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_subtract_supported_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test subtraction operation across all supported data types."""
+    check_type_supported(dtype_name)
     shape = (5, 5)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
