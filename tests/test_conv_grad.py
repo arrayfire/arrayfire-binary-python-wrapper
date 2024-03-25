@@ -3,9 +3,9 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 from arrayfire_wrapper.lib._constants import ConvGradient
+from tests.utility_functions import get_float_types
 
 
-# First parameterization for grad_types
 @pytest.mark.parametrize(
     "grad_type",
     [
@@ -15,15 +15,7 @@ from arrayfire_wrapper.lib._constants import ConvGradient
         3,  # ConvGradient.BIAS
     ],
 )
-# Second parameterization for dtypes
-@pytest.mark.parametrize(
-    "dtypes",
-    [
-        dtype.float16,  # Floating point 16-bit
-        dtype.float32,  # Floating point 32-bit
-        dtype.float64,  # Floating point 64-bit
-    ],
-)
+@pytest.mark.parametrize("dtypes", get_float_types())
 def test_convolve2_gradient_data(grad_type: int, dtypes: dtype.Dtype) -> None:
     """Test if convolve gradient returns the correct shape with varying data type and grad type."""
     incoming_gradient = wrapper.randu((8, 8), dtypes)
@@ -50,7 +42,6 @@ def test_convolve2_gradient_data(grad_type: int, dtypes: dtype.Dtype) -> None:
     assert wrapper.get_dims(result) == expected_shape, f"Failed for grad_type: {grad_type_enum}, dtype: {dtypes}"
 
 
-# Third parameterization for dtypes
 @pytest.mark.parametrize(
     "invdtypes",
     [

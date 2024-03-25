@@ -4,8 +4,8 @@ import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 import arrayfire_wrapper.lib.signal_processing.convolutions as convolutions
 from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
-
 from tests.utility_functions import check_type_supported, get_all_types, get_float_types
+
 
 # Parameterization for input shapes
 @pytest.mark.parametrize(
@@ -218,6 +218,7 @@ def test_convolve1_conv_domain(conv_domain: int) -> None:
     result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(conv_domain))
 
     assert wrapper.get_dims(result)[0] == input_size, f"Failed for conv_domain: {ConvDomain(conv_domain)}"
+
 
 @pytest.mark.parametrize("dtypes", get_all_types())
 def test_convolve1_valid(dtypes: dtype.Dtype) -> None:
