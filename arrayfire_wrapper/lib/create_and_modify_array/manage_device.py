@@ -429,7 +429,7 @@ def set_device(device_id: int, /) -> None:
     call_from_clib(set_device.__name__, device_id)
 
 
-def sync(device_id: int, /) -> None:
+def sync(device_id: int = -1, /) -> None:
     """
     Blocks until all operations on device are finished.
 
