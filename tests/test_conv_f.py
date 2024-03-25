@@ -5,6 +5,7 @@ import arrayfire_wrapper.lib as wrapper
 import arrayfire_wrapper.lib.signal_processing.convolutions as convolutions
 from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
 
+from tests.utility_functions import check_type_supported, get_all_types, get_float_types
 
 # Parameterization for input shapes
 @pytest.mark.parametrize(
@@ -17,15 +18,12 @@ from arrayfire_wrapper.lib._constants import ConvDomain, ConvMode
     ],
 )
 # Second parameterization for dtypes
-@pytest.mark.parametrize(
-    "dtypes",
-    [
-        dtype.float16,  # Floating point 16-bit
-        dtype.float32,  # Floating point 32-bit
-    ],
-)
+@pytest.mark.parametrize("dtypes", get_float_types())
 def test_convolve2_gradient_data(inputShape: tuple[int, int], dtypes: dtype.Dtype) -> None:
     """Test if convolve gradient returns the correct shape with varying data type and grad type."""
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
     original_signal = wrapper.randu(inputShape, dtypes)
     original_kernel = wrapper.randu((3, 3), dtypes)
     strides = (1, 1)
@@ -221,25 +219,20 @@ def test_convolve1_conv_domain(conv_domain: int) -> None:
 
     assert wrapper.get_dims(result)[0] == input_size, f"Failed for conv_domain: {ConvDomain(conv_domain)}"
 
-
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-    ],
-)
-def test_convolve1_valid(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_convolve1_valid(dtypes: dtype.Dtype) -> None:
     """Test convolve1 with valid dtypes."""
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
     input_size = 10
     filter_size = 3
-    signal = wrapper.randu((input_size, input_size), invdtypes)
-    filter = wrapper.randu((filter_size,), invdtypes)
+    signal = wrapper.randu((input_size, input_size), dtypes)
+    filter = wrapper.randu((filter_size,), dtypes)
 
     result = convolutions.convolve1(signal, filter, ConvMode(0), ConvDomain(0))
 
-    assert wrapper.get_dims(result)[0] == input_size, f"Failed for dtype: {invdtypes}"
+    assert wrapper.get_dims(result)[0] == input_size, f"Failed for dtype: {dtypes}"
 
 
 @pytest.mark.parametrize("input_size", [(8,), (12, 12), (10, 10, 10)])
@@ -283,23 +276,19 @@ def test_fft_convolve1_conv_mode(conv_mode: int) -> None:
     assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for conv_mode: {conv_mode}"
 
 
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-    ],
-)
-def test_fft_convolve1_valid(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_fft_convolve1_valid(dtypes: dtype.Dtype) -> None:
     """Test fft_convolve1 with valid dtypes."""
-    signal = wrapper.randu((10, 10), invdtypes)
-    filter = wrapper.randu((3,), invdtypes)
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
+    signal = wrapper.randu((10, 10), dtypes)
+    filter = wrapper.randu((3,), dtypes)
 
     result = convolutions.fft_convolve1(signal, filter, ConvMode(0))
 
     expected_output_size = wrapper.get_dims(signal)[0]
-    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {invdtypes}"
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {dtypes}"
 
 
 @pytest.mark.parametrize("input_size", [(8, 8), (12, 12, 12), (10, 10)])
@@ -367,23 +356,19 @@ def test_convolve2_conv_domain(conv_domain: int) -> None:
     ) == expected_output, f"Failed for conv_domain: {conv_domain}"
 
 
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-    ],
-)
-def test_convolve2_conv_valid_dtype(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_convolve2_conv_valid_dtype(dtypes: dtype.Dtype) -> None:
     """Test fft_convolve1 with valid dtypes."""
-    signal = wrapper.randu((10, 10), invdtypes)
-    filter = wrapper.randu((3, 3), invdtypes)
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
+    signal = wrapper.randu((10, 10), dtypes)
+    filter = wrapper.randu((3, 3), dtypes)
 
     result = convolutions.convolve2(signal, filter, ConvMode(0), ConvDomain(0))
 
     expected_output_size = wrapper.get_dims(signal)[0]
-    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {invdtypes}"
+    assert wrapper.get_dims(result)[0] == expected_output_size, f"Failed for dtype: {dtypes}"
 
 
 @pytest.mark.parametrize("input_size", [(8, 8), (12, 12, 12), (10, 10)])
@@ -435,26 +420,21 @@ def test_fftConvolve2_conv_mode(conv_mode: int) -> None:
     ) == expected_output, f"Failed for conv_mode: {conv_mode}"
 
 
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-        dtype.bool,
-    ],
-)
-def test_fftConvolve2_valid_dtype(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_fftConvolve2_valid_dtype(dtypes: dtype.Dtype) -> None:
     """Test fft_convolve1 with valid dtypes."""
-    signal = wrapper.randu((10, 10), invdtypes)
-    filter = wrapper.randu((3, 3), invdtypes)
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
+    signal = wrapper.randu((10, 10), dtypes)
+    filter = wrapper.randu((3, 3), dtypes)
     result = convolutions.fft_convolve2(signal, filter, ConvMode(0))
 
     expected_output = (wrapper.get_dims(signal)[0], wrapper.get_dims(signal)[1])
     assert (
         wrapper.get_dims(result)[0],
         wrapper.get_dims(result)[1],
-    ) == expected_output, f"Failed for dtype: {invdtypes}"
+    ) == expected_output, f"Failed for dtype: {dtypes}"
 
 
 @pytest.mark.parametrize("input_size", [(8, 8), (12, 12, 12), (10, 10)])
@@ -505,20 +485,15 @@ def test_convolve2_sep_row_vector(row_vector: tuple[int, int]) -> None:
     ) == expected_output, f"Failed for column vector: {row_vector}"
 
 
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-        dtype.bool,
-    ],
-)
-def test_convolve2_valid_dtypes(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_convolve2_valid_dtypes(dtypes: dtype.Dtype) -> None:
     """Test convolve2_sep with varying invalid data types."""
-    signal = wrapper.randu((8, 8), invdtypes)
-    col_filter = wrapper.randu((3, 1), invdtypes)
-    row_filter = wrapper.randu((3, 1), invdtypes)
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
+    signal = wrapper.randu((8, 8), dtypes)
+    col_filter = wrapper.randu((3, 1), dtypes)
+    row_filter = wrapper.randu((3, 1), dtypes)
 
     result = convolutions.convolve2_sep(col_filter, row_filter, signal, ConvMode(0))
 
@@ -526,7 +501,7 @@ def test_convolve2_valid_dtypes(invdtypes: dtype.Dtype) -> None:
     assert (
         wrapper.get_dims(signal)[0],
         wrapper.get_dims(signal)[1],
-    ) == expected_output, f"Failed for data type: {invdtypes}"
+    ) == expected_output, f"Failed for data type: {dtypes}"
 
 
 @pytest.mark.parametrize("input_size", [(8, 8, 8), (12, 12, 12), (10, 10, 10, 10)])
@@ -591,19 +566,14 @@ def test_convolve3_conv_mode(conv_mode: int) -> None:
     ) == expected_output, f"Failed for conv_mode: {conv_mode}"
 
 
-@pytest.mark.parametrize(
-    "invdtypes",
-    [
-        dtype.int32,  # Integer 32-bit
-        dtype.uint32,  # Unsigned Integer 32-bit
-        dtype.complex32,  # Complex number with float 32-bit real and imaginary
-        dtype.bool,
-    ],
-)
-def test_convolve3_valid_dtype(invdtypes: dtype.Dtype) -> None:
+@pytest.mark.parametrize("dtypes", get_all_types())
+def test_convolve3_valid_dtype(dtypes: dtype.Dtype) -> None:
     """Test convolve3 with valid data types."""
-    signal = wrapper.randu((10, 10, 10), invdtypes)
-    filter = wrapper.randu((3, 3, 3), invdtypes)
+    check_type_supported(dtypes)
+    if dtypes == dtype.f16:
+        pytest.skip()
+    signal = wrapper.randu((10, 10, 10), dtypes)
+    filter = wrapper.randu((3, 3, 3), dtypes)
 
     result = convolutions.convolve3(signal, filter, ConvMode(0), ConvDomain(0))
 
@@ -612,7 +582,7 @@ def test_convolve3_valid_dtype(invdtypes: dtype.Dtype) -> None:
         wrapper.get_dims(signal)[0],
         wrapper.get_dims(signal)[1],
         wrapper.get_dims(signal)[2],
-    ) == expected_output, f"Failed for dtype: {invdtypes}"
+    ) == expected_output, f"Failed for dtype: {dtypes}"
 
 
 @pytest.mark.parametrize("conv_domain", [0, 1, 2])
@@ -683,16 +653,12 @@ def test_fft_convolve3_conv_mode(conv_mode: int) -> None:
     ) == expected_output, f"Failed for conv_mode: {conv_mode}"
 
 
-@pytest.mark.parametrize(
-    "valid_dtype",
-    [
-        dtype.f32,  # Floating-point 32-bit
-        dtype.c32,  # Complex number with float 32-bit real and imaginary
-        dtype.bool,  # Typically not supported for FFT convolutions
-    ],
-)
+@pytest.mark.parametrize("valid_dtype", get_all_types())
 def test_fft_convolve3_valid_dtype(valid_dtype: dtype.Dtype) -> None:
     """Test fft_convolve3 with valid data types."""
+    check_type_supported(valid_dtype)
+    if valid_dtype == dtype.f16:
+        pytest.skip()
     signal = wrapper.randu((10, 10, 10), valid_dtype)
     filter = wrapper.randu((3, 3, 3), valid_dtype)
 
