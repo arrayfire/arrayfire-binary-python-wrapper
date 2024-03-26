@@ -3,7 +3,8 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
-from tests.utility_functions import check_type_supported, get_all_types, get_float_types, get_real_types
+from tests.utility_functions import check_type_supported, get_real_types
+
 
 @pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitshiftl_dtypes(dtype_name: dtype.Dtype) -> None:
