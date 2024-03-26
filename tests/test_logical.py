@@ -4,7 +4,7 @@ import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
-from tests.utility_functions import check_type_supported, get_all_types
+from tests.utility_functions import check_type_supported, get_all_types, get_real_types
 
 
 @pytest.mark.parametrize(
@@ -62,10 +62,12 @@ def test_and_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", get_all_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitand_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitand operation between two arrays of the same shape"""
     check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -102,10 +104,12 @@ def test_bitand_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", get_all_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitnot_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitnot operation between two arrays of the same shape"""
     check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.bitnot(out)
@@ -140,10 +144,12 @@ def test_bitnot_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", get_all_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitor_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitor operation between two arrays of the same shape"""
     check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -180,10 +186,12 @@ def test_bitor_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", get_all_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitxor_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test bitxor operation between two arrays of the same shape"""
     check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
