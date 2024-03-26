@@ -3,40 +3,14 @@ import pytest
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
 from arrayfire_wrapper.lib.create_and_modify_array.helper_functions import array_to_string
+from tests.utility_functions import check_type_supported, get_all_types, get_float_types, get_real_types
 
-dtype_map = {
-    "int16": dtype.s16,
-    "int32": dtype.s32,
-    "int64": dtype.s64,
-    "uint8": dtype.u8,
-    "uint16": dtype.u16,
-    "uint32": dtype.u32,
-    "uint64": dtype.u64,
-    # 'float16': dtype.f16,
-    # 'float32': dtype.f32,
-    # 'float64': dtype.f64,
-    # 'complex64': dtype.c64,
-    # 'complex32': dtype.c32,
-    "bool": dtype.b8,
-    "s16": dtype.s16,
-    "s32": dtype.s32,
-    "s64": dtype.s64,
-    "u8": dtype.u8,
-    "u16": dtype.u16,
-    "u32": dtype.u32,
-    "u64": dtype.u64,
-    # 'f16': dtype.f16,
-    # 'f32': dtype.f32,
-    # 'f64': dtype.f64,
-    # 'c32': dtype.c32,
-    # 'c64': dtype.c64,
-    "b8": dtype.b8,
-}
-
-
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitshiftl_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test bit shift operation across all supported data types."""
+    check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     shape = (5, 5)
     values = wrapper.randu(shape, dtype_name)
     bits_to_shift = wrapper.constant(1, shape, dtype_name)
@@ -49,7 +23,7 @@ def test_bitshiftl_dtypes(dtype_name: dtype.Dtype) -> None:
 @pytest.mark.parametrize(
     "invdtypes",
     [
-        dtype.c64,
+        dtype.c32,
         dtype.f64,
     ],
 )
@@ -139,9 +113,12 @@ def test_bitshift_right_varying_shift_amount(shift_amount: int) -> None:
     assert (wrapper.get_dims(result)[0], wrapper.get_dims(result)[1]) == shape
 
 
-@pytest.mark.parametrize("dtype_name", dtype_map.values())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_bitshiftr_dtypes(dtype_name: dtype.Dtype) -> None:
     """Test bit shift operation across all supported data types."""
+    check_type_supported(dtype_name)
+    if dtype_name == dtype.f16 or dtype_name == dtype.f32:
+        pytest.skip()
     shape = (5, 5)
     values = wrapper.randu(shape, dtype_name)
     bits_to_shift = wrapper.constant(1, shape, dtype_name)
@@ -154,7 +131,7 @@ def test_bitshiftr_dtypes(dtype_name: dtype.Dtype) -> None:
 @pytest.mark.parametrize(
     "invdtypes",
     [
-        dtype.c64,
+        dtype.c32,
         dtype.f64,
     ],
 )
