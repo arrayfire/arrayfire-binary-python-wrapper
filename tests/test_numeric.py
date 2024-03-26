@@ -5,8 +5,7 @@ import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
-
-from . import utility_functions as util
+from tests.utility_functions import check_type_supported, get_all_types, get_real_types, get_complex_types
 
 
 @pytest.mark.parametrize(
@@ -19,10 +18,10 @@ from . import utility_functions as util
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_abs_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test absolute value operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.abs_(out)
@@ -41,10 +40,10 @@ def test_abs_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_arg_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test arg operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.arg(out)
@@ -63,10 +62,10 @@ def test_arg_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_ceil_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test ceil operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.ceil(out)
@@ -104,10 +103,10 @@ def test_ceil_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_maxof_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test maxof operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -150,10 +149,10 @@ def test_maxof_varying_dimensionality(shape_a: tuple, shape_b: tuple) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_minof_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test minof operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -196,10 +195,10 @@ def test_minof_varying_dimensionality(shape_a: tuple, shape_b: tuple) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_mod_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test mod operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -210,7 +209,7 @@ def test_mod_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
 
-@pytest.mark.parametrize("invdtypes", util.get_complex_types())
+@pytest.mark.parametrize("invdtypes", get_complex_types())
 def test_mod_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test mod operation between two arrays of the same shape"""
     with pytest.raises(RuntimeError):
@@ -235,10 +234,10 @@ def test_mod_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_all_types())
+@pytest.mark.parametrize("dtype_name", get_all_types())
 def test_neg_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test arg operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.neg(out)
@@ -257,10 +256,10 @@ def test_neg_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_rem_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test remainder operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     lhs = wrapper.randu(shape, dtype_name)
     rhs = wrapper.randu(shape, dtype_name)
 
@@ -281,10 +280,10 @@ def test_rem_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_round_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test round operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.round_(out)
@@ -293,7 +292,7 @@ def test_round_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
 
-@pytest.mark.parametrize("invdtypes", util.get_complex_types())
+@pytest.mark.parametrize("invdtypes", get_complex_types())
 def test_round_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test round operation between two arrays of the same shape"""
     with pytest.raises(RuntimeError):
@@ -316,10 +315,10 @@ def test_round_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_sign_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test round operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.sign(out)
@@ -328,7 +327,7 @@ def test_sign_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
 
-@pytest.mark.parametrize("invdtypes", util.get_complex_types())
+@pytest.mark.parametrize("invdtypes", get_complex_types())
 def test_sign_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test sign operation between two arrays of the same shape"""
     with pytest.raises(RuntimeError):
@@ -351,10 +350,10 @@ def test_sign_shapes_invalid(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_trunc_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test truncating operation for an array with varying shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     out = wrapper.randu(shape, dtype_name)
 
     result = wrapper.trunc(out)
@@ -363,7 +362,7 @@ def test_trunc_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     ), f"failed for shape: {shape} and dtype {dtype_name}"
 
 
-@pytest.mark.parametrize("invdtypes", util.get_complex_types())
+@pytest.mark.parametrize("invdtypes", get_complex_types())
 def test_trunc_shapes_invalid(invdtypes: dtype.Dtype) -> None:
     """Test trunc operation for an array with varrying shape and invalid dtypes"""
     with pytest.raises(RuntimeError):
@@ -424,14 +423,13 @@ def test_hypot_unsupported_dtypes(invdtypes: dtype.Dtype) -> None:
         (random.randint(1, 10), random.randint(1, 10), random.randint(1, 10), random.randint(1, 10)),
     ],
 )
-@pytest.mark.parametrize("dtype_name", util.get_real_types())
+@pytest.mark.parametrize("dtype_name", get_real_types())
 def test_clamp_shape_dtypes(shape: tuple, dtype_name: dtype.Dtype) -> None:
     """Test clamp operation between two arrays of the same shape"""
-    util.check_type_supported(dtype_name)
+    check_type_supported(dtype_name)
     og = wrapper.randu(shape, dtype_name)
     low = wrapper.randu(shape, dtype_name)
     high = wrapper.randu(shape, dtype_name)
-    # talked to stefan about this, testing broadcasting is unnecessary
     result = wrapper.clamp(og, low, high, False)
     assert (
         wrapper.get_dims(result)[0 : len(shape)] == shape  # noqa
