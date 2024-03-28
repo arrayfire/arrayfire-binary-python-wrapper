@@ -144,9 +144,7 @@ def max_ragged(arr: AFArray, ragged_len: AFArray, dim: int, /) -> tuple[AFArray,
     """
     out_values = AFArray.create_null_pointer()
     out_idx = AFArray.create_null_pointer()
-    call_from_clib(
-        max_ragged.__name__, ctypes.pointer(out_values), ctypes.pointer(out_idx), arr, ragged_len, ctypes.c_int(dim)
-    )
+    call_from_clib(max_ragged.__name__, ctypes.pointer(out_values), ctypes.pointer(out_idx), arr, ragged_len, dim)
     return (out_values, out_idx)
 
 
@@ -156,9 +154,7 @@ def max_by_key(keys: AFArray, values: AFArray, dim: int, /) -> tuple[AFArray, AF
     """
     out_keys = AFArray.create_null_pointer()
     out_values = AFArray.create_null_pointer()
-    call_from_clib(
-        max_by_key.__name__, ctypes.pointer(out_keys), ctypes.pointer(out_values), keys, values, ctypes.c_int(dim)
-    )
+    call_from_clib(max_by_key.__name__, ctypes.pointer(out_keys), ctypes.pointer(out_values), keys, values, dim)
     return (out_keys, out_values)
 
 
