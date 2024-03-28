@@ -78,25 +78,31 @@ def replace_scalar(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> None
     call_from_clib(replace.__name__, lhs, cond_arr, ctypes.c_double(rhs))
 
 
-def select(lhs: AFArray, cond_arr: AFArray, rhs: AFArray, /) -> None:
+def select(lhs: AFArray, cond_arr: AFArray, rhs: AFArray, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
     """
-    call_from_clib(select.__name__, cond_arr, lhs, rhs)
+    out = AFArray.create_null_pointer()
+    call_from_clib(select.__name__, ctypes.pointer(out), cond_arr, lhs, rhs)
+    return out
 
 
-def select_scalar_l(lhs: int | float, cond_arr: AFArray, rhs: AFArray, /) -> None:
+def select_scalar_l(lhs: int | float, cond_arr: AFArray, rhs: AFArray, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
     """
-    call_from_clib(select_scalar_l.__name__, cond_arr, ctypes.c_double(lhs), rhs)
+    out = AFArray.create_null_pointer()
+    call_from_clib(select_scalar_l.__name__, ctypes.pointer(out), cond_arr, ctypes.c_double(lhs), rhs)
+    return out
 
 
-def select_scalar_r(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> None:
+def select_scalar_r(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
     """
-    call_from_clib(select_scalar_l.__name__, cond_arr, lhs, ctypes.c_double(rhs))
+    out = AFArray.create_null_pointer()
+    call_from_clib(select_scalar_l.__name__, ctypes.pointer(out), cond_arr, lhs, ctypes.c_double(rhs))
+    return out
 
 
 def shift(arr: AFArray, /, d0: int, d1: int = 0, d2: int = 0, d3: int = 0) -> AFArray:
