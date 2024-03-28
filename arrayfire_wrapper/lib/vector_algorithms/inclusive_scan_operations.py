@@ -28,7 +28,7 @@ def scan_by_key(key: AFArray, arr: AFArray, dim: int, op: BinaryOperator, inclus
     source: https://arrayfire.org/docs/group__scan__func__scanbykey.htm#gaaae150e0f197782782f45340d137b027
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(scan.__name__, ctypes.pointer(out), key, arr, dim, op.value, inclusive_scan)
+    call_from_clib(scan_by_key.__name__, ctypes.pointer(out), key, arr, dim, op.value, inclusive_scan)
     return out
 
 
