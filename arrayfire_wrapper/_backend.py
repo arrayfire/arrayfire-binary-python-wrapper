@@ -1,4 +1,4 @@
-__all__ = ["BackendType"]
+__all__ = ["BackendType", "get_backend", "set_backend"]
 
 import ctypes
 import enum
