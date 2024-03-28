@@ -17,9 +17,9 @@ def pad(arr: AFArray, begin_shape: tuple[int, ...], end_shape: tuple[int, ...], 
         ctypes.pointer(out),
         arr,
         4,
-        begin_c_shape.c_array,
+        ctypes.pointer(begin_c_shape.c_array),
         4,
-        end_c_shape.c_array,
+        ctypes.pointer(end_c_shape.c_array),
         border_type.value,
     )
     return out
