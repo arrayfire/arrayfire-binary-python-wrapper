@@ -11,6 +11,8 @@ def alloc_host(num_bytes: int, /) -> int:
 
     Allocate a buffer on the host with specified number of bytes.
     """
+    # TODO
+    # Avoid using AFArray and use ctypes.c_void_p to avoid misunderstanding 'coz its not actually an array
     out = AFArray.create_null_pointer()
     call_from_clib(alloc_host.__name__, ctypes.pointer(out), CDimT(num_bytes))
     return out.value  # type: ignore[return-value]

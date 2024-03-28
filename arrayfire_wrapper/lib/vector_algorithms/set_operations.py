@@ -27,5 +27,5 @@ def set_unique(arr: AFArray, is_sorted: bool, /) -> AFArray:
     source: https://arrayfire.org/docs/group__set__func__unique.htm#ga6afa1de48cbbc4b2df530c2530087943
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(set_intersect.__name__, ctypes.pointer(out), ctypes.c_bool(is_sorted))
+    call_from_clib(set_unique.__name__, ctypes.pointer(out), arr, ctypes.c_bool(is_sorted))
     return out
