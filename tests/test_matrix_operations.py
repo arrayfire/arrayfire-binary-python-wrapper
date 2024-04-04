@@ -9,7 +9,6 @@ from arrayfire_wrapper.dtypes import Dtype, b8, c32, c64, f16, f32, f64, s16, s3
 from .utility_functions import check_type_supported
 
 
-# det tests
 @pytest.mark.parametrize(
     "shape",
     [(1, 1), (10, 10), (100, 100), (1000, 1000), (10000, 10000)],
@@ -68,7 +67,6 @@ def test_det_valid_dtype(dtype: Dtype) -> None:
     assert isinstance(determinant, complex)
 
 
-# inverse tests
 @pytest.mark.parametrize(
     "shape",
     [(1, 1), (10, 10), (100, 100), (1000, 1000), (10000, 10000)],
@@ -125,7 +123,6 @@ def test_inverse_valid_dtype(dtype: Dtype) -> None:
     wrapper.inverse(arr, wrapper.MatProp(0))
 
 
-# norm tests
 @pytest.mark.parametrize(
     "shape",
     [(1, 1), (10, 10), (100, 100), (1000, 1000), (10000, 10000)],
