@@ -296,8 +296,10 @@ class Backend:
         return None
 
     @property
-    def backend_type(self) -> BackendType | None:
-        return self._backend_type
+    def backend_type(self) -> BackendType:
+        if self._backend_type:
+            return self._backend_type
+        raise RuntimeError("No valid _backend_type")
 
     @property
     def clib(self) -> ctypes.CDLL:
