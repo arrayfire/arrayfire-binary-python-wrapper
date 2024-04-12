@@ -11,8 +11,6 @@ from enum import Enum
 from pathlib import Path
 from typing import Iterator
 
-from arrayfire_wrapper.defines import AFArray
-
 from .version import ARRAYFIRE_VER_MAJOR
 
 VERBOSE_LOADS = os.environ.get("AF_VERBOSE_LOADS", "") == "1"
@@ -37,7 +35,7 @@ class _SupportedPlatforms(Enum):
 class _BackendPathConfig:
     lib_prefix: str
     lib_postfix: str
-    af_path: Path
+    af_path: Path | None
     af_is_user_path: bool
     cuda_found: bool
 
@@ -175,7 +173,7 @@ class BackendType(enum.Enum):  # TODO change name - avoid using _backend_type - 
 
 
 class Backend:
-    _backend_type: BackendType
+    _backend_type: BackendType | None
     _clibs: dict[BackendType, ctypes.CDLL]
 
     def __init__(self) -> None:
@@ -297,51 +295,15 @@ class Backend:
                 return f.name
         return None
 
-    # unified backend functions
-    def get_active_backend(self) -> str:
-        if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import get_active_backend as unified_get_active_backend
-
-            return unified_get_active_backend()
-        raise RuntimeError("Using unified function on non-unified backend")
-
-    def get_available_backends(self) -> list[int]:
-        if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import (
-                get_available_backends as unified_get_available_backends,
-            )
-
-            return unified_get_available_backends()
-        raise RuntimeError("Using unified function on non-unified backend")
-
-    def get_backend_count(self) -> int:
-        if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import get_backend_count as unified_get_backend_count
-
-            return unified_get_backend_count()
-        raise RuntimeError("Using unified function on non-unified backend")
-
-    def get_backend_id(self, arr: AFArray, /) -> int:
-        if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import get_backend_id as unified_get_backend_id
-
-            return unified_get_backend_id(arr)
-        raise RuntimeError("Using unified function on non-unified backend")
-
-    def get_device_id(self, arr: AFArray, /) -> int:
-        if self._backend_type == BackendType.unified:
-            from arrayfire_wrapper.lib.unified_api_functions import get_device_id as unified_get_device_id
-
-            return unified_get_device_id(arr)
-        raise RuntimeError("Using unified function on non-unified backend")
-
     @property
-    def backend_type(self) -> BackendType:
+    def backend_type(self) -> BackendType | None:
         return self._backend_type
 
     @property
     def clib(self) -> ctypes.CDLL:
-        return self._clibs[self._backend_type]
+        if self._backend_type:
+            return self._clibs[self._backend_type]
+        raise RuntimeError("No valid _backend_type")
 
 
 # Initialize the backend
