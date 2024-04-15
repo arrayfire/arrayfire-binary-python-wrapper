@@ -5,7 +5,7 @@ import pytest
 
 import arrayfire_wrapper.dtypes as dtype
 import arrayfire_wrapper.lib as wrapper
-from tests.utility_functions import check_type_supported, get_all_types, get_real_types, get_complex_types
+from tests.utility_functions import check_type_supported, get_all_types, get_complex_types, get_real_types
 
 
 @pytest.mark.parametrize(

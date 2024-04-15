@@ -1,14 +1,11 @@
 import ctypes
 
+import arrayfire_wrapper.dtypes as dtype
+import arrayfire_wrapper.lib as wrapper
 from arrayfire_wrapper.defines import AFArray
-from arrayfire_wrapper.dtypes import float32
 from arrayfire_wrapper.lib._utility import binary_op, call_from_clib, unary_op
 from arrayfire_wrapper.lib.create_and_modify_array.create_array import create_constant_array
 from arrayfire_wrapper.lib.mathematical_functions.arithmetic_operations import sub
-
-
-import arrayfire_wrapper.dtypes as dtype
-import arrayfire_wrapper.lib as wrapper
 
 
 def abs_(arr: AFArray, /) -> AFArray:
