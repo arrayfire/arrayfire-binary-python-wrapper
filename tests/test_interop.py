@@ -15,7 +15,7 @@ from arrayfire_wrapper.lib.interface_functions.interop import (  # noqa: E501
 # flake8: noqa: E203
 
 
-def test_numpy_to_af_array_type():
+def test_numpy_to_af_array_type() -> None:
     arr = np.array([1, 2, 3, 4])
 
     af_array = numpy_to_af_array(arr)
@@ -23,7 +23,7 @@ def test_numpy_to_af_array_type():
     assert isinstance(af_array, AFArray)
 
 
-def test_af_to_numpy_array_type():
+def test_af_to_numpy_array_type() -> None:
     arr = wrapper.constant(2, (5, 5), int16)
 
     np_arr = af_to_numpy_array(arr)
@@ -31,7 +31,7 @@ def test_af_to_numpy_array_type():
     assert isinstance(np_arr, np.ndarray)
 
 
-def test_pyopencl_to_af_array_type():
+def test_pyopencl_to_af_array_type() -> None:
     ctx = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
 
@@ -44,7 +44,7 @@ def test_pyopencl_to_af_array_type():
     assert isinstance(af_array, AFArray)
 
 
-def test_numpy_to_af_array_shape():
+def test_numpy_to_af_array_shape() -> None:
     np_arr = np.array([1, 2, 3, 4])
 
     af_arr = numpy_to_af_array(np_arr)
@@ -52,14 +52,14 @@ def test_numpy_to_af_array_shape():
     assert get_dims(af_arr)[0 : get_numdims(af_arr)] == np_arr.shape[0 : get_numdims(af_arr)]
 
 
-def test_af_to_numpy_array_shape():
+def test_af_to_numpy_array_shape() -> None:
     af_arr = wrapper.constant(2, (5, 5), int16)
 
     np_arr = af_to_numpy_array(af_arr)
     assert np_arr.shape[0 : get_numdims(af_arr)] == get_dims(af_arr)[0 : get_numdims(af_arr)]
 
 
-def test_pyopencl_to_af_array_shape():
+def test_pyopencl_to_af_array_shape() -> None:
     ctx = cl.create_some_context()
     queue = cl.CommandQueue(ctx)
 
