@@ -1,12 +1,15 @@
+import ctypes
+
 import arrayfire_wrapper.lib.interface_functions.opencl as cl
 
 
 def test_get_context_type() -> None:
-    assert isinstance(cl.get_context(), int)
+    ptr = cl.get_context()
+    assert isinstance(ptr, ctypes.c_void_p)
 
 
 def test_get_queue_type() -> None:
-    assert isinstance(cl.get_queue(), int)
+    assert isinstance(cl.get_queue(), ctypes.c_void_p)
 
 
 def test_get_device_id() -> None:

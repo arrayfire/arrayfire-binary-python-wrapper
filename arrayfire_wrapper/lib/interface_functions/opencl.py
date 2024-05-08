@@ -21,22 +21,22 @@ class PlatformType(Enum):
     UNKNOWN = -1
 
 
-def get_context(retain: bool = False) -> int:
+def get_context(retain: bool = False) -> ctypes.c_void_p:
     """
     source: https://arrayfire.org/docs/group__opencl__mat.htm#gad42de383f405b3e38d6eb669c0cbe2e3
     """
     out = ctypes.c_void_p()
     call_from_clib(get_context.__name__, ctypes.pointer(out), retain, clib_prefix="afcl")
-    return out.value  # type: ignore[return-value]
+    return out  # type: ignore[return-value]
 
 
-def get_queue(retain: bool = False) -> int:
+def get_queue(retain: bool = False) -> ctypes.c_void_p:
     """
     source: https://arrayfire.org/docs/group__opencl__mat.htm#gab1701ef4f2b68429eb31c1e21c88d0bc
     """
     out = ctypes.c_void_p()
     call_from_clib(get_queue.__name__, ctypes.pointer(out), retain, clib_prefix="afcl")
-    return out.value  # type: ignore[return-value]
+    return out  # type: ignore[return-value]
 
 
 def get_device_id() -> int:
@@ -45,7 +45,7 @@ def get_device_id() -> int:
     """
     out = ctypes.c_void_p()
     call_from_clib(get_device_id.__name__, ctypes.pointer(out), clib_prefix="afcl")
-    return out.value  # type: ignore[return-value]
+    return out  # type: ignore[return-value]
 
 
 def set_device_id(idx: int) -> None:
