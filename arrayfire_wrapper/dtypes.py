@@ -108,7 +108,7 @@ def c_api_value_to_dtype(value: int) -> Dtype:
 
 def str_to_dtype(value: str) -> Dtype:
     for dtype in supported_dtypes:
-        if value == dtype.typecode or value == dtype.typename or value == dtype.name:
+        if value == dtype.typecode or value == dtype.typename or value == dtype.name or value == dtype.c_type:
             return dtype
 
     raise TypeError("There is no supported dtype that matches passed dtype typecode.")
