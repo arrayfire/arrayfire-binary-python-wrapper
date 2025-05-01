@@ -78,6 +78,24 @@ build-dir = "build"
 py-api = "py3"
 packages = ["arrayfire_wrapper"]
 expand-macos-universal-tags = true
+exclude = [
+"libaf.so",
+"libaf.so.3",
+"libafcpu.so",
+"libafcpu.so.3",
+"libafopencl.so",
+"libafopencl.so.3",
+"libafcuda.so",
+"libafcuda.so.3",
+"libafoneapi.so",
+"libafoneapi.so.3",
+"libforge.so",
+"libforge.so.1",
+"libmkl_core.so",
+"libmkl_rt.so",
+"libmkl_intel_thread.so",
+"libmkl_intel_lp64.so",
+]
 
 [tool.scikit-build.cmake]
 build-type = "Release" # not working for whatever reason, duplicated below TODO: fix
