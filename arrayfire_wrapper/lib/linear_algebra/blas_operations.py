@@ -5,7 +5,7 @@ from arrayfire_wrapper.defines import AFArray
 from arrayfire_wrapper.dtypes import c_api_value_to_dtype, complex32, complex64, float32, float64
 from arrayfire_wrapper.lib._constants import MatProp
 from arrayfire_wrapper.lib._utility import call_from_clib
-from arrayfire_wrapper.lib.create_and_modify_array.manage_array import get_type
+from arrayfire_wrapper.lib.create_and_modify_array.manage_array import get_type, copy_array
 
 
 def dot(lhs: AFArray, rhs: AFArray, lhs_opts: MatProp, rhs_opts: MatProp, /) -> AFArray:
@@ -29,11 +29,17 @@ def dot_all(lhs: AFArray, rhs: AFArray, lhs_opts: MatProp, rhs_opts: MatProp, /)
     return real.value if imag.value == 0 else real.value + imag.value * 1j
 
 
-def gemm(lhs: AFArray, rhs: AFArray, lhs_opts: MatProp, rhs_opts: MatProp, alpha: Any, beta: Any, /) -> AFArray:
+def gemm(lhs: AFArray, rhs: AFArray, lhs_opts: MatProp, rhs_opts: MatProp, alpha: Any, beta: Any, accum: AFArray | None, /) -> AFArray:
     """
     source: https://arrayfire.org/docs/group__blas__func__matmul.htm#ga0463ae584163128718237b02faf5caf7
     """
-    out = AFArray.create_null_pointer()
+    out = None
+    if not accum is None:
+        out = copy_array(accum)
+    else:
+        beta = 0.0
+        out = AFArray.create_null_pointer()
+
     lhs_dtype = c_api_value_to_dtype(get_type(lhs))
 
     type_mapping = {
