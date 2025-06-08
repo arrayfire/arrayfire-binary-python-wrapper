@@ -281,7 +281,7 @@ def test_gemm_correct_shape_2d(shape_pairs: list) -> None:
     y = wrapper.randu(shape_pairs[1], dtype)
 
     result_shape = (shape_pairs[0][0], shape_pairs[1][1])
-    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
     assert wrapper.get_dims(result)[0:2] == result_shape
 
@@ -302,7 +302,7 @@ def test_gemm_correct_shape_3d(shape_pairs: list) -> None:
     y = wrapper.randu(shape_pairs[1], dtype)
     result_shape = (shape_pairs[0][0], shape_pairs[1][1], shape_pairs[0][2])
 
-    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
     assert wrapper.get_dims(result)[0:3] == result_shape
 
 
@@ -322,7 +322,7 @@ def test_gemm_correct_shape_4d(shape_pairs: list) -> None:
     y = wrapper.randu(shape_pairs[1], dtype)
     result_shape = (shape_pairs[0][0], shape_pairs[1][1], shape_pairs[0][2], shape_pairs[0][3])
 
-    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
     assert wrapper.get_dims(result)[0:4] == result_shape
 
 
@@ -339,7 +339,7 @@ def test_gemm_correct_dtype(dtype: dtypes.Dtype) -> None:
     x = wrapper.randu(shape, dtype)
     y = wrapper.randu(shape, dtype)
 
-    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+    result = wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
     assert dtypes.c_api_value_to_dtype(wrapper.get_type(result)) == dtype
 
@@ -361,7 +361,7 @@ def test_gemm_invalid_pair(shape_pairs: list) -> None:
         x = wrapper.randu(shape_pairs[0], dtype)
         y = wrapper.randu(shape_pairs[1], dtype)
 
-        wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+        wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
 
 def test_gemm_empty_shape() -> None:
@@ -371,7 +371,7 @@ def test_gemm_empty_shape() -> None:
         dtype = dtypes.f32
 
         x = wrapper.randu(empty_shape, dtype)
-        wrapper.gemm(x, x, MatProp.NONE, MatProp.NONE, 1, 1)
+        wrapper.gemm(x, x, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
 
 @pytest.mark.parametrize(
@@ -390,7 +390,7 @@ def test_gemm_invalid_dtype(dtype_index: int) -> None:
         x = wrapper.randu(shape, dtype)
         y = wrapper.randu(shape, dtype)
 
-        wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1)
+        wrapper.gemm(x, y, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
 
 def test_gemm_empty_matrix() -> None:
@@ -400,7 +400,7 @@ def test_gemm_empty_matrix() -> None:
         dtype = dtypes.f32
 
         x = wrapper.randu(empty_shape, dtype)
-        wrapper.gemm(x, x, MatProp.NONE, MatProp.NONE, 1, 1)
+        wrapper.gemm(x, x, MatProp.NONE, MatProp.NONE, 1, 1, None)
 
 
 # matmul tests
