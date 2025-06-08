@@ -19,7 +19,7 @@ def all_true_all(arr: AFArray, /) -> complex:
     """
     real = ctypes.c_double(0)
     imag = ctypes.c_double(0)
-    call_from_clib(all_true.__name__, ctypes.pointer(real), ctypes.pointer(imag), arr)
+    call_from_clib(all_true_all.__name__, ctypes.pointer(real), ctypes.pointer(imag), arr)
     return real.value if imag.value == 0 else real.value + imag.value * 1j
 
 
@@ -40,7 +40,7 @@ def any_true(arr: AFArray, dim: int, /) -> AFArray:
     source: https://arrayfire.org/docs/group__reduce__func__any__true.htm#ga7c275cda2cfc8eb0bd20ea86472ca0d5
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(all_true.__name__, ctypes.pointer(out), arr, dim)
+    call_from_clib(any_true.__name__, ctypes.pointer(out), arr, dim)
     return out
 
 
@@ -50,7 +50,7 @@ def any_true_all(arr: AFArray, /) -> int | float | bool | complex:
     """
     real = ctypes.c_double(0)
     imag = ctypes.c_double(0)
-    call_from_clib(all_true.__name__, ctypes.pointer(real), ctypes.pointer(imag), arr)
+    call_from_clib(any_true_all.__name__, ctypes.pointer(real), ctypes.pointer(imag), arr)
     return real.value if imag.value == 0 else real.value + imag.value * 1j
 
 
