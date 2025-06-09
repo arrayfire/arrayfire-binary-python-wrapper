@@ -101,7 +101,7 @@ def select_scalar_r(lhs: AFArray, cond_arr: AFArray, rhs: int | float, /) -> AFA
     source: https://arrayfire.org/docs/group__data__func__select.htm#gac4af16e31ddd5ddcf09b670f676fd093
     """
     out = AFArray.create_null_pointer()
-    call_from_clib(select_scalar_l.__name__, ctypes.pointer(out), cond_arr, lhs, ctypes.c_double(rhs))
+    call_from_clib(select_scalar_r.__name__, ctypes.pointer(out), cond_arr, lhs, ctypes.c_double(rhs))
     return out
 
 
