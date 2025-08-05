@@ -1,15 +1,26 @@
-# arrayfire-binary-python-wrapper
+# arrayfire-binary-python-wrapper (WIP)
+
+<p align="center"><a href="http://arrayfire.com/"><img src="http://arrayfire.com/logos/arrayfire_logo_whitebkgnd.png" width="800"></a></p>
 
 [ArrayFire](https://github.com/arrayfire/arrayfire) is a high performance library for parallel computing with an easy-to-use API. It enables users to write scientific computing code that is portable across CUDA, OpenCL and CPU devices.  
 
-This project is meant to provide thin Python bindings for the ArrayFire C library. It also decouples releases of the main C/C++ library from the Python library by acting as a intermediate library and only wrapping the provided C calls.  
+This project is a **work in progress**. It is meant to provide thin Python bindings for the ArrayFire C library. It also decouples releases of the main C/C++ library from the Python library by acting as a intermediate library and only wrapping the provided C calls.  
 
 This allows the building of large binary wheels only when the underlying ArrayFire version is increased, and the fully-featured Python library can be developed atop independently. The package is not intended to be used directly and merely exposes the 
 C functionality required by downstream implementations. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
 
+The ArrayFire Python Project is separated into 3 different parts:
+```
+arrayfire-py -> arrayfire-binary-python-wrapper -> ArrayFire C Libraries
+```
+The arrow `->` means `uses/depends on`. This means that arrayfire with python each of these parts is needed:
+- [`arrayfire-py`](https://github.com/arrayfire/arrayfire-py) is the `thin` wrapper that provides the numpy-like interface to do math and array operations. *** This is the intended User Interface ***
+- [`arrayfire-binary-python-wrapper`](https://github.com/arrayfire/arrayfire-binary-python-wrapper) is the `binary` wrapper that provides rough direct access to the functions in the C library. Its purpose is to do the handling of finding the C libraries and handling the communication between Python and C datatypes. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
+- [`ArrayFire C Libraries`](https://github.com/arrayfire/arrayfire) are the binaries obtained from compiling the [ArrayFire C/C++ Project](https://github.com/arrayfire/arrayfire)
+
 # Installing
 
-The arrayfire-binary-python-wrapper can be installed from a variety of sources. [Pre-built wheels](https://repo.arrayfire.com/python/wheels/3.9.0/) are available for a number of systems and toolkits. These will include a binary distribution of the ArrayFire libraries. Installing from PyPI directly will only include a wrapper-only, source distribution that will not contain binaries. In this case, wrapper-only installations will require a separate installation of the ArrayFire C/C++ libraries.
+The arrayfire-binary-python-wrapper can be installed from a variety of sources. [Pre-built wheels](https://repo.arrayfire.com/python/wheels/3.10.0/) are available for a number of systems and toolkits. These will include a binary distribution of the ArrayFire libraries. Installing from PyPI directly will only include a wrapper-only, source distribution that will not contain binaries. In this case, wrapper-only installations will require a separate installation of the ArrayFire C/C++ libraries.
 You can get the ArrayFire C/C++ library from the following sources:
 
 - [Download and install binaries](https://arrayfire.com/download)
@@ -23,7 +34,7 @@ pip install arrayfire-binary-python-wrapper
 
 **Install a pre-built wheel:**
 ```
-pip install arrayfire-binary-python-wrapper -f https://repo.arrayfire.com/python/wheels/3.9.0/
+pip install arrayfire-binary-python-wrapper -f https://repo.arrayfire.com/python/wheels/3.10.0/
 ```
 
 # Building
@@ -31,10 +42,12 @@ The arrayfire-binary-python-wrapper can build wheels in packaged-binary or in sy
 [scikit-build-core](https://github.com/scikit-build/scikit-build-core) is used to provide the python build backend.
 The minimal, wrapper-only mode that relies on a system install will be built by default though the regular python build process. For example:
 ```
-pipx run build --wheel
+python -m pip install -r dev-requirements.txt
+python -m build --wheel
 ```
 Building a full pre-packaged local binary is an involved process that will require referencing the regular ArrayFire [build](https://github.com/arrayfire/arrayfire/wiki/Build-Instructions-for-Linux) [procedures](https://github.com/arrayfire/arrayfire/wiki/Build-Instructions-for-Windows).
-Besides the regular ArrayFire CMake configuration, building the binaries is an opt-in process that is set by an environment variable `AF_BUILD_LOCAL_LIBS=1`. Once that environment variable is set, scikit-build-core will take care of cloning ArrayFire, building, and including the necessary binaries.
+
+Besides the regular ArrayFire CMake configuration, building the binaries is an opt-in process that is set by an environment variable `AF_BUILD_LOCAL_LIBS=1`. Once that environment variable is set, scikit-build-core will take care of cloning ArrayFire, building, and including the necessary binaries. You may require specifying certain locations of external packages using `CMAKE_ARGS` to pass them to cmake. We recommend looking at our [docker build](https://github.com/arrayfire/arrayfire-docker/blob/afwheel310/arrayfire/scripts/build_wheel.sh) procedure to build this wheel if you wish to replicate it yourself.
 
 
 # Contributing
