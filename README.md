@@ -4,16 +4,17 @@
 
 [ArrayFire](https://github.com/arrayfire/arrayfire) is a high performance library for parallel computing with an easy-to-use API. It enables users to write scientific computing code that is portable across CUDA, OpenCL and CPU devices.  
 
-This project is a **work in progress**. It is meant to provide thin Python bindings for the ArrayFire C library. It also decouples releases of the main C/C++ library from the Python library by acting as a intermediate library and only wrapping the provided C calls.  
+This project is a **work in progress**. This is meant to provide direct Python access for the ArrayFire C library by only wrapping the calls to the C/C++ ArrayFire Library. 
+This allows the building of large binary wheels only when the underlying ArrayFire version is increased, and the [interface Python library `arrayfire-py`](https://github.com/arrayfire/arrayfire-py) can be developed independently. The package is **not intended** to be used directly and merely exposes the 
+C functionality required by [`arrayfire-py`](https://github.com/arrayfire/arrayfire-py). This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
 
-This allows the building of large binary wheels only when the underlying ArrayFire version is increased, and the fully-featured Python library can be developed atop independently. The package is not intended to be used directly and merely exposes the 
-C functionality required by downstream implementations. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
+# Project Details
 
 The ArrayFire Python Project is separated into 3 different parts:
 ```
 arrayfire-py -> arrayfire-binary-python-wrapper -> ArrayFire C Libraries
 ```
-The arrow `->` means `uses/depends on`. This means that arrayfire with python each of these parts is needed:
+This means that arrayfire with python each of these parts is needed:
 - [`arrayfire-py`](https://github.com/arrayfire/arrayfire-py) is the `thin` wrapper that provides the numpy-like interface to do math and array operations. *** This is the intended User Interface ***
 - [`arrayfire-binary-python-wrapper`](https://github.com/arrayfire/arrayfire-binary-python-wrapper) is the `binary` wrapper that provides rough direct access to the functions in the C library. Its purpose is to do the handling of finding the C libraries and handling the communication between Python and C datatypes. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
 - [`ArrayFire C Libraries`](https://github.com/arrayfire/arrayfire) are the binaries obtained from compiling the [ArrayFire C/C++ Project](https://github.com/arrayfire/arrayfire)
@@ -27,9 +28,9 @@ You can get the ArrayFire C/C++ library from the following sources:
 - [Build and install from source](https://github.com/arrayfire/arrayfire)
 
 
-**Install the last stable version of python wrapper:**
+**Install the last stable version of the binary python wrapper:**
 ```
-pip install arrayfire-binary-python-wrapper
+pip install arrayfire_binary_python_wrapper-0.8.0+af3.10.0-py3-none-linux_x86_64.whl # install required binary wrapper with the 3.10 ArrayFire binaries included 
 ```
 
 **Install a pre-built wheel:**
