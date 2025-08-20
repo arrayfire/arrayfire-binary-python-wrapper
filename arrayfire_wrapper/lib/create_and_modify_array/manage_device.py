@@ -143,11 +143,13 @@ def get_kernel_cache_directory(length: int, path: str, /) -> None:
     call_from_clib(get_kernel_cache_directory.__name__, ctypes.c_size_t(length), path.encode("utf-8"))
 
 
-def get_mem_step_size(step_bytes: int, /) -> None:
+def get_mem_step_size() -> int:
     """
     source: https://arrayfire.org/docs/group__device__func__mem.htm#ga4c04df1ae248a6a8aa0a28263323872a
     """
-    call_from_clib(get_mem_step_size.__name__, ctypes.c_size_t(step_bytes))
+    out = ctypes.c_int(0)
+    call_from_clib(get_mem_step_size.__name__, ctypes.pointer(out))
+    return int(out.value)
 
 
 def is_locked_array(arr: AFArray, /) -> bool:
