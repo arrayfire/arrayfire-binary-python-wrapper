@@ -15,7 +15,7 @@ if(DEFINED ENV{AF_BUILD_LOCAL_LIBS})
     FetchContent_Declare(
         arrayfire
         GIT_REPOSITORY https://github.com/edwinsolisf/arrayfire.git
-        GIT_TAG afwheel310
+        GIT_TAG v3.10
     )
     #TODO: change package name to match repository/project name?
     #set(AF_INSTALL_CMAKE_DIR "${SKBUILD_PROJECT_NAME}")
