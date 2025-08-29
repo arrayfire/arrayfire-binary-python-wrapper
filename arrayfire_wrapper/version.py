@@ -1,7 +1,7 @@
 import os
 
 _MAJOR = "0"
-_MINOR = "7"
+_MINOR = "8"
 # On main and in a nightly release the patch should be one ahead of the last
 # released build.
 _PATCH = "0"
@@ -13,7 +13,7 @@ WRAPPER_VERSION = "{0}.{1}.{2}{3}".format(_MAJOR, _MINOR, _PATCH, _SUFFIX)
 
 FORGE_VER_MAJOR = "1"
 ARRAYFIRE_VER_MAJOR = "3"
-ARRAYFIRE_VER_MINOR = "9"
+ARRAYFIRE_VER_MINOR = "10"
 ARRAYFIRE_VER_PATCH = "0"
 ARRAYFIRE_VERSION = "AF{0}.{1}.{2}".format(ARRAYFIRE_VER_MAJOR, ARRAYFIRE_VER_MINOR, ARRAYFIRE_VER_PATCH)
 

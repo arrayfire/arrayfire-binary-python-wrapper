@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import ctypes
 import math
-from typing import Any
 
+from arrayfire_wrapper.defines import AFArray
 from arrayfire_wrapper.lib._broadcast import bcast_var
 from arrayfire_wrapper.lib.create_and_modify_array.manage_array import release_array, retain_array
-from arrayfire_wrapper.defines import AFArray
+
 
 class _IndexSequence(ctypes.Structure):
     """
