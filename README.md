@@ -1,4 +1,4 @@
-# arrayfire-binary-python-wrapper (WIP)
+# arrayfire-binary-python-wrapper
 
 <p align="center"><a href="http://arrayfire.com/"><img src="http://arrayfire.com/logos/arrayfire_logo_whitebkgnd.png" width="800"></a></p>
 
@@ -15,8 +15,8 @@ The ArrayFire Python Project is separated into 3 different parts:
 arrayfire-py -> arrayfire-binary-python-wrapper -> ArrayFire C Libraries
 ```
 This means that arrayfire with python each of these parts is needed:
-- [`arrayfire-py`](https://github.com/arrayfire/arrayfire-py) is the `thin` wrapper that provides the numpy-like interface to do math and array operations. *** This is the intended User Interface ***
-- [`arrayfire-binary-python-wrapper`](https://github.com/arrayfire/arrayfire-binary-python-wrapper) is the `binary` wrapper that provides rough direct access to the functions in the C library. Its purpose is to do the handling of finding the C libraries and handling the communication between Python and C datatypes. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
+- [`arrayfire-py`](https://github.com/arrayfire/arrayfire-py) is the ***intended User Interface*** that provides a numpy-like layer to execute math and array operations with ArrayFire.
+- [`arrayfire-binary-python-wrapper`](https://github.com/arrayfire/arrayfire-binary-python-wrapper) is the thin `binary` wrapper that provides rough direct access to the functions in the C library. Its purpose is to do the handling of finding the C libraries and handling the communication between Python and C datatypes. This package can exist in two forms, with a bundled binary distribution, or merely as a loader that will load the ArrayFire library from a system or user level install.
 - [`ArrayFire C Libraries`](https://github.com/arrayfire/arrayfire) are the binaries obtained from compiling the [ArrayFire C/C++ Project](https://github.com/arrayfire/arrayfire)
 
 # Installing
@@ -29,12 +29,15 @@ You can get the ArrayFire C/C++ library from the following sources:
 
 
 **Install the last stable version of the binary python wrapper:**
-```
-pip install arrayfire_binary_python_wrapper-0.8.0+af3.10.0-py3-none-linux_x86_64.whl # install required binary wrapper with the 3.10 ArrayFire binaries included 
+```sh
+# install binary wrapper from PyPI without binaries
+# assumes ArrayFire binaries will be installed on the system in some other manner
+pip install arrayfire_binary_python_wrapper 
 ```
 
 **Install a pre-built wheel:**
-```
+```sh
+# install binary wrapper with the 3.10 ArrayFire binaries pre-built and included
 pip install arrayfire-binary-python-wrapper -f https://repo.arrayfire.com/python/wheels/3.10.0/
 ```
 
