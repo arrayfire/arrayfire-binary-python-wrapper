@@ -238,6 +238,10 @@ class Backend:
             try:
                 if VERBOSE_LOADS:
                     print(f"Attempting to load {lib_name}")
+
+                # make additional dependencies available for oneapi backend on windows
+                if platform.system() == _SupportedPlatforms.windows.value and _backend_type == BackendType.oneapi:
+                    os.add_dll_directory(os.path.dirname(lib_name))
                 ctypes.cdll.LoadLibrary(str(lib_name))
                 self._backend_type = _backend_type
                 self._clibs[_backend_type] = ctypes.CDLL(str(lib_name))
