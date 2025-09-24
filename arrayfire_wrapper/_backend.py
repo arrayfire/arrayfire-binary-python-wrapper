@@ -242,6 +242,10 @@ class Backend:
                 # make additional dependencies available for oneapi backend on windows
                 if platform.system() == _SupportedPlatforms.windows.value and _backend_type == BackendType.oneapi:
                     os.add_dll_directory(os.path.dirname(lib_name))
+
+                    # TODO: temporary fix for mkl_core not getting loaded correctly
+                    ctypes.cdll.LoadLibrary('mkl_core.2.dll')
+
                 ctypes.cdll.LoadLibrary(str(lib_name))
                 self._backend_type = _backend_type
                 self._clibs[_backend_type] = ctypes.CDLL(str(lib_name))
